@@ -150,6 +150,12 @@ const std::string HttpMsgHandler::QUERY_USER_CFG_ACTION("query_user_cfg");
 
 const std::string HttpMsgHandler::QUERY_DEVICE_P2PID_ASP("getdevinfo.aspx");
 
+const std::string HttpMsgHandler::ADD_BLACK_ID("add_black_id");
+
+const std::string HttpMsgHandler::REMOVE_BLACK_ID("remove_black_id");
+
+const std::string HttpMsgHandler::QUERY_ALL_BLACK_LIST("query_all_black_list");
+
 HttpMsgHandler::HttpMsgHandler(const ParamInfo &parminfo, CacheMgr &sgr) :
 m_ParamInfo(parminfo),
 m_pInteractiveProtoHandler(new InteractiveProtoHandler),
@@ -7281,6 +7287,303 @@ bool HttpMsgHandler::QueryDeviceP2pIDAspHandler(boost::shared_ptr<MsgInfoMap> pM
     return blQueryFlag;
 }
 
+bool HttpMsgHandler::AddBlackIDHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));            
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("blackid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Black id not found.");
+        return blResult;
+    }
+    const std::string strBlackID = itFind->second;
+
+    itFind = pMsgInfoMap->find("id_type");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("ID type not found.");
+        return blResult;
+    }
+    const std::string strType = itFind->second;
+
+    unsigned int uiType = 0;
+    try
+    {
+        uiType = boost::lexical_cast<unsigned int>(strType);
+    }
+    catch (boost::bad_lexical_cast & e)
+    {
+        LOG_ERROR_RLD("Type info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+        return blResult;
+    }
+    catch (...)
+    {
+        LOG_ERROR_RLD("Type info is invalid and input index is " << itFind->second);
+        return blResult;
+    }
+    
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
+
+    BlkObj bo;
+    bo.m_strBlackID = strBlackID;
+    bo.m_strExtend = strExtend;
+    bo.m_uiIDType = uiType;    
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Add black info received and  user id is " << strUserID << " and black id is " << strBlackID << " and type is " << uiType 
+        << " and extend is " << strExtend);
+
+
+    if (!AddBlackID(strSid, strUserID, bo))
+    {
+        LOG_ERROR_RLD("Add black handle failed and user id is " << strUserID << " and sid is " << strSid << " and id is " << strBlackID);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::RemoveBlackIDHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("blackid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Black id not found.");
+        return blResult;
+    }
+    const std::string strBlkID = itFind->second;
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Remove black info received and  user id is " << strUserID << " and black id is " << strBlkID
+        << " and session id is " << strSid);
+
+    if (!RemoveBlackID(strSid, strUserID, strBlkID))
+    {
+        LOG_ERROR_RLD("Remove black handle failed and user id is " << strUserID << " and sid is " << strSid << " and black id is " << strBlkID);
+        return blResult;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool HttpMsgHandler::QueryAllBlackListHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsBlkList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsBlkList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["black_list"] = jsBlkList;
+
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Sid not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    std::string strType;
+    unsigned int uiType = 0xFFFFFFFF;
+    itFind = pMsgInfoMap->find("id_type");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strType = itFind->second;
+
+        try
+        {
+            uiType = boost::lexical_cast<unsigned int>(strType);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Type info is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Type info is invalid and input index is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    std::string strBeginIndex;
+    unsigned int uiBeginIndex = 0;
+    itFind = pMsgInfoMap->find("beginindex");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strBeginIndex = itFind->second;
+
+        try
+        {
+            uiBeginIndex = boost::lexical_cast<unsigned int>(strBeginIndex);
+        }
+        catch (boost::bad_lexical_cast & e)
+        {
+            LOG_ERROR_RLD("Begin index is invalid and error msg is " << e.what() << " and input index is " << itFind->second);
+            return blResult;
+        }
+        catch (...)
+        {
+            LOG_ERROR_RLD("Begin index is invalid and input index is " << itFind->second);
+            return blResult;
+        }
+    }
+        
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query all black info received and user id is " << strUserID << " and sid is " << strSid << " and id type is " << uiType
+        << " and begin index is " << uiBeginIndex);
+
+    std::list<BlkObj> blkobjlist;
+    if (!QueryAllBlack(strSid, strUserID, uiType, uiBeginIndex, blkobjlist))
+    {
+        LOG_ERROR_RLD("Query all black info failed and user id is " << strUserID << " and sid is " << strSid << " and id type is " << uiType
+            << " and begin index is " << uiBeginIndex);
+        return blResult;
+    }
+
+    auto itBegin = blkobjlist.begin();
+    auto itEnd = blkobjlist.end();
+    while (itBegin != itEnd)
+    {
+        Json::Value jsBlkObj;
+        jsBlkObj["blackid"] = itBegin->m_strBlackID;
+        jsBlkObj["extend"] = itBegin->m_strExtend;
+        jsBlkObj["id_type"] = itBegin->m_uiIDType;
+        
+        jsBlkList.append(jsBlkObj);
+
+        ++itBegin;
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
 void HttpMsgHandler::WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult, boost::function<void(void*)> PostFunc)
 {
     Json::Value jsBody;
@@ -11545,6 +11848,172 @@ bool HttpMsgHandler::BlacklistCompare(const std::string &strKey, const std::stri
     }
 
     return false;
+}
+
+bool HttpMsgHandler::AddBlackID(const std::string &strSid, const std::string &strUserID, const BlkObj &blkobj)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::AddBlackIDReq_USR AddBlkIDReq;
+        AddBlkIDReq.m_MsgType = InteractiveProtoHandler::MsgType::AddBlackIDReq_USER_T;
+        AddBlkIDReq.m_uiMsgSeq = 1;
+        AddBlkIDReq.m_strSID = strSid;
+
+        AddBlkIDReq.m_blkobj.m_strBlackID = blkobj.m_strBlackID;
+        AddBlkIDReq.m_blkobj.m_strExtend = blkobj.m_strExtend;
+        AddBlkIDReq.m_blkobj.m_uiIDType = blkobj.m_uiIDType;
+        AddBlkIDReq.m_strUserID = strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(AddBlkIDReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add black id req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        InteractiveProtoHandler::AddBlackIDRsp_USR AddBlkIDRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, AddBlkIDRsp))
+        {
+            LOG_ERROR_RLD("Add black id rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = AddBlkIDRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Add black id and rsp value is " << AddBlkIDRsp.m_strValue <<
+            " and return code is " << AddBlkIDRsp.m_iRetcode <<
+            " and return msg is " << AddBlkIDRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&HttpMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::RemoveBlackID(const std::string &strSid, const std::string &strUserID, const std::string &strBlkID)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::RemoveBlackIDReq_USR RemoveBlkIDReq;
+        RemoveBlkIDReq.m_MsgType = InteractiveProtoHandler::MsgType::RemoveBlackIDReq_USER_T;
+        RemoveBlkIDReq.m_uiMsgSeq = 1;
+        RemoveBlkIDReq.m_strSID = strSid;
+
+        RemoveBlkIDReq.m_strBlackID = strBlkID;
+        RemoveBlkIDReq.m_strUserID = strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(RemoveBlkIDReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Remove black id req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        InteractiveProtoHandler::RemoveBlackIDRsp_USR RemoveBlkIDRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, RemoveBlkIDRsp))
+        {
+            LOG_ERROR_RLD("Remove black id rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        iRet = RemoveBlkIDRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Remove black id and rsp value is " << RemoveBlkIDRsp.m_strValue <<
+            " and return code is " << RemoveBlkIDRsp.m_iRetcode <<
+            " and return msg is " << RemoveBlkIDRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&HttpMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
+}
+
+bool HttpMsgHandler::QueryAllBlack(const std::string &strSid, const std::string &strUserID, unsigned int uiIDType, unsigned int uiBeginIndex, std::list<BlkObj> &blkobjlist)
+{
+    auto ReqFunc = [&](CommMsgHandler::SendWriter writer) -> int
+    {
+        InteractiveProtoHandler::QueryAllBlackIDReq_USR QueryAllBlkIDReq;
+        QueryAllBlkIDReq.m_MsgType = InteractiveProtoHandler::MsgType::QueryAllBlackIDReq_USER_T;
+        QueryAllBlkIDReq.m_uiMsgSeq = 1;
+        QueryAllBlkIDReq.m_strSID = strSid;
+
+        QueryAllBlkIDReq.m_uiBeginIndex = uiBeginIndex;
+        QueryAllBlkIDReq.m_uiIDType = uiIDType;
+        QueryAllBlkIDReq.m_strUserID = strUserID;
+
+        std::string strSerializeOutPut;
+        if (!m_pInteractiveProtoHandler->SerializeReq(QueryAllBlkIDReq, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all black id req serialize failed.");
+            return CommMsgHandler::FAILED;
+        }
+
+        return writer("0", "1", strSerializeOutPut.c_str(), strSerializeOutPut.length());
+    };
+
+    int iRet = CommMsgHandler::SUCCEED;
+    auto RspFunc = [&](CommMsgHandler::Packet &pt) -> int
+    {
+        const std::string &strMsgReceived = std::string(pt.pBuffer.get(), pt.buflen);
+
+        InteractiveProtoHandler::QueryAllBlackIDRsp_USR QueryAllBlkIDRsp;
+        if (!m_pInteractiveProtoHandler->UnSerializeReq(strMsgReceived, QueryAllBlkIDRsp))
+        {
+            LOG_ERROR_RLD("Query all black id rsp unserialize failed.");
+            return iRet = CommMsgHandler::FAILED;
+        }
+
+        for (auto itBegin = QueryAllBlkIDRsp.m_blkobjlist.begin(), itEnd = QueryAllBlkIDRsp.m_blkobjlist.end(); itBegin != itEnd; ++itBegin)
+        {
+            BlkObj bo;
+            bo.m_strBlackID = itBegin->m_strBlackID;
+            bo.m_strExtend = itBegin->m_strExtend;
+            bo.m_uiIDType = itBegin->m_uiIDType;
+
+            blkobjlist.push_back(std::move(bo));
+        }
+
+        iRet = QueryAllBlkIDRsp.m_iRetcode;
+
+        LOG_INFO_RLD("Query all black id and black id number is " << QueryAllBlkIDRsp.m_blkobjlist.size() <<
+            " and return code is " << QueryAllBlkIDRsp.m_iRetcode <<
+            " and return msg is " << QueryAllBlkIDRsp.m_strRetMsg);
+
+        return CommMsgHandler::SUCCEED;
+    };
+
+    boost::shared_ptr<CommMsgHandler> pCommMsgHdr(new CommMsgHandler(m_ParamInfo.m_strSelfID, m_ParamInfo.m_uiCallFuncTimeout));
+    pCommMsgHdr->SetReqAndRspHandler(ReqFunc, boost::bind(&HttpMsgHandler::RspFuncCommonAction, this, _1, &iRet, RspFunc));
+
+    return CommMsgHandler::SUCCEED == pCommMsgHdr->Start(m_ParamInfo.m_strRemoteAddress,
+        m_ParamInfo.m_strRemotePort, 0, m_ParamInfo.m_uiShakehandOfChannelInterval) &&
+        CommMsgHandler::SUCCEED == iRet;
 }
 
 bool HttpMsgHandler::ValidDatetime(const std::string &strDatetime)

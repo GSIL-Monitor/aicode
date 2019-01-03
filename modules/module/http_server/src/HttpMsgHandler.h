@@ -104,6 +104,11 @@ public:
 
     static const std::string QUERY_DEVICE_P2PID_ASP;
 
+    static const std::string ADD_BLACK_ID;
+    static const std::string REMOVE_BLACK_ID;
+    static const std::string QUERY_ALL_BLACK_LIST;
+
+
     typedef struct _ParamInfo
     {
         std::string m_strRemoteAddress;
@@ -254,6 +259,9 @@ public:
 
     bool QueryDeviceP2pIDAspHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
+    bool AddBlackIDHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+    bool RemoveBlackIDHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+    bool QueryAllBlackListHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
     void WriteMsg(const std::map<std::string, std::string> &MsgMap, MsgWriter writer, const bool blResult = true, boost::function<void(void*)> PostFunc = NULL);
 
@@ -411,6 +419,13 @@ private:
         std::string m_strVersion;
         std::string m_strCfgURL;
     } UserCfg;
+
+    typedef struct
+    {
+        std::string m_strBlackID;
+        unsigned int m_uiIDType;
+        std::string m_strExtend;
+    } BlkObj;
 
     int RspFuncCommonAction(CommMsgHandler::Packet &pt, int *piRetCode, RspFuncCommon rspfunc);
 
@@ -577,6 +592,13 @@ private:
     void GetDeviceP2pIDAspXMLReport(const DevP2pIDInfo &p2pinfo, std::string &strXMLReport);
 
     bool BlacklistCompare(const std::string &strKey, const std::string &strValue);
+
+
+    bool AddBlackID(const std::string &strSid, const std::string &strUserID, const BlkObj &blkobj);
+
+    bool RemoveBlackID(const std::string &strSid, const std::string &strUserID, const std::string &strBlkID);
+
+    bool QueryAllBlack(const std::string &strSid, const std::string &strUserID, unsigned int uiIDType, unsigned int uiBeginIndex, std::list<BlkObj> &blkobjlist);
 
 private:
     bool ValidDatetime(const std::string &strDatetime);

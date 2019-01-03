@@ -1434,6 +1434,50 @@ InteractiveProtoHandler::InteractiveProtoHandler()
     handler.UnSzr = boost::bind(&InteractiveProtoHandler::ControlChannelRsp_DEV_UnSerializer, this, _1, _2);
 
     m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::ControlChannelRsp_DEV_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::AddBlackIDReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::AddBlackIDReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::AddBlackIDReq_USER_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::AddBlackIDRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::AddBlackIDRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::AddBlackIDRsp_USER_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::RemoveBlackIDReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::RemoveBlackIDReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::RemoveBlackIDReq_USER_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::RemoveBlackIDRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::RemoveBlackIDRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::RemoveBlackIDRsp_USER_T, handler));
+
+    //////////////////////////////////////////////////
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryAllBlackIDReq_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryAllBlackIDReq_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryAllBlackIDReq_USER_T, handler));
+
+    //
+
+    handler.Szr = boost::bind(&InteractiveProtoHandler::QueryAllBlackIDRsp_USR_Serializer, this, _1, _2);
+    handler.UnSzr = boost::bind(&InteractiveProtoHandler::QueryAllBlackIDRsp_USR_UnSerializer, this, _1, _2);
+
+    m_ReqAndRspHandlerMap.insert(std::make_pair(Interactive::Message::MsgType::QueryAllBlackIDRsp_USER_T, handler));
+
+
 }
 
 InteractiveProtoHandler::~InteractiveProtoHandler()
@@ -2898,6 +2942,66 @@ bool InteractiveProtoHandler::ControlChannelRsp_DEV_Serializer(const Req &rsp, s
 bool InteractiveProtoHandler::ControlChannelRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
 {
     return UnSerializerT<ControlChannelRsp_DEV, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::AddBlackIDReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<AddBlackIDReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::AddBlackIDReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<AddBlackIDReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::AddBlackIDRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<AddBlackIDRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::AddBlackIDRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<AddBlackIDRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::RemoveBlackIDReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<RemoveBlackIDReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::RemoveBlackIDReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<RemoveBlackIDReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::RemoveBlackIDRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<RemoveBlackIDRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::RemoveBlackIDRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<RemoveBlackIDRsp_USR, Req>(InteractiveMsg, rsp);
+}
+
+bool InteractiveProtoHandler::QueryAllBlackIDReq_USR_Serializer(const Req &req, std::string &strOutput)
+{
+    return SerializerT<QueryAllBlackIDReq_USR, Req>(req, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryAllBlackIDReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req)
+{
+    return UnSerializerT<QueryAllBlackIDReq_USR, Req>(InteractiveMsg, req);
+}
+
+bool InteractiveProtoHandler::QueryAllBlackIDRsp_USR_Serializer(const Req &rsp, std::string &strOutput)
+{
+    return SerializerT<QueryAllBlackIDRsp_USR, Req>(rsp, strOutput);
+}
+
+bool InteractiveProtoHandler::QueryAllBlackIDRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp)
+{
+    return UnSerializerT<QueryAllBlackIDRsp_USR, Req>(InteractiveMsg, rsp);
 }
 
 void InteractiveProtoHandler::Req::UnSerializer(const InteractiveMessage &InteractiveMsg)
@@ -6083,4 +6187,140 @@ void InteractiveProtoHandler::ControlChannelRsp_DEV::Serializer(InteractiveMessa
     InteractiveMsg.set_type(Interactive::Message::MsgType::ControlChannelRsp_DEV_T);
 
     InteractiveMsg.mutable_rspvalue()->mutable_controlchannelrsp_dev_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::AddBlackIDReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+    
+    m_blkobj.m_strBlackID = InteractiveMsg.reqvalue().addblackidreq_usr_value().blkobj().strblackid();
+    m_blkobj.m_strExtend = InteractiveMsg.reqvalue().addblackidreq_usr_value().blkobj().strextend();
+    m_blkobj.m_uiIDType = InteractiveMsg.reqvalue().addblackidreq_usr_value().blkobj().uiidtype();
+    m_strUserID = InteractiveMsg.reqvalue().addblackidreq_usr_value().struserid();
+}
+
+void InteractiveProtoHandler::AddBlackIDReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::AddBlackIDReq_USER_T);
+
+    InteractiveMsg.mutable_reqvalue()->mutable_addblackidreq_usr_value()->mutable_blkobj()->set_strblackid(m_blkobj.m_strBlackID);
+    InteractiveMsg.mutable_reqvalue()->mutable_addblackidreq_usr_value()->mutable_blkobj()->set_strextend(m_blkobj.m_strExtend);
+    InteractiveMsg.mutable_reqvalue()->mutable_addblackidreq_usr_value()->mutable_blkobj()->set_uiidtype(m_blkobj.m_uiIDType);
+    InteractiveMsg.mutable_reqvalue()->mutable_addblackidreq_usr_value()->set_struserid(m_strUserID);
+}
+
+void InteractiveProtoHandler::AddBlackIDRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+
+    m_strValue = InteractiveMsg.rspvalue().addblackidrsp_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::AddBlackIDRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::AddBlackIDRsp_USER_T);
+
+    InteractiveMsg.mutable_rspvalue()->mutable_addblackidrsp_usr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::RemoveBlackIDReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+
+    m_strBlackID = InteractiveMsg.reqvalue().removeblackidreq_usr_value().strblackid();
+    m_strUserID = InteractiveMsg.reqvalue().removeblackidreq_usr_value().struserid();
+}
+
+void InteractiveProtoHandler::RemoveBlackIDReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::RemoveBlackIDReq_USER_T);
+
+    InteractiveMsg.mutable_reqvalue()->mutable_removeblackidreq_usr_value()->set_strblackid(m_strBlackID);
+    InteractiveMsg.mutable_reqvalue()->mutable_removeblackidreq_usr_value()->set_struserid(m_strUserID);
+}
+
+void InteractiveProtoHandler::RemoveBlackIDRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+
+    m_strValue = InteractiveMsg.rspvalue().removeblackidrsp_usr_value().strvalue();
+}
+
+void InteractiveProtoHandler::RemoveBlackIDRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::RemoveBlackIDRsp_USER_T);
+
+    InteractiveMsg.mutable_rspvalue()->mutable_removeblackidrsp_usr_value()->set_strvalue(m_strValue);
+}
+
+void InteractiveProtoHandler::QueryAllBlackIDReq_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Req::UnSerializer(InteractiveMsg);
+
+    m_uiIDType = InteractiveMsg.reqvalue().queryallblackidreq_usr_value().uiidtype();
+    m_uiBeginIndex = InteractiveMsg.reqvalue().queryallblackidreq_usr_value().uibeginindex();
+    m_strUserID = InteractiveMsg.reqvalue().queryallblackidreq_usr_value().struserid();
+}
+
+void InteractiveProtoHandler::QueryAllBlackIDReq_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Req::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryAllBlackIDReq_USER_T);
+
+    InteractiveMsg.mutable_reqvalue()->mutable_queryallblackidreq_usr_value()->set_uiidtype(m_uiIDType);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryallblackidreq_usr_value()->set_uibeginindex(m_uiBeginIndex);
+    InteractiveMsg.mutable_reqvalue()->mutable_queryallblackidreq_usr_value()->set_struserid(m_strUserID);
+}
+
+void InteractiveProtoHandler::QueryAllBlackIDRsp_USR::UnSerializer(const InteractiveMessage &InteractiveMsg)
+{
+    Rsp::UnSerializer(InteractiveMsg);
+
+    m_blkobjlist.clear();
+
+    const auto &srcblkobjlist = InteractiveMsg.rspvalue().queryallblackidrsp_usr_value().blkobjlist();
+
+    unsigned int iCount = srcblkobjlist.size();
+    for (unsigned int i = 0; i < iCount; ++i)
+    {
+        const auto &srcBlkObj = srcblkobjlist.Get(i);
+        InteractiveProtoHandler::BlackObj blkobj;
+        blkobj.m_strBlackID = srcBlkObj.strblackid();
+        blkobj.m_strExtend = srcBlkObj.strextend();
+        blkobj.m_uiIDType = srcBlkObj.uiidtype();
+
+        m_blkobjlist.push_back(std::move(blkobj));
+    }
+}
+
+void InteractiveProtoHandler::QueryAllBlackIDRsp_USR::Serializer(InteractiveMessage &InteractiveMsg) const
+{
+    Rsp::Serializer(InteractiveMsg);
+    InteractiveMsg.set_type(Interactive::Message::MsgType::QueryAllBlackIDRsp_USER_T);
+
+    auto pDstDeviceEventList = InteractiveMsg.mutable_rspvalue()->mutable_queryallblackidrsp_usr_value()->mutable_blkobjlist();
+
+    unsigned int iCount = m_blkobjlist.size();
+    for (unsigned int i = 0; i < iCount; ++i)
+    {
+        pDstDeviceEventList->Add();
+    }
+
+    auto itBegin = m_blkobjlist.begin();
+    auto itEnd = m_blkobjlist.end();
+    int i = 0;
+    while (itBegin != itEnd)
+    {
+        auto pDstBlkObj = pDstDeviceEventList->Mutable(i);
+        pDstBlkObj->set_strblackid(itBegin->m_strBlackID);
+        pDstBlkObj->set_strextend(itBegin->m_strExtend);
+        pDstBlkObj->set_uiidtype(itBegin->m_uiIDType);
+        
+        ++i;
+        ++itBegin;
+    }
 }

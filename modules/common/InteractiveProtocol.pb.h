@@ -32,6 +32,12 @@
 // @@protoc_insertion_point(includes)
 namespace Interactive {
 namespace Message {
+class AddBlackIDReq_USR;
+class AddBlackIDReq_USRDefaultTypeInternal;
+extern AddBlackIDReq_USRDefaultTypeInternal _AddBlackIDReq_USR_default_instance_;
+class AddBlackIDRsp_USR;
+class AddBlackIDRsp_USRDefaultTypeInternal;
+extern AddBlackIDRsp_USRDefaultTypeInternal _AddBlackIDRsp_USR_default_instance_;
 class AddConfigurationReq_MGR;
 class AddConfigurationReq_MGRDefaultTypeInternal;
 extern AddConfigurationReq_MGRDefaultTypeInternal _AddConfigurationReq_MGR_default_instance_;
@@ -62,6 +68,9 @@ extern AddStorageDetailReq_USRDefaultTypeInternal _AddStorageDetailReq_USR_defau
 class AddStorageDetailRsp_USR;
 class AddStorageDetailRsp_USRDefaultTypeInternal;
 extern AddStorageDetailRsp_USRDefaultTypeInternal _AddStorageDetailRsp_USR_default_instance_;
+class BlackObj;
+class BlackObjDefaultTypeInternal;
+extern BlackObjDefaultTypeInternal _BlackObj_default_instance_;
 class BroadcastOnlineDevInfo_INNER;
 class BroadcastOnlineDevInfo_INNERDefaultTypeInternal;
 extern BroadcastOnlineDevInfo_INNERDefaultTypeInternal _BroadcastOnlineDevInfo_INNER_default_instance_;
@@ -305,6 +314,12 @@ extern QueryAccessDomainNameRsp_DEVDefaultTypeInternal _QueryAccessDomainNameRsp
 class QueryAccessDomainNameRsp_USR;
 class QueryAccessDomainNameRsp_USRDefaultTypeInternal;
 extern QueryAccessDomainNameRsp_USRDefaultTypeInternal _QueryAccessDomainNameRsp_USR_default_instance_;
+class QueryAllBlackIDReq_USR;
+class QueryAllBlackIDReq_USRDefaultTypeInternal;
+extern QueryAllBlackIDReq_USRDefaultTypeInternal _QueryAllBlackIDReq_USR_default_instance_;
+class QueryAllBlackIDRsp_USR;
+class QueryAllBlackIDRsp_USRDefaultTypeInternal;
+extern QueryAllBlackIDRsp_USRDefaultTypeInternal _QueryAllBlackIDRsp_USR_default_instance_;
 class QueryAllConfigurationReq_MGR;
 class QueryAllConfigurationReq_MGRDefaultTypeInternal;
 extern QueryAllConfigurationReq_MGRDefaultTypeInternal _QueryAllConfigurationReq_MGR_default_instance_;
@@ -458,6 +473,12 @@ extern RegisterUserRsp_USRDefaultTypeInternal _RegisterUserRsp_USR_default_insta
 class Relation;
 class RelationDefaultTypeInternal;
 extern RelationDefaultTypeInternal _Relation_default_instance_;
+class RemoveBlackIDReq_USR;
+class RemoveBlackIDReq_USRDefaultTypeInternal;
+extern RemoveBlackIDReq_USRDefaultTypeInternal _RemoveBlackIDReq_USR_default_instance_;
+class RemoveBlackIDRsp_USR;
+class RemoveBlackIDRsp_USRDefaultTypeInternal;
+extern RemoveBlackIDRsp_USRDefaultTypeInternal _RemoveBlackIDRsp_USR_default_instance_;
 class Req;
 class ReqDefaultTypeInternal;
 extern ReqDefaultTypeInternal _Req_default_instance_;
@@ -676,6 +697,12 @@ enum MsgType {
   UploadUserCfgRsp_USR_T = 20974,
   QueryUserCfgReq_USR_T = 20975,
   QueryUserCfgRsp_USR_T = 20976,
+  AddBlackIDReq_USER_T = 20977,
+  AddBlackIDRsp_USER_T = 20978,
+  RemoveBlackIDReq_USER_T = 20979,
+  RemoveBlackIDRsp_USER_T = 20980,
+  QueryAllBlackIDReq_USER_T = 20981,
+  QueryAllBlackIDRsp_USER_T = 20982,
   GetOnlineDevInfoReq_INNER_T = 30000,
   GetOnlineDevInfoRsp_INNER_T = 30010,
   BroadcastOnlineDevInfo_INNER_T = 30020,
@@ -715,6 +742,119 @@ inline bool MsgType_Parse(
     MsgType_descriptor(), name, value);
 }
 // ===================================================================
+
+class BlackObj : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.BlackObj) */ {
+ public:
+  BlackObj();
+  virtual ~BlackObj();
+
+  BlackObj(const BlackObj& from);
+
+  inline BlackObj& operator=(const BlackObj& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const BlackObj& default_instance();
+
+  static inline const BlackObj* internal_default_instance() {
+    return reinterpret_cast<const BlackObj*>(
+               &_BlackObj_default_instance_);
+  }
+
+  void Swap(BlackObj* other);
+
+  // implements Message ----------------------------------------------
+
+  inline BlackObj* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  BlackObj* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const BlackObj& from);
+  void MergeFrom(const BlackObj& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(BlackObj* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strBlackID = 1;
+  void clear_strblackid();
+  static const int kStrBlackIDFieldNumber = 1;
+  const ::std::string& strblackid() const;
+  void set_strblackid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strblackid(::std::string&& value);
+  #endif
+  void set_strblackid(const char* value);
+  void set_strblackid(const char* value, size_t size);
+  ::std::string* mutable_strblackid();
+  ::std::string* release_strblackid();
+  void set_allocated_strblackid(::std::string* strblackid);
+
+  // string strExtend = 3;
+  void clear_strextend();
+  static const int kStrExtendFieldNumber = 3;
+  const ::std::string& strextend() const;
+  void set_strextend(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strextend(::std::string&& value);
+  #endif
+  void set_strextend(const char* value);
+  void set_strextend(const char* value, size_t size);
+  ::std::string* mutable_strextend();
+  ::std::string* release_strextend();
+  void set_allocated_strextend(::std::string* strextend);
+
+  // uint32 uiIDType = 2;
+  void clear_uiidtype();
+  static const int kUiIDTypeFieldNumber = 2;
+  ::google::protobuf::uint32 uiidtype() const;
+  void set_uiidtype(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.BlackObj)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strblackid_;
+  ::google::protobuf::internal::ArenaStringPtr strextend_;
+  ::google::protobuf::uint32 uiidtype_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
 
 class PermissionOfUser : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.PermissionOfUser) */ {
  public:
@@ -17636,6 +17776,589 @@ class QueryUserCfgRsp_USR : public ::google::protobuf::Message /* @@protoc_inser
 };
 // -------------------------------------------------------------------
 
+class AddBlackIDReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.AddBlackIDReq_USR) */ {
+ public:
+  AddBlackIDReq_USR();
+  virtual ~AddBlackIDReq_USR();
+
+  AddBlackIDReq_USR(const AddBlackIDReq_USR& from);
+
+  inline AddBlackIDReq_USR& operator=(const AddBlackIDReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddBlackIDReq_USR& default_instance();
+
+  static inline const AddBlackIDReq_USR* internal_default_instance() {
+    return reinterpret_cast<const AddBlackIDReq_USR*>(
+               &_AddBlackIDReq_USR_default_instance_);
+  }
+
+  void Swap(AddBlackIDReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddBlackIDReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddBlackIDReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddBlackIDReq_USR& from);
+  void MergeFrom(const AddBlackIDReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddBlackIDReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 2;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 2;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // .Interactive.Message.BlackObj blkobj = 1;
+  bool has_blkobj() const;
+  void clear_blkobj();
+  static const int kBlkobjFieldNumber = 1;
+  const ::Interactive::Message::BlackObj& blkobj() const;
+  ::Interactive::Message::BlackObj* mutable_blkobj();
+  ::Interactive::Message::BlackObj* release_blkobj();
+  void set_allocated_blkobj(::Interactive::Message::BlackObj* blkobj);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.AddBlackIDReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::Interactive::Message::BlackObj* blkobj_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class AddBlackIDRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.AddBlackIDRsp_USR) */ {
+ public:
+  AddBlackIDRsp_USR();
+  virtual ~AddBlackIDRsp_USR();
+
+  AddBlackIDRsp_USR(const AddBlackIDRsp_USR& from);
+
+  inline AddBlackIDRsp_USR& operator=(const AddBlackIDRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AddBlackIDRsp_USR& default_instance();
+
+  static inline const AddBlackIDRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const AddBlackIDRsp_USR*>(
+               &_AddBlackIDRsp_USR_default_instance_);
+  }
+
+  void Swap(AddBlackIDRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline AddBlackIDRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  AddBlackIDRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const AddBlackIDRsp_USR& from);
+  void MergeFrom(const AddBlackIDRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(AddBlackIDRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.AddBlackIDRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class RemoveBlackIDReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.RemoveBlackIDReq_USR) */ {
+ public:
+  RemoveBlackIDReq_USR();
+  virtual ~RemoveBlackIDReq_USR();
+
+  RemoveBlackIDReq_USR(const RemoveBlackIDReq_USR& from);
+
+  inline RemoveBlackIDReq_USR& operator=(const RemoveBlackIDReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RemoveBlackIDReq_USR& default_instance();
+
+  static inline const RemoveBlackIDReq_USR* internal_default_instance() {
+    return reinterpret_cast<const RemoveBlackIDReq_USR*>(
+               &_RemoveBlackIDReq_USR_default_instance_);
+  }
+
+  void Swap(RemoveBlackIDReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline RemoveBlackIDReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  RemoveBlackIDReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const RemoveBlackIDReq_USR& from);
+  void MergeFrom(const RemoveBlackIDReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(RemoveBlackIDReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strBlackID = 1;
+  void clear_strblackid();
+  static const int kStrBlackIDFieldNumber = 1;
+  const ::std::string& strblackid() const;
+  void set_strblackid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strblackid(::std::string&& value);
+  #endif
+  void set_strblackid(const char* value);
+  void set_strblackid(const char* value, size_t size);
+  ::std::string* mutable_strblackid();
+  ::std::string* release_strblackid();
+  void set_allocated_strblackid(::std::string* strblackid);
+
+  // string strUserID = 2;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 2;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.RemoveBlackIDReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strblackid_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class RemoveBlackIDRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.RemoveBlackIDRsp_USR) */ {
+ public:
+  RemoveBlackIDRsp_USR();
+  virtual ~RemoveBlackIDRsp_USR();
+
+  RemoveBlackIDRsp_USR(const RemoveBlackIDRsp_USR& from);
+
+  inline RemoveBlackIDRsp_USR& operator=(const RemoveBlackIDRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RemoveBlackIDRsp_USR& default_instance();
+
+  static inline const RemoveBlackIDRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const RemoveBlackIDRsp_USR*>(
+               &_RemoveBlackIDRsp_USR_default_instance_);
+  }
+
+  void Swap(RemoveBlackIDRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline RemoveBlackIDRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  RemoveBlackIDRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const RemoveBlackIDRsp_USR& from);
+  void MergeFrom(const RemoveBlackIDRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(RemoveBlackIDRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strValue = 1;
+  void clear_strvalue();
+  static const int kStrValueFieldNumber = 1;
+  const ::std::string& strvalue() const;
+  void set_strvalue(const ::std::string& value);
+  #if LANG_CXX11
+  void set_strvalue(::std::string&& value);
+  #endif
+  void set_strvalue(const char* value);
+  void set_strvalue(const char* value, size_t size);
+  ::std::string* mutable_strvalue();
+  ::std::string* release_strvalue();
+  void set_allocated_strvalue(::std::string* strvalue);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.RemoveBlackIDRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr strvalue_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAllBlackIDReq_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryAllBlackIDReq_USR) */ {
+ public:
+  QueryAllBlackIDReq_USR();
+  virtual ~QueryAllBlackIDReq_USR();
+
+  QueryAllBlackIDReq_USR(const QueryAllBlackIDReq_USR& from);
+
+  inline QueryAllBlackIDReq_USR& operator=(const QueryAllBlackIDReq_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAllBlackIDReq_USR& default_instance();
+
+  static inline const QueryAllBlackIDReq_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryAllBlackIDReq_USR*>(
+               &_QueryAllBlackIDReq_USR_default_instance_);
+  }
+
+  void Swap(QueryAllBlackIDReq_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAllBlackIDReq_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAllBlackIDReq_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAllBlackIDReq_USR& from);
+  void MergeFrom(const QueryAllBlackIDReq_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAllBlackIDReq_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string strUserID = 3;
+  void clear_struserid();
+  static const int kStrUserIDFieldNumber = 3;
+  const ::std::string& struserid() const;
+  void set_struserid(const ::std::string& value);
+  #if LANG_CXX11
+  void set_struserid(::std::string&& value);
+  #endif
+  void set_struserid(const char* value);
+  void set_struserid(const char* value, size_t size);
+  ::std::string* mutable_struserid();
+  ::std::string* release_struserid();
+  void set_allocated_struserid(::std::string* struserid);
+
+  // uint32 uiIDType = 1;
+  void clear_uiidtype();
+  static const int kUiIDTypeFieldNumber = 1;
+  ::google::protobuf::uint32 uiidtype() const;
+  void set_uiidtype(::google::protobuf::uint32 value);
+
+  // uint32 uiBeginIndex = 2;
+  void clear_uibeginindex();
+  static const int kUiBeginIndexFieldNumber = 2;
+  ::google::protobuf::uint32 uibeginindex() const;
+  void set_uibeginindex(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryAllBlackIDReq_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr struserid_;
+  ::google::protobuf::uint32 uiidtype_;
+  ::google::protobuf::uint32 uibeginindex_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class QueryAllBlackIDRsp_USR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryAllBlackIDRsp_USR) */ {
+ public:
+  QueryAllBlackIDRsp_USR();
+  virtual ~QueryAllBlackIDRsp_USR();
+
+  QueryAllBlackIDRsp_USR(const QueryAllBlackIDRsp_USR& from);
+
+  inline QueryAllBlackIDRsp_USR& operator=(const QueryAllBlackIDRsp_USR& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const QueryAllBlackIDRsp_USR& default_instance();
+
+  static inline const QueryAllBlackIDRsp_USR* internal_default_instance() {
+    return reinterpret_cast<const QueryAllBlackIDRsp_USR*>(
+               &_QueryAllBlackIDRsp_USR_default_instance_);
+  }
+
+  void Swap(QueryAllBlackIDRsp_USR* other);
+
+  // implements Message ----------------------------------------------
+
+  inline QueryAllBlackIDRsp_USR* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  QueryAllBlackIDRsp_USR* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const QueryAllBlackIDRsp_USR& from);
+  void MergeFrom(const QueryAllBlackIDRsp_USR& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(QueryAllBlackIDRsp_USR* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .Interactive.Message.BlackObj blkobjlist = 1;
+  int blkobjlist_size() const;
+  void clear_blkobjlist();
+  static const int kBlkobjlistFieldNumber = 1;
+  const ::Interactive::Message::BlackObj& blkobjlist(int index) const;
+  ::Interactive::Message::BlackObj* mutable_blkobjlist(int index);
+  ::Interactive::Message::BlackObj* add_blkobjlist();
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::BlackObj >*
+      mutable_blkobjlist();
+  const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::BlackObj >&
+      blkobjlist() const;
+
+  // @@protoc_insertion_point(class_scope:Interactive.Message.QueryAllBlackIDRsp_USR)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::Interactive::Message::BlackObj > blkobjlist_;
+  mutable int _cached_size_;
+  friend struct  protobuf_InteractiveProtocol_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class QueryUploadURLReq_MGR : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:Interactive.Message.QueryUploadURLReq_MGR) */ {
  public:
   QueryUploadURLReq_MGR();
@@ -20140,6 +20863,33 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryUserCfgReq_USR* release_queryusercfgreq_usr_value();
   void set_allocated_queryusercfgreq_usr_value(::Interactive::Message::QueryUserCfgReq_USR* queryusercfgreq_usr_value);
 
+  // .Interactive.Message.AddBlackIDReq_USR AddBlackIDReq_USR_Value = 1109;
+  bool has_addblackidreq_usr_value() const;
+  void clear_addblackidreq_usr_value();
+  static const int kAddBlackIDReqUSRValueFieldNumber = 1109;
+  const ::Interactive::Message::AddBlackIDReq_USR& addblackidreq_usr_value() const;
+  ::Interactive::Message::AddBlackIDReq_USR* mutable_addblackidreq_usr_value();
+  ::Interactive::Message::AddBlackIDReq_USR* release_addblackidreq_usr_value();
+  void set_allocated_addblackidreq_usr_value(::Interactive::Message::AddBlackIDReq_USR* addblackidreq_usr_value);
+
+  // .Interactive.Message.RemoveBlackIDReq_USR RemoveBlackIDReq_USR_Value = 1110;
+  bool has_removeblackidreq_usr_value() const;
+  void clear_removeblackidreq_usr_value();
+  static const int kRemoveBlackIDReqUSRValueFieldNumber = 1110;
+  const ::Interactive::Message::RemoveBlackIDReq_USR& removeblackidreq_usr_value() const;
+  ::Interactive::Message::RemoveBlackIDReq_USR* mutable_removeblackidreq_usr_value();
+  ::Interactive::Message::RemoveBlackIDReq_USR* release_removeblackidreq_usr_value();
+  void set_allocated_removeblackidreq_usr_value(::Interactive::Message::RemoveBlackIDReq_USR* removeblackidreq_usr_value);
+
+  // .Interactive.Message.QueryAllBlackIDReq_USR QueryAllBlackIDReq_USR_Value = 1111;
+  bool has_queryallblackidreq_usr_value() const;
+  void clear_queryallblackidreq_usr_value();
+  static const int kQueryAllBlackIDReqUSRValueFieldNumber = 1111;
+  const ::Interactive::Message::QueryAllBlackIDReq_USR& queryallblackidreq_usr_value() const;
+  ::Interactive::Message::QueryAllBlackIDReq_USR* mutable_queryallblackidreq_usr_value();
+  ::Interactive::Message::QueryAllBlackIDReq_USR* release_queryallblackidreq_usr_value();
+  void set_allocated_queryallblackidreq_usr_value(::Interactive::Message::QueryAllBlackIDReq_USR* queryallblackidreq_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
   bool has_getonlinedevinforeq_inner_value() const;
   void clear_getonlinedevinforeq_inner_value();
@@ -20307,6 +21057,9 @@ class Req : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryDeviceP2pIDReq_USR* querydevicep2pidreq_usr_value_;
   ::Interactive::Message::UploadUserCfgReq_USR* uploadusercfgreq_usr_value_;
   ::Interactive::Message::QueryUserCfgReq_USR* queryusercfgreq_usr_value_;
+  ::Interactive::Message::AddBlackIDReq_USR* addblackidreq_usr_value_;
+  ::Interactive::Message::RemoveBlackIDReq_USR* removeblackidreq_usr_value_;
+  ::Interactive::Message::QueryAllBlackIDReq_USR* queryallblackidreq_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoReq_INNER* getonlinedevinforeq_inner_value_;
   ::Interactive::Message::BroadcastOnlineDevInfo_INNER* broadcastonlinedevinfo_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoReq_INNER* getonlineuserinforeq_inner_value_;
@@ -20980,6 +21733,33 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryUserCfgRsp_USR* release_queryusercfgrsp_usr_value();
   void set_allocated_queryusercfgrsp_usr_value(::Interactive::Message::QueryUserCfgRsp_USR* queryusercfgrsp_usr_value);
 
+  // .Interactive.Message.AddBlackIDRsp_USR AddBlackIDRsp_USR_Value = 1109;
+  bool has_addblackidrsp_usr_value() const;
+  void clear_addblackidrsp_usr_value();
+  static const int kAddBlackIDRspUSRValueFieldNumber = 1109;
+  const ::Interactive::Message::AddBlackIDRsp_USR& addblackidrsp_usr_value() const;
+  ::Interactive::Message::AddBlackIDRsp_USR* mutable_addblackidrsp_usr_value();
+  ::Interactive::Message::AddBlackIDRsp_USR* release_addblackidrsp_usr_value();
+  void set_allocated_addblackidrsp_usr_value(::Interactive::Message::AddBlackIDRsp_USR* addblackidrsp_usr_value);
+
+  // .Interactive.Message.RemoveBlackIDRsp_USR RemoveBlackIDRsp_USR_Value = 1110;
+  bool has_removeblackidrsp_usr_value() const;
+  void clear_removeblackidrsp_usr_value();
+  static const int kRemoveBlackIDRspUSRValueFieldNumber = 1110;
+  const ::Interactive::Message::RemoveBlackIDRsp_USR& removeblackidrsp_usr_value() const;
+  ::Interactive::Message::RemoveBlackIDRsp_USR* mutable_removeblackidrsp_usr_value();
+  ::Interactive::Message::RemoveBlackIDRsp_USR* release_removeblackidrsp_usr_value();
+  void set_allocated_removeblackidrsp_usr_value(::Interactive::Message::RemoveBlackIDRsp_USR* removeblackidrsp_usr_value);
+
+  // .Interactive.Message.QueryAllBlackIDRsp_USR QueryAllBlackIDRsp_USR_Value = 1111;
+  bool has_queryallblackidrsp_usr_value() const;
+  void clear_queryallblackidrsp_usr_value();
+  static const int kQueryAllBlackIDRspUSRValueFieldNumber = 1111;
+  const ::Interactive::Message::QueryAllBlackIDRsp_USR& queryallblackidrsp_usr_value() const;
+  ::Interactive::Message::QueryAllBlackIDRsp_USR* mutable_queryallblackidrsp_usr_value();
+  ::Interactive::Message::QueryAllBlackIDRsp_USR* release_queryallblackidrsp_usr_value();
+  void set_allocated_queryallblackidrsp_usr_value(::Interactive::Message::QueryAllBlackIDRsp_USR* queryallblackidrsp_usr_value);
+
   // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
   bool has_getonlinedevinforsp_inner_value() const;
   void clear_getonlinedevinforsp_inner_value();
@@ -21136,6 +21916,9 @@ class Rsp : public ::google::protobuf::Message /* @@protoc_insertion_point(class
   ::Interactive::Message::QueryDeviceP2pIDRsp_USR* querydevicep2pidrsp_usr_value_;
   ::Interactive::Message::UploadUserCfgRsp_USR* uploadusercfgrsp_usr_value_;
   ::Interactive::Message::QueryUserCfgRsp_USR* queryusercfgrsp_usr_value_;
+  ::Interactive::Message::AddBlackIDRsp_USR* addblackidrsp_usr_value_;
+  ::Interactive::Message::RemoveBlackIDRsp_USR* removeblackidrsp_usr_value_;
+  ::Interactive::Message::QueryAllBlackIDRsp_USR* queryallblackidrsp_usr_value_;
   ::Interactive::Message::GetOnlineDevInfoRsp_INNER* getonlinedevinforsp_inner_value_;
   ::Interactive::Message::GetOnlineUserInfoRsp_INNER* getonlineuserinforsp_inner_value_;
   ::Interactive::Message::GetDeviceAccessRecordRsp_INNER* getdeviceaccessrecordrsp_inner_value_;
@@ -21280,6 +22063,128 @@ class InteractiveMessage : public ::google::protobuf::Message /* @@protoc_insert
 // ===================================================================
 
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
+// BlackObj
+
+// string strBlackID = 1;
+inline void BlackObj::clear_strblackid() {
+  strblackid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& BlackObj::strblackid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.BlackObj.strBlackID)
+  return strblackid_.GetNoArena();
+}
+inline void BlackObj::set_strblackid(const ::std::string& value) {
+  
+  strblackid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.BlackObj.strBlackID)
+}
+#if LANG_CXX11
+inline void BlackObj::set_strblackid(::std::string&& value) {
+  
+  strblackid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.BlackObj.strBlackID)
+}
+#endif
+inline void BlackObj::set_strblackid(const char* value) {
+  
+  strblackid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.BlackObj.strBlackID)
+}
+inline void BlackObj::set_strblackid(const char* value, size_t size) {
+  
+  strblackid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.BlackObj.strBlackID)
+}
+inline ::std::string* BlackObj::mutable_strblackid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.BlackObj.strBlackID)
+  return strblackid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* BlackObj::release_strblackid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.BlackObj.strBlackID)
+  
+  return strblackid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void BlackObj::set_allocated_strblackid(::std::string* strblackid) {
+  if (strblackid != NULL) {
+    
+  } else {
+    
+  }
+  strblackid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strblackid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.BlackObj.strBlackID)
+}
+
+// uint32 uiIDType = 2;
+inline void BlackObj::clear_uiidtype() {
+  uiidtype_ = 0u;
+}
+inline ::google::protobuf::uint32 BlackObj::uiidtype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.BlackObj.uiIDType)
+  return uiidtype_;
+}
+inline void BlackObj::set_uiidtype(::google::protobuf::uint32 value) {
+  
+  uiidtype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.BlackObj.uiIDType)
+}
+
+// string strExtend = 3;
+inline void BlackObj::clear_strextend() {
+  strextend_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& BlackObj::strextend() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.BlackObj.strExtend)
+  return strextend_.GetNoArena();
+}
+inline void BlackObj::set_strextend(const ::std::string& value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.BlackObj.strExtend)
+}
+#if LANG_CXX11
+inline void BlackObj::set_strextend(::std::string&& value) {
+  
+  strextend_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.BlackObj.strExtend)
+}
+#endif
+inline void BlackObj::set_strextend(const char* value) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.BlackObj.strExtend)
+}
+inline void BlackObj::set_strextend(const char* value, size_t size) {
+  
+  strextend_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.BlackObj.strExtend)
+}
+inline ::std::string* BlackObj::mutable_strextend() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.BlackObj.strExtend)
+  return strextend_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* BlackObj::release_strextend() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.BlackObj.strExtend)
+  
+  return strextend_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void BlackObj::set_allocated_strextend(::std::string* strextend) {
+  if (strextend != NULL) {
+    
+  } else {
+    
+  }
+  strextend_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strextend);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.BlackObj.strExtend)
+}
+
+// -------------------------------------------------------------------
+
 // PermissionOfUser
 
 // uint32 uiUnlimited = 1;
@@ -42033,6 +42938,439 @@ inline void QueryUserCfgRsp_USR::set_allocated_strextend(::std::string* strexten
 
 // -------------------------------------------------------------------
 
+// AddBlackIDReq_USR
+
+// .Interactive.Message.BlackObj blkobj = 1;
+inline bool AddBlackIDReq_USR::has_blkobj() const {
+  return this != internal_default_instance() && blkobj_ != NULL;
+}
+inline void AddBlackIDReq_USR::clear_blkobj() {
+  if (GetArenaNoVirtual() == NULL && blkobj_ != NULL) delete blkobj_;
+  blkobj_ = NULL;
+}
+inline const ::Interactive::Message::BlackObj& AddBlackIDReq_USR::blkobj() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddBlackIDReq_USR.blkobj)
+  return blkobj_ != NULL ? *blkobj_
+                         : *::Interactive::Message::BlackObj::internal_default_instance();
+}
+inline ::Interactive::Message::BlackObj* AddBlackIDReq_USR::mutable_blkobj() {
+  
+  if (blkobj_ == NULL) {
+    blkobj_ = new ::Interactive::Message::BlackObj;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddBlackIDReq_USR.blkobj)
+  return blkobj_;
+}
+inline ::Interactive::Message::BlackObj* AddBlackIDReq_USR::release_blkobj() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.AddBlackIDReq_USR.blkobj)
+  
+  ::Interactive::Message::BlackObj* temp = blkobj_;
+  blkobj_ = NULL;
+  return temp;
+}
+inline void AddBlackIDReq_USR::set_allocated_blkobj(::Interactive::Message::BlackObj* blkobj) {
+  delete blkobj_;
+  blkobj_ = blkobj;
+  if (blkobj) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddBlackIDReq_USR.blkobj)
+}
+
+// string strUserID = 2;
+inline void AddBlackIDReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddBlackIDReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddBlackIDReq_USR.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void AddBlackIDReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.AddBlackIDReq_USR.strUserID)
+}
+#if LANG_CXX11
+inline void AddBlackIDReq_USR::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.AddBlackIDReq_USR.strUserID)
+}
+#endif
+inline void AddBlackIDReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.AddBlackIDReq_USR.strUserID)
+}
+inline void AddBlackIDReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.AddBlackIDReq_USR.strUserID)
+}
+inline ::std::string* AddBlackIDReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddBlackIDReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddBlackIDReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.AddBlackIDReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddBlackIDReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddBlackIDReq_USR.strUserID)
+}
+
+// -------------------------------------------------------------------
+
+// AddBlackIDRsp_USR
+
+// string strValue = 1;
+inline void AddBlackIDRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddBlackIDRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.AddBlackIDRsp_USR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void AddBlackIDRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.AddBlackIDRsp_USR.strValue)
+}
+#if LANG_CXX11
+inline void AddBlackIDRsp_USR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.AddBlackIDRsp_USR.strValue)
+}
+#endif
+inline void AddBlackIDRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.AddBlackIDRsp_USR.strValue)
+}
+inline void AddBlackIDRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.AddBlackIDRsp_USR.strValue)
+}
+inline ::std::string* AddBlackIDRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.AddBlackIDRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddBlackIDRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.AddBlackIDRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddBlackIDRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.AddBlackIDRsp_USR.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// RemoveBlackIDReq_USR
+
+// string strBlackID = 1;
+inline void RemoveBlackIDReq_USR::clear_strblackid() {
+  strblackid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RemoveBlackIDReq_USR::strblackid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.RemoveBlackIDReq_USR.strBlackID)
+  return strblackid_.GetNoArena();
+}
+inline void RemoveBlackIDReq_USR::set_strblackid(const ::std::string& value) {
+  
+  strblackid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.RemoveBlackIDReq_USR.strBlackID)
+}
+#if LANG_CXX11
+inline void RemoveBlackIDReq_USR::set_strblackid(::std::string&& value) {
+  
+  strblackid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.RemoveBlackIDReq_USR.strBlackID)
+}
+#endif
+inline void RemoveBlackIDReq_USR::set_strblackid(const char* value) {
+  
+  strblackid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.RemoveBlackIDReq_USR.strBlackID)
+}
+inline void RemoveBlackIDReq_USR::set_strblackid(const char* value, size_t size) {
+  
+  strblackid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.RemoveBlackIDReq_USR.strBlackID)
+}
+inline ::std::string* RemoveBlackIDReq_USR::mutable_strblackid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.RemoveBlackIDReq_USR.strBlackID)
+  return strblackid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RemoveBlackIDReq_USR::release_strblackid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.RemoveBlackIDReq_USR.strBlackID)
+  
+  return strblackid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RemoveBlackIDReq_USR::set_allocated_strblackid(::std::string* strblackid) {
+  if (strblackid != NULL) {
+    
+  } else {
+    
+  }
+  strblackid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strblackid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.RemoveBlackIDReq_USR.strBlackID)
+}
+
+// string strUserID = 2;
+inline void RemoveBlackIDReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RemoveBlackIDReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.RemoveBlackIDReq_USR.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void RemoveBlackIDReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.RemoveBlackIDReq_USR.strUserID)
+}
+#if LANG_CXX11
+inline void RemoveBlackIDReq_USR::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.RemoveBlackIDReq_USR.strUserID)
+}
+#endif
+inline void RemoveBlackIDReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.RemoveBlackIDReq_USR.strUserID)
+}
+inline void RemoveBlackIDReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.RemoveBlackIDReq_USR.strUserID)
+}
+inline ::std::string* RemoveBlackIDReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.RemoveBlackIDReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RemoveBlackIDReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.RemoveBlackIDReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RemoveBlackIDReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.RemoveBlackIDReq_USR.strUserID)
+}
+
+// -------------------------------------------------------------------
+
+// RemoveBlackIDRsp_USR
+
+// string strValue = 1;
+inline void RemoveBlackIDRsp_USR::clear_strvalue() {
+  strvalue_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RemoveBlackIDRsp_USR::strvalue() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.RemoveBlackIDRsp_USR.strValue)
+  return strvalue_.GetNoArena();
+}
+inline void RemoveBlackIDRsp_USR::set_strvalue(const ::std::string& value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.RemoveBlackIDRsp_USR.strValue)
+}
+#if LANG_CXX11
+inline void RemoveBlackIDRsp_USR::set_strvalue(::std::string&& value) {
+  
+  strvalue_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.RemoveBlackIDRsp_USR.strValue)
+}
+#endif
+inline void RemoveBlackIDRsp_USR::set_strvalue(const char* value) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.RemoveBlackIDRsp_USR.strValue)
+}
+inline void RemoveBlackIDRsp_USR::set_strvalue(const char* value, size_t size) {
+  
+  strvalue_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.RemoveBlackIDRsp_USR.strValue)
+}
+inline ::std::string* RemoveBlackIDRsp_USR::mutable_strvalue() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.RemoveBlackIDRsp_USR.strValue)
+  return strvalue_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RemoveBlackIDRsp_USR::release_strvalue() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.RemoveBlackIDRsp_USR.strValue)
+  
+  return strvalue_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RemoveBlackIDRsp_USR::set_allocated_strvalue(::std::string* strvalue) {
+  if (strvalue != NULL) {
+    
+  } else {
+    
+  }
+  strvalue_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), strvalue);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.RemoveBlackIDRsp_USR.strValue)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAllBlackIDReq_USR
+
+// uint32 uiIDType = 1;
+inline void QueryAllBlackIDReq_USR::clear_uiidtype() {
+  uiidtype_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryAllBlackIDReq_USR::uiidtype() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAllBlackIDReq_USR.uiIDType)
+  return uiidtype_;
+}
+inline void QueryAllBlackIDReq_USR::set_uiidtype(::google::protobuf::uint32 value) {
+  
+  uiidtype_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAllBlackIDReq_USR.uiIDType)
+}
+
+// uint32 uiBeginIndex = 2;
+inline void QueryAllBlackIDReq_USR::clear_uibeginindex() {
+  uibeginindex_ = 0u;
+}
+inline ::google::protobuf::uint32 QueryAllBlackIDReq_USR::uibeginindex() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAllBlackIDReq_USR.uiBeginIndex)
+  return uibeginindex_;
+}
+inline void QueryAllBlackIDReq_USR::set_uibeginindex(::google::protobuf::uint32 value) {
+  
+  uibeginindex_ = value;
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAllBlackIDReq_USR.uiBeginIndex)
+}
+
+// string strUserID = 3;
+inline void QueryAllBlackIDReq_USR::clear_struserid() {
+  struserid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& QueryAllBlackIDReq_USR::struserid() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAllBlackIDReq_USR.strUserID)
+  return struserid_.GetNoArena();
+}
+inline void QueryAllBlackIDReq_USR::set_struserid(const ::std::string& value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:Interactive.Message.QueryAllBlackIDReq_USR.strUserID)
+}
+#if LANG_CXX11
+inline void QueryAllBlackIDReq_USR::set_struserid(::std::string&& value) {
+  
+  struserid_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:Interactive.Message.QueryAllBlackIDReq_USR.strUserID)
+}
+#endif
+inline void QueryAllBlackIDReq_USR::set_struserid(const char* value) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:Interactive.Message.QueryAllBlackIDReq_USR.strUserID)
+}
+inline void QueryAllBlackIDReq_USR::set_struserid(const char* value, size_t size) {
+  
+  struserid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:Interactive.Message.QueryAllBlackIDReq_USR.strUserID)
+}
+inline ::std::string* QueryAllBlackIDReq_USR::mutable_struserid() {
+  
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAllBlackIDReq_USR.strUserID)
+  return struserid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* QueryAllBlackIDReq_USR::release_struserid() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.QueryAllBlackIDReq_USR.strUserID)
+  
+  return struserid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void QueryAllBlackIDReq_USR::set_allocated_struserid(::std::string* struserid) {
+  if (struserid != NULL) {
+    
+  } else {
+    
+  }
+  struserid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), struserid);
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.QueryAllBlackIDReq_USR.strUserID)
+}
+
+// -------------------------------------------------------------------
+
+// QueryAllBlackIDRsp_USR
+
+// repeated .Interactive.Message.BlackObj blkobjlist = 1;
+inline int QueryAllBlackIDRsp_USR::blkobjlist_size() const {
+  return blkobjlist_.size();
+}
+inline void QueryAllBlackIDRsp_USR::clear_blkobjlist() {
+  blkobjlist_.Clear();
+}
+inline const ::Interactive::Message::BlackObj& QueryAllBlackIDRsp_USR::blkobjlist(int index) const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.QueryAllBlackIDRsp_USR.blkobjlist)
+  return blkobjlist_.Get(index);
+}
+inline ::Interactive::Message::BlackObj* QueryAllBlackIDRsp_USR::mutable_blkobjlist(int index) {
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.QueryAllBlackIDRsp_USR.blkobjlist)
+  return blkobjlist_.Mutable(index);
+}
+inline ::Interactive::Message::BlackObj* QueryAllBlackIDRsp_USR::add_blkobjlist() {
+  // @@protoc_insertion_point(field_add:Interactive.Message.QueryAllBlackIDRsp_USR.blkobjlist)
+  return blkobjlist_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::Interactive::Message::BlackObj >*
+QueryAllBlackIDRsp_USR::mutable_blkobjlist() {
+  // @@protoc_insertion_point(field_mutable_list:Interactive.Message.QueryAllBlackIDRsp_USR.blkobjlist)
+  return &blkobjlist_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Interactive::Message::BlackObj >&
+QueryAllBlackIDRsp_USR::blkobjlist() const {
+  // @@protoc_insertion_point(field_list:Interactive.Message.QueryAllBlackIDRsp_USR.blkobjlist)
+  return blkobjlist_;
+}
+
+// -------------------------------------------------------------------
+
 // QueryUploadURLReq_MGR
 
 // string strValue = 1;
@@ -45645,6 +46983,123 @@ inline void Req::set_allocated_queryusercfgreq_usr_value(::Interactive::Message:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryUserCfgReq_USR_Value)
 }
 
+// .Interactive.Message.AddBlackIDReq_USR AddBlackIDReq_USR_Value = 1109;
+inline bool Req::has_addblackidreq_usr_value() const {
+  return this != internal_default_instance() && addblackidreq_usr_value_ != NULL;
+}
+inline void Req::clear_addblackidreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && addblackidreq_usr_value_ != NULL) delete addblackidreq_usr_value_;
+  addblackidreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::AddBlackIDReq_USR& Req::addblackidreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.AddBlackIDReq_USR_Value)
+  return addblackidreq_usr_value_ != NULL ? *addblackidreq_usr_value_
+                         : *::Interactive::Message::AddBlackIDReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::AddBlackIDReq_USR* Req::mutable_addblackidreq_usr_value() {
+  
+  if (addblackidreq_usr_value_ == NULL) {
+    addblackidreq_usr_value_ = new ::Interactive::Message::AddBlackIDReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.AddBlackIDReq_USR_Value)
+  return addblackidreq_usr_value_;
+}
+inline ::Interactive::Message::AddBlackIDReq_USR* Req::release_addblackidreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.AddBlackIDReq_USR_Value)
+  
+  ::Interactive::Message::AddBlackIDReq_USR* temp = addblackidreq_usr_value_;
+  addblackidreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_addblackidreq_usr_value(::Interactive::Message::AddBlackIDReq_USR* addblackidreq_usr_value) {
+  delete addblackidreq_usr_value_;
+  addblackidreq_usr_value_ = addblackidreq_usr_value;
+  if (addblackidreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.AddBlackIDReq_USR_Value)
+}
+
+// .Interactive.Message.RemoveBlackIDReq_USR RemoveBlackIDReq_USR_Value = 1110;
+inline bool Req::has_removeblackidreq_usr_value() const {
+  return this != internal_default_instance() && removeblackidreq_usr_value_ != NULL;
+}
+inline void Req::clear_removeblackidreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && removeblackidreq_usr_value_ != NULL) delete removeblackidreq_usr_value_;
+  removeblackidreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::RemoveBlackIDReq_USR& Req::removeblackidreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.RemoveBlackIDReq_USR_Value)
+  return removeblackidreq_usr_value_ != NULL ? *removeblackidreq_usr_value_
+                         : *::Interactive::Message::RemoveBlackIDReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::RemoveBlackIDReq_USR* Req::mutable_removeblackidreq_usr_value() {
+  
+  if (removeblackidreq_usr_value_ == NULL) {
+    removeblackidreq_usr_value_ = new ::Interactive::Message::RemoveBlackIDReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.RemoveBlackIDReq_USR_Value)
+  return removeblackidreq_usr_value_;
+}
+inline ::Interactive::Message::RemoveBlackIDReq_USR* Req::release_removeblackidreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.RemoveBlackIDReq_USR_Value)
+  
+  ::Interactive::Message::RemoveBlackIDReq_USR* temp = removeblackidreq_usr_value_;
+  removeblackidreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_removeblackidreq_usr_value(::Interactive::Message::RemoveBlackIDReq_USR* removeblackidreq_usr_value) {
+  delete removeblackidreq_usr_value_;
+  removeblackidreq_usr_value_ = removeblackidreq_usr_value;
+  if (removeblackidreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.RemoveBlackIDReq_USR_Value)
+}
+
+// .Interactive.Message.QueryAllBlackIDReq_USR QueryAllBlackIDReq_USR_Value = 1111;
+inline bool Req::has_queryallblackidreq_usr_value() const {
+  return this != internal_default_instance() && queryallblackidreq_usr_value_ != NULL;
+}
+inline void Req::clear_queryallblackidreq_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryallblackidreq_usr_value_ != NULL) delete queryallblackidreq_usr_value_;
+  queryallblackidreq_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryAllBlackIDReq_USR& Req::queryallblackidreq_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Req.QueryAllBlackIDReq_USR_Value)
+  return queryallblackidreq_usr_value_ != NULL ? *queryallblackidreq_usr_value_
+                         : *::Interactive::Message::QueryAllBlackIDReq_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryAllBlackIDReq_USR* Req::mutable_queryallblackidreq_usr_value() {
+  
+  if (queryallblackidreq_usr_value_ == NULL) {
+    queryallblackidreq_usr_value_ = new ::Interactive::Message::QueryAllBlackIDReq_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Req.QueryAllBlackIDReq_USR_Value)
+  return queryallblackidreq_usr_value_;
+}
+inline ::Interactive::Message::QueryAllBlackIDReq_USR* Req::release_queryallblackidreq_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Req.QueryAllBlackIDReq_USR_Value)
+  
+  ::Interactive::Message::QueryAllBlackIDReq_USR* temp = queryallblackidreq_usr_value_;
+  queryallblackidreq_usr_value_ = NULL;
+  return temp;
+}
+inline void Req::set_allocated_queryallblackidreq_usr_value(::Interactive::Message::QueryAllBlackIDReq_USR* queryallblackidreq_usr_value) {
+  delete queryallblackidreq_usr_value_;
+  queryallblackidreq_usr_value_ = queryallblackidreq_usr_value;
+  if (queryallblackidreq_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Req.QueryAllBlackIDReq_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoReq_INNER GetOnlineDevInfoReq_INNER_Value = 260;
 inline bool Req::has_getonlinedevinforeq_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforeq_inner_value_ != NULL;
@@ -48640,6 +50095,123 @@ inline void Rsp::set_allocated_queryusercfgrsp_usr_value(::Interactive::Message:
   // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryUserCfgRsp_USR_Value)
 }
 
+// .Interactive.Message.AddBlackIDRsp_USR AddBlackIDRsp_USR_Value = 1109;
+inline bool Rsp::has_addblackidrsp_usr_value() const {
+  return this != internal_default_instance() && addblackidrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_addblackidrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && addblackidrsp_usr_value_ != NULL) delete addblackidrsp_usr_value_;
+  addblackidrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::AddBlackIDRsp_USR& Rsp::addblackidrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.AddBlackIDRsp_USR_Value)
+  return addblackidrsp_usr_value_ != NULL ? *addblackidrsp_usr_value_
+                         : *::Interactive::Message::AddBlackIDRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::AddBlackIDRsp_USR* Rsp::mutable_addblackidrsp_usr_value() {
+  
+  if (addblackidrsp_usr_value_ == NULL) {
+    addblackidrsp_usr_value_ = new ::Interactive::Message::AddBlackIDRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.AddBlackIDRsp_USR_Value)
+  return addblackidrsp_usr_value_;
+}
+inline ::Interactive::Message::AddBlackIDRsp_USR* Rsp::release_addblackidrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.AddBlackIDRsp_USR_Value)
+  
+  ::Interactive::Message::AddBlackIDRsp_USR* temp = addblackidrsp_usr_value_;
+  addblackidrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_addblackidrsp_usr_value(::Interactive::Message::AddBlackIDRsp_USR* addblackidrsp_usr_value) {
+  delete addblackidrsp_usr_value_;
+  addblackidrsp_usr_value_ = addblackidrsp_usr_value;
+  if (addblackidrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.AddBlackIDRsp_USR_Value)
+}
+
+// .Interactive.Message.RemoveBlackIDRsp_USR RemoveBlackIDRsp_USR_Value = 1110;
+inline bool Rsp::has_removeblackidrsp_usr_value() const {
+  return this != internal_default_instance() && removeblackidrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_removeblackidrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && removeblackidrsp_usr_value_ != NULL) delete removeblackidrsp_usr_value_;
+  removeblackidrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::RemoveBlackIDRsp_USR& Rsp::removeblackidrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.RemoveBlackIDRsp_USR_Value)
+  return removeblackidrsp_usr_value_ != NULL ? *removeblackidrsp_usr_value_
+                         : *::Interactive::Message::RemoveBlackIDRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::RemoveBlackIDRsp_USR* Rsp::mutable_removeblackidrsp_usr_value() {
+  
+  if (removeblackidrsp_usr_value_ == NULL) {
+    removeblackidrsp_usr_value_ = new ::Interactive::Message::RemoveBlackIDRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.RemoveBlackIDRsp_USR_Value)
+  return removeblackidrsp_usr_value_;
+}
+inline ::Interactive::Message::RemoveBlackIDRsp_USR* Rsp::release_removeblackidrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.RemoveBlackIDRsp_USR_Value)
+  
+  ::Interactive::Message::RemoveBlackIDRsp_USR* temp = removeblackidrsp_usr_value_;
+  removeblackidrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_removeblackidrsp_usr_value(::Interactive::Message::RemoveBlackIDRsp_USR* removeblackidrsp_usr_value) {
+  delete removeblackidrsp_usr_value_;
+  removeblackidrsp_usr_value_ = removeblackidrsp_usr_value;
+  if (removeblackidrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.RemoveBlackIDRsp_USR_Value)
+}
+
+// .Interactive.Message.QueryAllBlackIDRsp_USR QueryAllBlackIDRsp_USR_Value = 1111;
+inline bool Rsp::has_queryallblackidrsp_usr_value() const {
+  return this != internal_default_instance() && queryallblackidrsp_usr_value_ != NULL;
+}
+inline void Rsp::clear_queryallblackidrsp_usr_value() {
+  if (GetArenaNoVirtual() == NULL && queryallblackidrsp_usr_value_ != NULL) delete queryallblackidrsp_usr_value_;
+  queryallblackidrsp_usr_value_ = NULL;
+}
+inline const ::Interactive::Message::QueryAllBlackIDRsp_USR& Rsp::queryallblackidrsp_usr_value() const {
+  // @@protoc_insertion_point(field_get:Interactive.Message.Rsp.QueryAllBlackIDRsp_USR_Value)
+  return queryallblackidrsp_usr_value_ != NULL ? *queryallblackidrsp_usr_value_
+                         : *::Interactive::Message::QueryAllBlackIDRsp_USR::internal_default_instance();
+}
+inline ::Interactive::Message::QueryAllBlackIDRsp_USR* Rsp::mutable_queryallblackidrsp_usr_value() {
+  
+  if (queryallblackidrsp_usr_value_ == NULL) {
+    queryallblackidrsp_usr_value_ = new ::Interactive::Message::QueryAllBlackIDRsp_USR;
+  }
+  // @@protoc_insertion_point(field_mutable:Interactive.Message.Rsp.QueryAllBlackIDRsp_USR_Value)
+  return queryallblackidrsp_usr_value_;
+}
+inline ::Interactive::Message::QueryAllBlackIDRsp_USR* Rsp::release_queryallblackidrsp_usr_value() {
+  // @@protoc_insertion_point(field_release:Interactive.Message.Rsp.QueryAllBlackIDRsp_USR_Value)
+  
+  ::Interactive::Message::QueryAllBlackIDRsp_USR* temp = queryallblackidrsp_usr_value_;
+  queryallblackidrsp_usr_value_ = NULL;
+  return temp;
+}
+inline void Rsp::set_allocated_queryallblackidrsp_usr_value(::Interactive::Message::QueryAllBlackIDRsp_USR* queryallblackidrsp_usr_value) {
+  delete queryallblackidrsp_usr_value_;
+  queryallblackidrsp_usr_value_ = queryallblackidrsp_usr_value;
+  if (queryallblackidrsp_usr_value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:Interactive.Message.Rsp.QueryAllBlackIDRsp_USR_Value)
+}
+
 // .Interactive.Message.GetOnlineDevInfoRsp_INNER GetOnlineDevInfoRsp_INNER_Value = 280;
 inline bool Rsp::has_getonlinedevinforsp_inner_value() const {
   return this != internal_default_instance() && getonlinedevinforsp_inner_value_ != NULL;
@@ -49154,6 +50726,20 @@ inline void InteractiveMessage::set_allocated_rspvalue(::Interactive::Message::R
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

@@ -276,6 +276,11 @@ public:
 
     bool QueryUserCfgReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
 
+    bool AddBlackIDReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+    bool RemoveBlackIDReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+    bool QueryAllBlackListReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer);
+
+
 private:
     void InsertUserToDB(const InteractiveProtoHandler::User &UsrInfo);
 
@@ -527,6 +532,12 @@ private:
     bool GetUsrCfgMaxVersion(const std::string &strUserID, const unsigned int uiBusinessType, unsigned int &uiMaxVersion);
 
     bool QueryUsrCfg(const std::string &strUserID, const unsigned int uiBusinessType, UserCfg &ucfg);
+
+
+    bool GetBlackIDNum(const std::string &strBlackID, unsigned int &uiNum);
+    void AddBlackID(const std::string &strBlackID, const std::string &strExtend, unsigned int uiIDType);
+    void RemoveBlackID(const std::string &strBlackID);
+    bool QueryAllBlackInfo(unsigned int uiIDType, unsigned int uiBeginIndex, std::list<InteractiveProtoHandler::BlackObj> &blkobjlist);
 
 private:
     ParamInfo m_ParamInfo;

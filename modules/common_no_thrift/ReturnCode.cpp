@@ -57,6 +57,9 @@ const int ReturnInfo::ENTRANCE_DEVICE_ALREADY_BINDED = 3300; //³öÈë¿Ú¶ÔÓ¦µÄÉè±¸Ò
 
 const int ReturnInfo::ENTRANCE_NAME_DUPLICATE = 3310;
 
+
+const int ReturnInfo::PRODUCT_ALREADY_USED = 3330; //²úÆ·ÒÑ¾­Ê¹ÓÃ
+
 boost::thread_specific_ptr<int> ReturnInfo::ms_iRetCode;
 
 int ReturnInfo::RetCode()

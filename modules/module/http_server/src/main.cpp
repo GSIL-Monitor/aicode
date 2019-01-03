@@ -371,6 +371,11 @@ int main(int argc, char *argv[])
 
     fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_USER_CFG_ACTION, boost::bind(&HttpMsgHandler::QueryUserCfgHandler, &filehdr, _1, _2));
 
+    fcgimgr.SetMsgHandler(HttpMsgHandler::ADD_BLACK_ID, boost::bind(&HttpMsgHandler::AddBlackIDHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::REMOVE_BLACK_ID, boost::bind(&HttpMsgHandler::RemoveBlackIDHandler, &filehdr, _1, _2));
+    fcgimgr.SetMsgHandler(HttpMsgHandler::QUERY_ALL_BLACK_LIST, boost::bind(&HttpMsgHandler::QueryAllBlackListHandler, &filehdr, _1, _2));
+
+
 
     fcgimgr.Run(true);
     return 0;

@@ -186,6 +186,16 @@ public:
         QueryUserCfgReq_USR_T = 20975,                 //查询用户配置信息
         QueryUserCfgRsp_USR_T = 20976,
 
+        AddBlackIDReq_USER_T = 20977,                    //增加黑名单
+        AddBlackIDRsp_USER_T = 20978,
+
+        RemoveBlackIDReq_USER_T = 20979,                 //删除黑名单
+        RemoveBlackIDRsp_USER_T = 20980,
+
+        QueryAllBlackIDReq_USER_T = 20981,               //查询所有黑名单
+        QueryAllBlackIDRsp_USER_T = 20982,
+
+
         ///////////////////////////////////////////////////////
 
         GetOnlineDevInfoReq_INNER_T = 30000,          //获取在线设备信息
@@ -213,6 +223,13 @@ public:
         ModifyConfigurationRsp_MGR_T = 40070,
         QueryAllConfigurationReq_MGR_T = 40080,      //查询所有配置项
         QueryAllConfigurationRsp_MGR_T = 40090
+   };
+
+   struct BlackObj                                 //黑名单对象
+   {
+     std::string m_strBlackID;
+     unsigned int m_uiIDType;
+     std::string m_strExtend;
    };
 
     struct Device
@@ -1356,6 +1373,64 @@ public:
         virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
     };
 
+    struct AddBlackIDReq_USR : Req
+    {
+        BlackObj m_blkobj;
+        std::string m_strUserID;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct AddBlackIDRsp_USR : Rsp
+    {
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct RemoveBlackIDReq_USR : Req
+    {
+        std::string m_strBlackID;
+        std::string m_strUserID;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct RemoveBlackIDRsp_USR : Rsp
+    {
+        std::string m_strValue;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryAllBlackIDReq_USR : Req
+    {
+        unsigned int m_uiIDType;
+        unsigned int m_uiBeginIndex;
+        std::string m_strUserID;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
+    struct QueryAllBlackIDRsp_USR : Rsp
+    {
+        std::list<BlackObj> m_blkobjlist;
+
+        virtual void UnSerializer(const InteractiveMessage &InteractiveMsg);
+
+        virtual void Serializer(InteractiveMessage &InteractiveMsg) const;
+    };
+
     struct AddFileReq_DEV : Req
     {
         std::string m_strDevID;
@@ -2294,6 +2369,21 @@ private:
     bool ControlChannelReq_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
     bool ControlChannelRsp_DEV_Serializer(const Req &rsp, std::string &strOutput);
     bool ControlChannelRsp_DEV_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool AddBlackIDReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool AddBlackIDReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool AddBlackIDRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool AddBlackIDRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool RemoveBlackIDReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool RemoveBlackIDReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool RemoveBlackIDRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool RemoveBlackIDRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
+
+    bool QueryAllBlackIDReq_USR_Serializer(const Req &req, std::string &strOutput);
+    bool QueryAllBlackIDReq_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &req);
+    bool QueryAllBlackIDRsp_USR_Serializer(const Req &rsp, std::string &strOutput);
+    bool QueryAllBlackIDRsp_USR_UnSerializer(const InteractiveMessage &InteractiveMsg, Req &rsp);
 
 
 private:    

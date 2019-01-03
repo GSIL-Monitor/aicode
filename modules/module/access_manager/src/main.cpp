@@ -455,6 +455,11 @@ int main(int argc, char* argv[])
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::UploadUserCfgReq_USR_T, boost::bind(&AccessManager::UploadUserCfgReq, &Umg, _1, _2, _3));
     ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryUserCfgReq_USR_T, boost::bind(&AccessManager::QueryUserCfgReq, &Umg, _1, _2, _3));
 
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::AddBlackIDReq_USER_T, boost::bind(&AccessManager::AddBlackIDReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::RemoveBlackIDReq_USER_T, boost::bind(&AccessManager::RemoveBlackIDReq, &Umg, _1, _2, _3));
+    ccenter.SetupMsgHandler(InteractiveProtoHandler::MsgType::QueryAllBlackIDReq_USER_T, boost::bind(&AccessManager::QueryAllBlackListReq, &Umg, _1, _2, _3));
+
+
     ccenter.Run(true);
 
     return 0;

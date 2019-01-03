@@ -210,6 +210,15 @@ enum MsgType
   QueryUserCfgReq_USR_T = 20975;                //查询用户配置信息
   QueryUserCfgRsp_USR_T = 20976;
   
+  AddBlackIDReq_USER_T = 20977;                    //增加黑名单
+  AddBlackIDRsp_USER_T = 20978;
+  
+  RemoveBlackIDReq_USER_T = 20979;                 //删除黑名单
+  RemoveBlackIDRsp_USER_T = 20980;
+  
+  QueryAllBlackIDReq_USER_T = 20981;               //查询所有黑名单
+  QueryAllBlackIDRsp_USER_T = 20982;
+  
   
   ///////////////////////////////////////////////////////
   
@@ -238,6 +247,13 @@ enum MsgType
   ModifyConfigurationRsp_MGR_T = 40070;
   QueryAllConfigurationReq_MGR_T = 40080;       //查询所有配置项
   QueryAllConfigurationRsp_MGR_T = 40090;
+}
+
+message BlackObj                                 //黑名单对象
+{
+  string strBlackID = 1;
+  uint32 uiIDType = 2;
+  string strExtend = 3;
 }
 
 message PermissionOfUser                        //用户权限对象
@@ -1279,6 +1295,40 @@ message QueryUserCfgRsp_USR                     //查询用户配置信息响应
   string strExtend = 3;
 }
 
+message AddBlackIDReq_USR                       //增加黑名单请求
+{
+  BlackObj blkobj = 1;
+  string strUserID = 2;
+}
+
+message AddBlackIDRsp_USR                       //增加黑名单响应
+{
+  string strValue = 1;
+}
+
+message RemoveBlackIDReq_USR                    //删除黑名单请求
+{
+  string strBlackID = 1;
+  string strUserID = 2;
+}
+
+message RemoveBlackIDRsp_USR                    //删除黑名单响应
+{
+  string strValue = 1;
+}
+
+message QueryAllBlackIDReq_USR                  //查询所有黑名单请求
+{
+  uint32 uiIDType = 1;
+  uint32 uiBeginIndex = 2;
+  string strUserID = 3;
+}
+
+message QueryAllBlackIDRsp_USR                  //查询所有黑名单响应
+{
+  repeated BlackObj blkobjlist = 1;
+}
+
 
 ///////////////////////////////配置相关命令，目前固件和APP升级会使用/////////////////////////////////
 
@@ -1493,6 +1543,9 @@ message Req
   
   QueryUserCfgReq_USR QueryUserCfgReq_USR_Value = 1108;                       //查询用户配置信息请求
   
+  AddBlackIDReq_USR AddBlackIDReq_USR_Value = 1109;                           //增加黑名单请求
+  RemoveBlackIDReq_USR RemoveBlackIDReq_USR_Value = 1110;                     //删除黑名单请求
+  QueryAllBlackIDReq_USR QueryAllBlackIDReq_USR_Value = 1111;                 //查询所有黑名单请求
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1612,6 +1665,10 @@ message Rsp
   UploadUserCfgRsp_USR UploadUserCfgRsp_USR_Value = 1107;                     //上传用户配置信息响应
   
   QueryUserCfgRsp_USR QueryUserCfgRsp_USR_Value = 1108;                       //查询用户配置信息响应
+  
+  AddBlackIDRsp_USR AddBlackIDRsp_USR_Value = 1109;                           //增加黑名单响应
+  RemoveBlackIDRsp_USR RemoveBlackIDRsp_USR_Value = 1110;                     //删除黑名单响应
+  QueryAllBlackIDRsp_USR QueryAllBlackIDRsp_USR_Value = 1111;                 //查询所有黑名单响应
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
 

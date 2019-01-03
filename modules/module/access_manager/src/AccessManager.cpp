@@ -4881,6 +4881,173 @@ bool AccessManager::QueryUserCfgReq(const std::string &strMsg, const std::string
     return true;
 }
 
+bool AccessManager::AddBlackIDReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+    InteractiveProtoHandler::AddBlackIDReq_USR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::AddBlackIDRsp_USR rsp;
+
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::AddBlackIDRsp_USER_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Add black id rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Add black id rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Add black id req unserialize failed, src id is " << strSrcID);
+        return blResult;
+    }
+    
+    //判断是否已经存在该BlackID    
+    unsigned int uiIDNum = 0;
+    if (!GetBlackIDNum(req.m_blkobj.m_strBlackID, uiIDNum))
+    {
+        LOG_ERROR_RLD("Get black id num failed");
+        return blResult;
+    }
+
+    if (uiIDNum > 0)
+    {
+        LOG_INFO_RLD("Query black id exist and black id is " << req.m_blkobj.m_strBlackID);
+        
+        blResult = true;
+        return blResult;
+    }
+    
+    m_DBRuner.Post(boost::bind(&AccessManager::AddBlackID, this, req.m_blkobj.m_strBlackID, req.m_blkobj.m_strExtend, req.m_blkobj.m_uiIDType));
+
+    blResult = true;
+    return blResult;
+}
+
+bool AccessManager::RemoveBlackIDReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    bool blResult = false;
+    InteractiveProtoHandler::RemoveBlackIDReq_USR req;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &req, &writer, &strSrcID)
+    {
+        InteractiveProtoHandler::RemoveBlackIDRsp_USR rsp;
+
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::RemoveBlackIDRsp_USER_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+        rsp.m_strValue = "value";
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Remove black id rsp serialize failed.");
+            return; //false;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Remove black id rsp already send, dst id is " << strSrcID << " and user id is " << req.m_strUserID <<
+            " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Remove black id req unserialize failed, src id is " << strSrcID);
+        return blResult;
+    }
+
+    //判断是否已经存在该BlackID    
+    unsigned int uiIDNum = 0;
+    if (!GetBlackIDNum(req.m_strBlackID, uiIDNum))
+    {
+        LOG_ERROR_RLD("Get black id num failed");
+        return blResult;
+    }
+
+    if (uiIDNum == 0)
+    {
+        LOG_INFO_RLD("Query black id not exist and black id is " << req.m_strBlackID);
+        return blResult;
+    }
+
+    m_DBRuner.Post(boost::bind(&AccessManager::RemoveBlackID, this, req.m_strBlackID));
+
+    blResult = true;
+    return blResult;
+}
+
+bool AccessManager::QueryAllBlackListReq(const std::string &strMsg, const std::string &strSrcID, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::FAILED_CODE);
+
+    bool blResult = false;
+
+    InteractiveProtoHandler::QueryAllBlackIDReq_USR req;
+    std::list<InteractiveProtoHandler::BlackObj> blkobjList;
+
+    BOOST_SCOPE_EXIT(&blResult, this_, &strSrcID, &writer, &req, &blkobjList)
+    {
+        InteractiveProtoHandler::QueryAllBlackIDRsp_USR rsp;
+        rsp.m_MsgType = InteractiveProtoHandler::MsgType::QueryAllBlackIDRsp_USER_T;
+        rsp.m_uiMsgSeq = ++this_->m_uiMsgSeq;
+        rsp.m_strSID = req.m_strSID;
+        rsp.m_iRetcode = blResult ? ReturnInfo::SUCCESS_CODE : ReturnInfo::FAILED_CODE;
+        rsp.m_strRetMsg = blResult ? ReturnInfo::SUCCESS_INFO : ReturnInfo::FAILED_INFO;
+
+        if (blResult)
+        {
+            rsp.m_blkobjlist.swap(blkobjList);
+        }
+
+        std::string strSerializeOutPut;
+        if (!this_->m_pProtoHandler->SerializeReq(rsp, strSerializeOutPut))
+        {
+            LOG_ERROR_RLD("Query all black id rsp serialize failed");
+            return;
+        }
+
+        writer(strSrcID, strSerializeOutPut);
+        LOG_INFO_RLD("Query all black id rsp already send, dst id is " << strSrcID
+            << " and result is " << blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    if (!m_pProtoHandler->UnSerializeReq(strMsg, req))
+    {
+        LOG_ERROR_RLD("Query all black id req unserialize failed, src id is " << strSrcID);
+        return blResult;
+    }
+
+    if (!QueryAllBlackInfo(req.m_uiIDType, req.m_uiBeginIndex, blkobjList))
+    {
+        LOG_ERROR_RLD("Query all black id failed and user id is " << req.m_strUserID);
+        return blResult;
+    }
+    
+    blResult = true;
+    return blResult;
+}
+
 void AccessManager::AddDeviceFileToDB(const std::string &strDevID, const std::list<InteractiveProtoHandler::File> &FileInfoList,
     std::list<std::string> &FileIDFailedList)
 {
@@ -10148,4 +10315,118 @@ bool AccessManager::QueryUsrCfg(const std::string &strUserID, const unsigned int
     }
 
     return true;
+}
+
+bool AccessManager::GetBlackIDNum(const std::string &strBlackID, unsigned int &uiNum)
+{
+    bool blResult = false;
+
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "SELECT COUNT(id) FROM t_user_device_blacklist WHERE black_id = '%s' AND STATUS = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strBlackID.c_str());
+
+    unsigned int uiIDNum;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &Result)
+    {
+        uiIDNum = boost::lexical_cast<unsigned int>(strColumn);
+        Result = uiIDNum;
+
+        LOG_INFO_RLD("Query black id exist sql count(id) is " << uiIDNum);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Query black id exist sql failed, sql is " << sql);
+        return blResult;
+    }
+
+    if (ResultList.empty())
+    {
+        LOG_ERROR_RLD("Query black id return empty, black id is " << strBlackID);
+        return blResult;
+    }
+
+    uiIDNum = boost::any_cast<unsigned int>(ResultList.front());
+
+    uiNum = uiIDNum;
+
+    blResult = true;
+    return blResult;
+}
+
+void AccessManager::AddBlackID(const std::string &strBlackID, const std::string &strExtend, unsigned int uiIDType)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "insert into t_user_device_blacklist (id, black_id, id_type, extend)"
+        " values(uuid(), '%s', '%d', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, strBlackID.c_str(), uiIDType, strExtend.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Add black id exec sql failed, sql is " << sql);
+    }
+}
+
+void AccessManager::RemoveBlackID(const std::string &strBlackID)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "delete from t_user_device_blacklist where black_id = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strBlackID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Remove black id exec sql failed, sql is " << sql);
+    }
+}
+
+bool AccessManager::QueryAllBlackInfo(unsigned int uiIDType, unsigned int uiBeginIndex, std::list<InteractiveProtoHandler::BlackObj> &blkobjlist)
+{
+    bool blResult = false;
+    
+    char sql[2048] = { 0 };
+    int size = sizeof(sql);
+    const char *sqlfmt = "SELECT black_id, id_type, extend FROM t_user_device_blacklist WHERE STATUS = 0 ";
+    int len = snprintf(sql, sizeof(sql), sqlfmt);
+
+    if (0xFFFFFFFF != uiIDType)
+    {
+        len += snprintf(sql + len, size - len, " AND id_type = %d", uiIDType);
+    }
+
+    snprintf(sql + len, size - len, " order by createdate desc limit %d, %d", uiBeginIndex, 100);
+
+    InteractiveProtoHandler::BlackObj bo;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            bo.m_strBlackID = strColumn;
+            break;
+        case 1:
+            bo.m_uiIDType = boost::lexical_cast<unsigned int>(strColumn);
+            break;
+        case 2:
+            bo.m_strExtend = strColumn;
+            blkobjlist.push_back(bo);
+            break;
+
+        default:
+            LOG_ERROR_RLD("Query all black id sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Query all black id exec sql failed, sql is " << sql);
+        return blResult;
+    }
+
+    blResult = true;
+    return blResult;
 }

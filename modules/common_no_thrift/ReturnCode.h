@@ -63,6 +63,8 @@ public:
 
     static const int ENTRANCE_NAME_DUPLICATE;      //出入口名称重复
 
+    static const int PRODUCT_ALREADY_USED; //产品已经使用
+
     static int RetCode();
 
     static void RetCode(const int iRetCode);
