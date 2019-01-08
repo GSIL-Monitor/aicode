@@ -114,7 +114,7 @@ void ProductManager::AddProduct(AddProductRT& _return, const std::string& strSid
 
     char sql[8192] = { 0 };
     const char *sqlfmt = "insert into t_product_info (id, pdtid, pdtname, typeinfo, typename, aliasname, pdtprice, pic, extend)"
-        " values (uuid(), '%s', '%s', %d, '%s', %f, '%s', '%s')";
+        " values (uuid(), '%s', '%s', %d, '%s', '%s', %f, '%s', '%s')";
     snprintf(sql, sizeof(sql), sqlfmt, strPdtID.c_str(), pdt.strName.c_str(), pdt.iType, pdt.strTypeName.c_str(), pdt.strAliasName.c_str(), 
         pdt.dlPrice, pdt.strPic.c_str(), pdt.strExtend.c_str());
 
@@ -129,12 +129,27 @@ void ProductManager::AddProduct(AddProductRT& _return, const std::string& strSid
 
 void ProductManager::RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID)
 {
+    int iFailCode = g_Product_constants.PDT_FAILED_CODE;
     bool blResult = false;
-    BOOST_SCOPE_EXIT(&blResult, this_, &_return, &g_Product_constants)
+    BOOST_SCOPE_EXIT(&blResult, this_, &_return, &g_Product_constants, &iFailCode)
     {
-        _return.__set_iRtCode(blResult ? g_Product_constants.PDT_SUCCESS_CODE : g_Product_constants.PDT_FAILED_CODE);
+        _return.__set_iRtCode(blResult ? g_Product_constants.PDT_SUCCESS_CODE : iFailCode);
     }
     BOOST_SCOPE_EXIT_END
+
+    bool blCan = false;
+    if (!IsProductCanBeRemove(strPdtID, blCan))
+    {
+        LOG_ERROR_RLD("Product id valid failed and id is " << strPdtID);
+        return;
+    }
+
+    if (!blCan)
+    {
+        iFailCode = ReturnInfo::PRODUCT_ALREADY_USED;
+        LOG_INFO_RLD("Product already used and id is " << strPdtID);
+        return;
+    }
 
     char sql[1024] = { 0 };
     const char *sqlfmt = "delete from t_product_info where pdtid = '%s'";
@@ -1089,6 +1104,31 @@ bool ProductManager::QueryOrderDetail(const std::string &strOrdID, std::vector<O
         LOG_ERROR_RLD("Query order detail exec sql failed, sql is " << sql);
         return false;
     }
+
+    return true;
+}
+
+bool ProductManager::IsProductCanBeRemove(const std::string &strPdtID, bool &blCan)
+{
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select count(orddtid) from t_order_detail where pdtid = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strPdtID.c_str());
+
+    unsigned int uiCount = 0;
+    OrderDetail orddt;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        uiCount = boost::lexical_cast<unsigned int>(strColumn);
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Query order detail exec sql failed, sql is " << sql);
+        return false;
+    }
+
+    blCan = (0 == uiCount);
 
     return true;
 }

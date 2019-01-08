@@ -133,7 +133,8 @@ private:
     bool QueryProductProperty(const std::string &strPdtID, std::vector<ProductProperty> &pdtpptlist);
 
     bool QueryOrderDetail(const std::string &strOrdID, std::vector<OrderDetail> &orddtlist, const std::string &strPdtID = "");
-   
+    
+    bool IsProductCanBeRemove(const std::string &strPdtID, bool &blCan);
 
 private:
     ParamInfo m_ParamInfo;
