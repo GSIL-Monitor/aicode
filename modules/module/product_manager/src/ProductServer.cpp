@@ -2,6 +2,10 @@
 #include "LogRLD.h"
 #include "thrift/processor/TMultiplexedProcessor.h"
 #include "ProductManager.h"
+#include <type_traits>
+
+template <typename T, typename U>
+struct decay_equiv : std::is_same<typename std::decay<T>::type, U>::type{};
 
 ProductServerHandler::ProductServerHandler(boost::shared_ptr<ProductServiceIf> pImpl) : m_pImpl(pImpl), m_bh(NULL), m_ah(NULL)
 {
@@ -21,6 +25,97 @@ void ProductServerHandler::SetBeforeHandler(BeforeHandler bh)
 void ProductServerHandler::SetAfterHandler(AfterHandler ah)
 {
     m_ah = ah;
+}
+
+void ProductServerHandler::AddProductType(AddProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype)
+{
+    BeforeProcess<AddProductTypeRT>(ADD_PRODUCT_TYPE_CMD, strSid, _return, Flag<decay_equiv<AddProductTypeRT, ProductRTInfo>::value>());
+
+    m_pImpl->AddProductType(_return, strSid, strUserID, pdttype);
+
+    AfterProcess(ADD_PRODUCT_TYPE_CMD, strSid);
+}
+
+void ProductServerHandler::RemoveProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID)
+{
+
+    BeforeProcess<ProductRTInfo>(REMOVE_PRODUCT_TYPE_CMD, strSid, _return, Flag<decay_equiv<ProductRTInfo, ProductRTInfo>::value>());
+
+    m_pImpl->RemoveProductType(_return, strSid, strUserID, strTypeID);
+
+    AfterProcess(REMOVE_PRODUCT_TYPE_CMD, strSid);
+}
+
+void ProductServerHandler::ModifyProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype)
+{
+    BeforeProcess<ProductRTInfo>(MODIFY_PRODUCT_TYPE_CMD, strSid, _return, Flag<decay_equiv<ProductRTInfo, ProductRTInfo>::value>());
+
+    m_pImpl->ModifyProductType(_return, strSid, strUserID, pdttype);
+
+    AfterProcess(MODIFY_PRODUCT_TYPE_CMD, strSid);
+}
+
+void ProductServerHandler::QueryProductType(QueryProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID)
+{
+    BeforeProcess<QueryProductTypeRT>(QUERY_PRODUCT_TYPE_CMD, strSid, _return, Flag<decay_equiv<QueryProductTypeRT, ProductRTInfo>::value>());
+
+    m_pImpl->QueryProductType(_return, strSid, strUserID, strTypeID);
+
+    AfterProcess(QUERY_PRODUCT_TYPE_CMD, strSid);
+}
+
+void ProductServerHandler::QueryAllProductType(QueryAllProductTypeRT& _return, const std::string& strSid, const std::string& strUserID)
+{
+    BeforeProcess<QueryAllProductTypeRT>(QUERY_ALL_PRODUCT_TYPE_CMD, strSid, _return, Flag<decay_equiv<QueryAllProductTypeRT, ProductRTInfo>::value>());
+
+    m_pImpl->QueryAllProductType(_return, strSid, strUserID);
+
+    AfterProcess(QUERY_ALL_PRODUCT_TYPE_CMD, strSid);
+}
+
+void ProductServerHandler::AddOpenRequest(AddOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq)
+{
+    BeforeProcess<AddOpenRequestRT>(ADD_OPEN_REQUEST_CMD, strSid, _return, Flag<decay_equiv<AddOpenRequestRT, ProductRTInfo>::value>());
+
+    m_pImpl->AddOpenRequest(_return, strSid, strUserID, opreq);
+
+    AfterProcess(ADD_OPEN_REQUEST_CMD, strSid);
+}
+
+void ProductServerHandler::RemoveOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOpReqID)
+{
+    BeforeProcess<ProductRTInfo>(REMOVE_OPEN_REQUEST_CMD, strSid, _return, Flag<decay_equiv<ProductRTInfo, ProductRTInfo>::value>());
+
+    m_pImpl->RemoveOpenRequest(_return, strSid, strUserID, strOpReqID);
+
+    AfterProcess(REMOVE_OPEN_REQUEST_CMD, strSid);
+}
+
+void ProductServerHandler::ModifyOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq)
+{
+    BeforeProcess<ProductRTInfo>(MODIFY_OPEN_REQUEST_CMD, strSid, _return, Flag<decay_equiv<ProductRTInfo, ProductRTInfo>::value>());
+
+    m_pImpl->ModifyOpenRequest(_return, strSid, strUserID, opreq);
+
+    AfterProcess(MODIFY_OPEN_REQUEST_CMD, strSid);
+}
+
+void ProductServerHandler::QueryOpenRequest(QueryOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strReqID, const std::string& strReqUserID, const std::string& strReqUserName)
+{
+    BeforeProcess<QueryOpenRequestRT>(QUERY_OPEN_REQUEST_CMD, strSid, _return, Flag<decay_equiv<QueryOpenRequestRT, ProductRTInfo>::value>());
+
+    m_pImpl->QueryOpenRequest(_return, strSid, strUserID, strReqID, strReqUserID, strReqUserName);
+
+    AfterProcess(QUERY_OPEN_REQUEST_CMD, strSid);
+}
+
+void ProductServerHandler::QueryAllOpenRequest(QueryAllOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const QueryAllOpenRequestParam& qryparam)
+{
+    BeforeProcess<QueryAllOpenRequestRT>(QUERY_ALL_OPEN_REQUEST_CMD, strSid, _return, Flag<decay_equiv<QueryAllOpenRequestRT, ProductRTInfo>::value>());
+
+    m_pImpl->QueryAllOpenRequest(_return, strSid, strUserID, qryparam);
+
+    AfterProcess(QUERY_ALL_OPEN_REQUEST_CMD, strSid);
 }
 
 void ProductServerHandler::AddProduct(AddProductRT& _return, const std::string& strSid, const std::string& strUserID, const ProductInfo& pdt)
@@ -196,6 +291,52 @@ void ProductServerHandler::RemoveProductProperty(ProductRTInfo& _return, const s
     if (NULL != m_ah)
     {
         m_ah(REMOVE_PRODUCT_PROPERTY_CMD, strSid);
+    }
+}
+
+template<typename T>
+void ProductServerHandler::BeforeProcess(int iCmd, const std::string &strSid, T &_return, Flag<true> flag)
+{
+    if (NULL != m_bh)
+    {
+        int iRet = 0;
+        if (!m_bh(iCmd, strSid, &iRet))
+        {
+            LOG_ERROR_RLD("Before handler failed and sid is " << strSid << " and retcode is " << iRet << " and cmd is " << iCmd);
+            
+            _return.__set_iRtCode(iRet);
+            _return.__set_strRtMsg("Before handler failed.");
+            
+            return;
+        }
+    }
+}
+
+template<typename T>
+void ProductServerHandler::BeforeProcess(int iCmd, const std::string &strSid, T &_return, Flag<false> flag)
+{
+    if (NULL != m_bh)
+    {
+        int iRet = 0;
+        if (!m_bh(iCmd, strSid, &iRet))
+        {
+            LOG_ERROR_RLD("Before handler failed and sid is " << strSid << " and retcode is " << iRet << " and cmd is " << iCmd);
+                        
+            ProductRTInfo rtd;
+            rtd.__set_iRtCode(iRet);
+            rtd.__set_strRtMsg("Before handler failed.");
+            _return.__set_rtcode(rtd);
+            
+            return;
+        }
+    }
+}
+
+void ProductServerHandler::AfterProcess(int iCmd, const std::string &strSid)
+{
+    if (NULL != m_ah)
+    {
+        m_ah(iCmd, strSid);
     }
 }
 
@@ -391,6 +532,16 @@ void OrderServerHandler::RemoveOrdDetail(ProductRTInfo& _return, const std::stri
     {
         m_ah(QUERY_ALL_ORDER, strSid);
     }
+}
+
+void OrderServerHandler::BeforeProcess(int iCmd, const std::string &strSid, int *piRet)
+{
+
+}
+
+void OrderServerHandler::AfterProcess(int iCmd, const std::string &strSid)
+{
+
 }
 
 ProductServer::ProductServer(boost::shared_ptr<ProductManager> pImpl) : m_pImpl(pImpl)

@@ -25,6 +25,18 @@ class ProductHandler;
 class ProductHandler : public boost::noncopyable
 {
 public:
+    static const std::string ADD_PRODUCT_TYPE_ACTION;
+    static const std::string REMOVE_PRODUCT_TYPE_ACTION;
+    static const std::string MOD_PRODUCT_TYPE_ACTION;
+    static const std::string QUERY_PRODUCT_TYPE_ACTION;
+    static const std::string QUERY_ALL_PRODUCT_TYPE_ACTION;
+
+    static const std::string ADD_OPEN_REQUEST_ACTION;
+    static const std::string REMOVE_OPEN_REQUEST_ACTION;
+    static const std::string MOD_OPEN_REQUEST_ACTION;
+    static const std::string QUERY_OPEN_REQUEST_ACTION;
+    static const std::string QUERY_ALL_OPEN_REQUEST_ACTION;
+
     static const std::string ADD_PRODUCT_ACTION;
     static const std::string REMOVE_PRODUCT_ACTION;
     static const std::string MOD_PRODUCT_ACTION;
@@ -55,6 +67,28 @@ public:
     ~ProductHandler();
 
     bool ParseMsgOfCompact(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    
+    bool AddProductTypeHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool RemoveProductTypeHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool ModifyProductTypeHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryProductTypeHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryAllProductTypeHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+
+    bool AddOpenRequestHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool RemoveOpenRequestHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool ModifyOpenRequestHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryOpenRequestHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
+
+    bool QueryAllOpenRequestHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);
 
 
     bool AddProductHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer);

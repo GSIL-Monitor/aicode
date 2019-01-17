@@ -80,6 +80,83 @@ struct OrderInfo
    17: list<OrderDetail> orddtList;
 }
 
+//开通申请信息
+struct OpenRequest
+{
+    1: optional string strOpReqID;
+    2: optional string strReqUserID;
+    3: optional string strReqUserName;
+    4: optional i32    iReqStatus;
+    5: optional string strReqInfo;
+    6: optional string strReqDate;
+    7: optional string strExtend;
+}
+
+//产品类型信息
+struct ProductType
+{
+    1: optional string strPdtTpID;
+    2: optional i32    iType;
+    3: optional string strTypeName;
+    4: optional string strPic;
+    5: optional i32    iIndex;
+    6: optional string strExtend;
+}
+
+
+//增加产品类型返回信息
+struct AddProductTypeRT
+{
+    1: optional ProductRTInfo rtcode;
+    2: optional string strTypeID;
+}
+
+//查询产品类型返回信息
+struct QueryProductTypeRT
+{
+    1: optional ProductRTInfo rtcode;
+    2: optional ProductType pdttype;
+}
+
+//查询所有产品类型返回信息
+struct QueryAllProductTypeRT
+{
+    1: optional ProductRTInfo rtcode;
+    2: optional list<ProductType> pdttypelist;
+}
+
+//增加开通申请返回信息
+struct AddOpenRequestRT
+{
+    1: optional ProductRTInfo rtcode;
+    2: optional string strOpReqID;
+}
+
+//查询开通申请返回信息
+struct QueryOpenRequestRT
+{
+    1: optional ProductRTInfo rtcode;
+    2: optional string strReqUserID;
+    3: optional string strReqUserName;
+    4: list<OpenRequest> opreqlist;
+}
+
+//查询所有开通申请返回信息
+struct QueryAllOpenRequestRT
+{
+    1: optional ProductRTInfo rtcode;
+    2: list<OpenRequest> opreqlist;
+}
+
+//查询所有开通申请参数
+struct QueryAllOpenRequestParam
+{
+    1: optional i32 iReqStatus;
+    2: optional string strBeginDate;
+    3: optional string strEndDate;
+    4: optional string strBeginIndex;
+}
+
 struct AddProductRT
 {
     1: optional ProductRTInfo rtcode;
@@ -106,6 +183,21 @@ struct AddProductPropertyRT
 
 service ProductService
 {
+    AddProductTypeRT AddProductType(1: string strSid, 2: string strUserID, 3: ProductType pdttype);
+    ProductRTInfo RemoveProductType(1: string strSid, 2: string strUserID, 3: string strTypeID);
+    ProductRTInfo ModifyProductType(1: string strSid, 2: string strUserID, 3: ProductType pdttype);
+    
+    QueryProductTypeRT QueryProductType(1: string strSid, 2: string strUserID, 3: string strTypeID);
+    QueryAllProductTypeRT QueryAllProductType(1: string strSid, 2: string strUserID);
+    
+    AddOpenRequestRT AddOpenRequest(1: string strSid, 2: string strUserID, 3: OpenRequest opreq);
+    ProductRTInfo RemoveOpenRequest(1: string strSid, 2: string strUserID, 3: string strOpReqID);
+    ProductRTInfo ModifyOpenRequest(1: string strSid, 2: string strUserID, 3: OpenRequest opreq);
+    
+    QueryOpenRequestRT QueryOpenRequest(1: string strSid, 2: string strUserID, 3: string strReqID, 4: string strReqUserID, 5: string strReqUserName);
+    QueryAllOpenRequestRT QueryAllOpenRequest(1: string strSid, 2: string strUserID, 3: QueryAllOpenRequestParam qryparam);
+    
+    
     AddProductRT AddProduct(1: string strSid, 2: string strUserID, 3: ProductInfo pdt);
     ProductRTInfo RemoveProduct(1: string strSid, 2: string strUserID, 3: string strPdtID);
     ProductRTInfo ModifyProduct(1: string strSid, 2: string strUserID, 3: string strPdtID, 4: ProductInfo pdt);

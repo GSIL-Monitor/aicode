@@ -253,6 +253,20 @@ int main(int argc, char *argv[])
 
     fcgimgr.SetMsgPreHandler(boost::bind(&ProductHandler::ParseMsgOfCompact, &pdthdr, _1, _2));
     
+    fcgimgr.SetMsgHandler(ProductHandler::ADD_PRODUCT_TYPE_ACTION, boost::bind(&ProductHandler::AddProductTypeHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::REMOVE_PRODUCT_TYPE_ACTION, boost::bind(&ProductHandler::RemoveProductTypeHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::MOD_PRODUCT_TYPE_ACTION, boost::bind(&ProductHandler::ModifyProductTypeHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::QUERY_PRODUCT_TYPE_ACTION, boost::bind(&ProductHandler::QueryProductTypeHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::QUERY_ALL_PRODUCT_TYPE_ACTION, boost::bind(&ProductHandler::QueryAllProductTypeHandler, &pdthdr, _1, _2));
+
+    fcgimgr.SetMsgHandler(ProductHandler::ADD_OPEN_REQUEST_ACTION, boost::bind(&ProductHandler::AddOpenRequestHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::REMOVE_OPEN_REQUEST_ACTION, boost::bind(&ProductHandler::RemoveOpenRequestHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::MOD_OPEN_REQUEST_ACTION, boost::bind(&ProductHandler::ModifyOpenRequestHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::QUERY_OPEN_REQUEST_ACTION, boost::bind(&ProductHandler::QueryOpenRequestHandler, &pdthdr, _1, _2));
+    fcgimgr.SetMsgHandler(ProductHandler::QUERY_ALL_OPEN_REQUEST_ACTION, boost::bind(&ProductHandler::QueryAllOpenRequestHandler, &pdthdr, _1, _2));
+
+
+
     fcgimgr.SetMsgHandler(ProductHandler::ADD_PRODUCT_ACTION, boost::bind(&ProductHandler::AddProductHandler, &pdthdr, _1, _2));
     fcgimgr.SetMsgHandler(ProductHandler::REMOVE_PRODUCT_ACTION, boost::bind(&ProductHandler::RemoveProductHandler, &pdthdr, _1, _2));
     fcgimgr.SetMsgHandler(ProductHandler::MOD_PRODUCT_ACTION, boost::bind(&ProductHandler::ModifyProductHandler, &pdthdr, _1, _2));

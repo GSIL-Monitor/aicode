@@ -58,6 +58,187 @@ void ProductClient::Close()
     m_pTransport->close();
 }
 
+void ProductClient::AddProductType(AddProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype)
+{
+    try
+    {
+        m_pProductClient->AddProductType(_return, strSid, strUserID, pdttype);
+    }
+    catch (TTransportException te)
+    {
+        LOG_INFO_RLD("AddProductType call was failed and error code is " << te.getType() << " and error msg is " << te.what());
+        return;
+    }
+    catch (...)
+    {
+        LOG_INFO_RLD("AddProductType call was failed and error is unknown");
+        return;
+    }
+}
+
+void ProductClient::RemoveProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID)
+{
+    try
+    {
+        m_pProductClient->RemoveProductType(_return, strSid, strUserID, strTypeID);
+    }
+    catch (TTransportException te)
+    {
+        LOG_INFO_RLD("RemoveProductType call was failed and error code is " << te.getType() << " and error msg is " << te.what());
+        return;
+    }
+    catch (...)
+    {
+        LOG_INFO_RLD("RemoveProductType call was failed and error is unknown");
+        return;
+    }
+}
+
+void ProductClient::ModifyProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype)
+{
+    try
+    {
+        m_pProductClient->ModifyProductType(_return, strSid, strUserID, pdttype);
+    }
+    catch (TTransportException te)
+    {
+        LOG_INFO_RLD("ModifyProductType call was failed and error code is " << te.getType() << " and error msg is " << te.what());
+        return;
+    }
+    catch (...)
+    {
+        LOG_INFO_RLD("ModifyProductType call was failed and error is unknown");
+        return;
+    }
+}
+
+void ProductClient::QueryProductType(QueryProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID)
+{
+    try
+    {
+        m_pProductClient->QueryProductType(_return, strSid, strUserID, strTypeID);
+    }
+    catch (TTransportException te)
+    {
+        LOG_INFO_RLD("QueryProductType call was failed and error code is " << te.getType() << " and error msg is " << te.what());
+        return;
+    }
+    catch (...)
+    {
+        LOG_INFO_RLD("QueryProductType call was failed and error is unknown");
+        return;
+    }
+}
+
+void ProductClient::QueryAllProductType(QueryAllProductTypeRT& _return, const std::string& strSid, const std::string& strUserID)
+{
+    try
+    {
+        m_pProductClient->QueryAllProductType(_return, strSid, strUserID);
+    }
+    catch (TTransportException te)
+    {
+        LOG_INFO_RLD("QueryAllProductType call was failed and error code is " << te.getType() << " and error msg is " << te.what());
+        return;
+    }
+    catch (...)
+    {
+        LOG_INFO_RLD("QueryAllProductType call was failed and error is unknown");
+        return;
+    }
+}
+
+void ProductClient::AddOpenRequest(AddOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq)
+{
+    try
+    {
+        m_pProductClient->AddOpenRequest(_return, strSid, strUserID, opreq);
+    }
+    catch (TTransportException te)
+    {
+        LOG_INFO_RLD("AddOpenRequest call was failed and error code is " << te.getType() << " and error msg is " << te.what());
+        return;
+    }
+    catch (...)
+    {
+        LOG_INFO_RLD("AddOpenRequest call was failed and error is unknown");
+        return;
+    }
+}
+
+void ProductClient::RemoveOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOpReqID)
+{
+    try
+    {
+        m_pProductClient->RemoveOpenRequest(_return, strSid, strUserID, strOpReqID);
+    }
+    catch (TTransportException te)
+    {
+        LOG_INFO_RLD("RemoveOpenRequest call was failed and error code is " << te.getType() << " and error msg is " << te.what());
+        return;
+    }
+    catch (...)
+    {
+        LOG_INFO_RLD("RemoveOpenRequest call was failed and error is unknown");
+        return;
+    }
+}
+
+void ProductClient::ModifyOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq)
+{
+    try
+    {
+        m_pProductClient->ModifyOpenRequest(_return, strSid, strUserID, opreq);
+    }
+    catch (TTransportException te)
+    {
+        LOG_INFO_RLD("ModifyOpenRequest call was failed and error code is " << te.getType() << " and error msg is " << te.what());
+        return;
+    }
+    catch (...)
+    {
+        LOG_INFO_RLD("ModifyOpenRequest call was failed and error is unknown");
+        return;
+    }
+}
+
+void ProductClient::QueryOpenRequest(QueryOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strReqID,
+    const std::string& strReqUserID, const std::string& strReqUserName)
+{
+    try
+    {
+        m_pProductClient->QueryOpenRequest(_return, strSid, strUserID, strReqID, strReqUserID, strReqUserName);
+    }
+    catch (TTransportException te)
+    {
+        LOG_INFO_RLD("QueryOpenRequest call was failed and error code is " << te.getType() << " and error msg is " << te.what());
+        return;
+    }
+    catch (...)
+    {
+        LOG_INFO_RLD("QueryOpenRequest call was failed and error is unknown");
+        return;
+    }
+}
+
+void ProductClient::QueryAllOpenRequest(QueryAllOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const QueryAllOpenRequestParam& qryparam)
+{
+    try
+    {
+        m_pProductClient->QueryAllOpenRequest(_return, strSid, strUserID, qryparam);
+    }
+    catch (TTransportException te)
+    {
+        LOG_INFO_RLD("QueryAllOpenRequest call was failed and error code is " << te.getType() << " and error msg is " << te.what());
+        return;
+    }
+    catch (...)
+    {
+        LOG_INFO_RLD("QueryAllOpenRequest call was failed and error is unknown");
+        return;
+    }
+}
+
 void ProductClient::AddProduct(AddProductRT& _return, const std::string& strSid, const std::string& strUserID, const ProductInfo& pdt)
 {
     try

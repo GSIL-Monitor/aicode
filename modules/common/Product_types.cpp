@@ -1538,6 +1538,1392 @@ void OrderInfo::printTo(std::ostream& out) const {
 }
 
 
+OpenRequest::~OpenRequest() throw() {
+}
+
+
+void OpenRequest::__set_strOpReqID(const std::string& val) {
+  this->strOpReqID = val;
+__isset.strOpReqID = true;
+}
+
+void OpenRequest::__set_strReqUserID(const std::string& val) {
+  this->strReqUserID = val;
+__isset.strReqUserID = true;
+}
+
+void OpenRequest::__set_strReqUserName(const std::string& val) {
+  this->strReqUserName = val;
+__isset.strReqUserName = true;
+}
+
+void OpenRequest::__set_iReqStatus(const int32_t val) {
+  this->iReqStatus = val;
+__isset.iReqStatus = true;
+}
+
+void OpenRequest::__set_strReqInfo(const std::string& val) {
+  this->strReqInfo = val;
+__isset.strReqInfo = true;
+}
+
+void OpenRequest::__set_strReqDate(const std::string& val) {
+  this->strReqDate = val;
+__isset.strReqDate = true;
+}
+
+void OpenRequest::__set_strExtend(const std::string& val) {
+  this->strExtend = val;
+__isset.strExtend = true;
+}
+std::ostream& operator<<(std::ostream& out, const OpenRequest& obj)
+{
+  obj.printTo(out);
+  return out;
+}
+
+
+uint32_t OpenRequest::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strOpReqID);
+          this->__isset.strOpReqID = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strReqUserID);
+          this->__isset.strReqUserID = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strReqUserName);
+          this->__isset.strReqUserName = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->iReqStatus);
+          this->__isset.iReqStatus = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 5:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strReqInfo);
+          this->__isset.strReqInfo = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 6:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strReqDate);
+          this->__isset.strReqDate = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 7:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strExtend);
+          this->__isset.strExtend = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t OpenRequest::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("OpenRequest");
+
+  if (this->__isset.strOpReqID) {
+    xfer += oprot->writeFieldBegin("strOpReqID", ::apache::thrift::protocol::T_STRING, 1);
+    xfer += oprot->writeString(this->strOpReqID);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strReqUserID) {
+    xfer += oprot->writeFieldBegin("strReqUserID", ::apache::thrift::protocol::T_STRING, 2);
+    xfer += oprot->writeString(this->strReqUserID);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strReqUserName) {
+    xfer += oprot->writeFieldBegin("strReqUserName", ::apache::thrift::protocol::T_STRING, 3);
+    xfer += oprot->writeString(this->strReqUserName);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.iReqStatus) {
+    xfer += oprot->writeFieldBegin("iReqStatus", ::apache::thrift::protocol::T_I32, 4);
+    xfer += oprot->writeI32(this->iReqStatus);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strReqInfo) {
+    xfer += oprot->writeFieldBegin("strReqInfo", ::apache::thrift::protocol::T_STRING, 5);
+    xfer += oprot->writeString(this->strReqInfo);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strReqDate) {
+    xfer += oprot->writeFieldBegin("strReqDate", ::apache::thrift::protocol::T_STRING, 6);
+    xfer += oprot->writeString(this->strReqDate);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strExtend) {
+    xfer += oprot->writeFieldBegin("strExtend", ::apache::thrift::protocol::T_STRING, 7);
+    xfer += oprot->writeString(this->strExtend);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(OpenRequest &a, OpenRequest &b) {
+  using ::std::swap;
+  swap(a.strOpReqID, b.strOpReqID);
+  swap(a.strReqUserID, b.strReqUserID);
+  swap(a.strReqUserName, b.strReqUserName);
+  swap(a.iReqStatus, b.iReqStatus);
+  swap(a.strReqInfo, b.strReqInfo);
+  swap(a.strReqDate, b.strReqDate);
+  swap(a.strExtend, b.strExtend);
+  swap(a.__isset, b.__isset);
+}
+
+OpenRequest::OpenRequest(const OpenRequest& other24) {
+  strOpReqID = other24.strOpReqID;
+  strReqUserID = other24.strReqUserID;
+  strReqUserName = other24.strReqUserName;
+  iReqStatus = other24.iReqStatus;
+  strReqInfo = other24.strReqInfo;
+  strReqDate = other24.strReqDate;
+  strExtend = other24.strExtend;
+  __isset = other24.__isset;
+}
+OpenRequest& OpenRequest::operator=(const OpenRequest& other25) {
+  strOpReqID = other25.strOpReqID;
+  strReqUserID = other25.strReqUserID;
+  strReqUserName = other25.strReqUserName;
+  iReqStatus = other25.iReqStatus;
+  strReqInfo = other25.strReqInfo;
+  strReqDate = other25.strReqDate;
+  strExtend = other25.strExtend;
+  __isset = other25.__isset;
+  return *this;
+}
+void OpenRequest::printTo(std::ostream& out) const {
+  using ::apache::thrift::to_string;
+  out << "OpenRequest(";
+  out << "strOpReqID="; (__isset.strOpReqID ? (out << to_string(strOpReqID)) : (out << "<null>"));
+  out << ", " << "strReqUserID="; (__isset.strReqUserID ? (out << to_string(strReqUserID)) : (out << "<null>"));
+  out << ", " << "strReqUserName="; (__isset.strReqUserName ? (out << to_string(strReqUserName)) : (out << "<null>"));
+  out << ", " << "iReqStatus="; (__isset.iReqStatus ? (out << to_string(iReqStatus)) : (out << "<null>"));
+  out << ", " << "strReqInfo="; (__isset.strReqInfo ? (out << to_string(strReqInfo)) : (out << "<null>"));
+  out << ", " << "strReqDate="; (__isset.strReqDate ? (out << to_string(strReqDate)) : (out << "<null>"));
+  out << ", " << "strExtend="; (__isset.strExtend ? (out << to_string(strExtend)) : (out << "<null>"));
+  out << ")";
+}
+
+
+ProductType::~ProductType() throw() {
+}
+
+
+void ProductType::__set_strPdtTpID(const std::string& val) {
+  this->strPdtTpID = val;
+__isset.strPdtTpID = true;
+}
+
+void ProductType::__set_iType(const int32_t val) {
+  this->iType = val;
+__isset.iType = true;
+}
+
+void ProductType::__set_strTypeName(const std::string& val) {
+  this->strTypeName = val;
+__isset.strTypeName = true;
+}
+
+void ProductType::__set_strPic(const std::string& val) {
+  this->strPic = val;
+__isset.strPic = true;
+}
+
+void ProductType::__set_iIndex(const int32_t val) {
+  this->iIndex = val;
+__isset.iIndex = true;
+}
+
+void ProductType::__set_strExtend(const std::string& val) {
+  this->strExtend = val;
+__isset.strExtend = true;
+}
+std::ostream& operator<<(std::ostream& out, const ProductType& obj)
+{
+  obj.printTo(out);
+  return out;
+}
+
+
+uint32_t ProductType::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strPdtTpID);
+          this->__isset.strPdtTpID = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->iType);
+          this->__isset.iType = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strTypeName);
+          this->__isset.strTypeName = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strPic);
+          this->__isset.strPic = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 5:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->iIndex);
+          this->__isset.iIndex = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 6:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strExtend);
+          this->__isset.strExtend = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t ProductType::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("ProductType");
+
+  if (this->__isset.strPdtTpID) {
+    xfer += oprot->writeFieldBegin("strPdtTpID", ::apache::thrift::protocol::T_STRING, 1);
+    xfer += oprot->writeString(this->strPdtTpID);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.iType) {
+    xfer += oprot->writeFieldBegin("iType", ::apache::thrift::protocol::T_I32, 2);
+    xfer += oprot->writeI32(this->iType);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strTypeName) {
+    xfer += oprot->writeFieldBegin("strTypeName", ::apache::thrift::protocol::T_STRING, 3);
+    xfer += oprot->writeString(this->strTypeName);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strPic) {
+    xfer += oprot->writeFieldBegin("strPic", ::apache::thrift::protocol::T_STRING, 4);
+    xfer += oprot->writeString(this->strPic);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.iIndex) {
+    xfer += oprot->writeFieldBegin("iIndex", ::apache::thrift::protocol::T_I32, 5);
+    xfer += oprot->writeI32(this->iIndex);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strExtend) {
+    xfer += oprot->writeFieldBegin("strExtend", ::apache::thrift::protocol::T_STRING, 6);
+    xfer += oprot->writeString(this->strExtend);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(ProductType &a, ProductType &b) {
+  using ::std::swap;
+  swap(a.strPdtTpID, b.strPdtTpID);
+  swap(a.iType, b.iType);
+  swap(a.strTypeName, b.strTypeName);
+  swap(a.strPic, b.strPic);
+  swap(a.iIndex, b.iIndex);
+  swap(a.strExtend, b.strExtend);
+  swap(a.__isset, b.__isset);
+}
+
+ProductType::ProductType(const ProductType& other26) {
+  strPdtTpID = other26.strPdtTpID;
+  iType = other26.iType;
+  strTypeName = other26.strTypeName;
+  strPic = other26.strPic;
+  iIndex = other26.iIndex;
+  strExtend = other26.strExtend;
+  __isset = other26.__isset;
+}
+ProductType& ProductType::operator=(const ProductType& other27) {
+  strPdtTpID = other27.strPdtTpID;
+  iType = other27.iType;
+  strTypeName = other27.strTypeName;
+  strPic = other27.strPic;
+  iIndex = other27.iIndex;
+  strExtend = other27.strExtend;
+  __isset = other27.__isset;
+  return *this;
+}
+void ProductType::printTo(std::ostream& out) const {
+  using ::apache::thrift::to_string;
+  out << "ProductType(";
+  out << "strPdtTpID="; (__isset.strPdtTpID ? (out << to_string(strPdtTpID)) : (out << "<null>"));
+  out << ", " << "iType="; (__isset.iType ? (out << to_string(iType)) : (out << "<null>"));
+  out << ", " << "strTypeName="; (__isset.strTypeName ? (out << to_string(strTypeName)) : (out << "<null>"));
+  out << ", " << "strPic="; (__isset.strPic ? (out << to_string(strPic)) : (out << "<null>"));
+  out << ", " << "iIndex="; (__isset.iIndex ? (out << to_string(iIndex)) : (out << "<null>"));
+  out << ", " << "strExtend="; (__isset.strExtend ? (out << to_string(strExtend)) : (out << "<null>"));
+  out << ")";
+}
+
+
+AddProductTypeRT::~AddProductTypeRT() throw() {
+}
+
+
+void AddProductTypeRT::__set_rtcode(const ProductRTInfo& val) {
+  this->rtcode = val;
+__isset.rtcode = true;
+}
+
+void AddProductTypeRT::__set_strTypeID(const std::string& val) {
+  this->strTypeID = val;
+__isset.strTypeID = true;
+}
+std::ostream& operator<<(std::ostream& out, const AddProductTypeRT& obj)
+{
+  obj.printTo(out);
+  return out;
+}
+
+
+uint32_t AddProductTypeRT::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->rtcode.read(iprot);
+          this->__isset.rtcode = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strTypeID);
+          this->__isset.strTypeID = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t AddProductTypeRT::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("AddProductTypeRT");
+
+  if (this->__isset.rtcode) {
+    xfer += oprot->writeFieldBegin("rtcode", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->rtcode.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strTypeID) {
+    xfer += oprot->writeFieldBegin("strTypeID", ::apache::thrift::protocol::T_STRING, 2);
+    xfer += oprot->writeString(this->strTypeID);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(AddProductTypeRT &a, AddProductTypeRT &b) {
+  using ::std::swap;
+  swap(a.rtcode, b.rtcode);
+  swap(a.strTypeID, b.strTypeID);
+  swap(a.__isset, b.__isset);
+}
+
+AddProductTypeRT::AddProductTypeRT(const AddProductTypeRT& other28) {
+  rtcode = other28.rtcode;
+  strTypeID = other28.strTypeID;
+  __isset = other28.__isset;
+}
+AddProductTypeRT& AddProductTypeRT::operator=(const AddProductTypeRT& other29) {
+  rtcode = other29.rtcode;
+  strTypeID = other29.strTypeID;
+  __isset = other29.__isset;
+  return *this;
+}
+void AddProductTypeRT::printTo(std::ostream& out) const {
+  using ::apache::thrift::to_string;
+  out << "AddProductTypeRT(";
+  out << "rtcode="; (__isset.rtcode ? (out << to_string(rtcode)) : (out << "<null>"));
+  out << ", " << "strTypeID="; (__isset.strTypeID ? (out << to_string(strTypeID)) : (out << "<null>"));
+  out << ")";
+}
+
+
+QueryProductTypeRT::~QueryProductTypeRT() throw() {
+}
+
+
+void QueryProductTypeRT::__set_rtcode(const ProductRTInfo& val) {
+  this->rtcode = val;
+__isset.rtcode = true;
+}
+
+void QueryProductTypeRT::__set_pdttype(const ProductType& val) {
+  this->pdttype = val;
+__isset.pdttype = true;
+}
+std::ostream& operator<<(std::ostream& out, const QueryProductTypeRT& obj)
+{
+  obj.printTo(out);
+  return out;
+}
+
+
+uint32_t QueryProductTypeRT::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->rtcode.read(iprot);
+          this->__isset.rtcode = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->pdttype.read(iprot);
+          this->__isset.pdttype = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t QueryProductTypeRT::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("QueryProductTypeRT");
+
+  if (this->__isset.rtcode) {
+    xfer += oprot->writeFieldBegin("rtcode", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->rtcode.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.pdttype) {
+    xfer += oprot->writeFieldBegin("pdttype", ::apache::thrift::protocol::T_STRUCT, 2);
+    xfer += this->pdttype.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(QueryProductTypeRT &a, QueryProductTypeRT &b) {
+  using ::std::swap;
+  swap(a.rtcode, b.rtcode);
+  swap(a.pdttype, b.pdttype);
+  swap(a.__isset, b.__isset);
+}
+
+QueryProductTypeRT::QueryProductTypeRT(const QueryProductTypeRT& other30) {
+  rtcode = other30.rtcode;
+  pdttype = other30.pdttype;
+  __isset = other30.__isset;
+}
+QueryProductTypeRT& QueryProductTypeRT::operator=(const QueryProductTypeRT& other31) {
+  rtcode = other31.rtcode;
+  pdttype = other31.pdttype;
+  __isset = other31.__isset;
+  return *this;
+}
+void QueryProductTypeRT::printTo(std::ostream& out) const {
+  using ::apache::thrift::to_string;
+  out << "QueryProductTypeRT(";
+  out << "rtcode="; (__isset.rtcode ? (out << to_string(rtcode)) : (out << "<null>"));
+  out << ", " << "pdttype="; (__isset.pdttype ? (out << to_string(pdttype)) : (out << "<null>"));
+  out << ")";
+}
+
+
+QueryAllProductTypeRT::~QueryAllProductTypeRT() throw() {
+}
+
+
+void QueryAllProductTypeRT::__set_rtcode(const ProductRTInfo& val) {
+  this->rtcode = val;
+__isset.rtcode = true;
+}
+
+void QueryAllProductTypeRT::__set_pdttypelist(const std::vector<ProductType> & val) {
+  this->pdttypelist = val;
+__isset.pdttypelist = true;
+}
+std::ostream& operator<<(std::ostream& out, const QueryAllProductTypeRT& obj)
+{
+  obj.printTo(out);
+  return out;
+}
+
+
+uint32_t QueryAllProductTypeRT::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->rtcode.read(iprot);
+          this->__isset.rtcode = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->pdttypelist.clear();
+            uint32_t _size32;
+            ::apache::thrift::protocol::TType _etype35;
+            xfer += iprot->readListBegin(_etype35, _size32);
+            this->pdttypelist.resize(_size32);
+            uint32_t _i36;
+            for (_i36 = 0; _i36 < _size32; ++_i36)
+            {
+              xfer += this->pdttypelist[_i36].read(iprot);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.pdttypelist = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t QueryAllProductTypeRT::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("QueryAllProductTypeRT");
+
+  if (this->__isset.rtcode) {
+    xfer += oprot->writeFieldBegin("rtcode", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->rtcode.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.pdttypelist) {
+    xfer += oprot->writeFieldBegin("pdttypelist", ::apache::thrift::protocol::T_LIST, 2);
+    {
+      xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->pdttypelist.size()));
+      std::vector<ProductType> ::const_iterator _iter37;
+      for (_iter37 = this->pdttypelist.begin(); _iter37 != this->pdttypelist.end(); ++_iter37)
+      {
+        xfer += (*_iter37).write(oprot);
+      }
+      xfer += oprot->writeListEnd();
+    }
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(QueryAllProductTypeRT &a, QueryAllProductTypeRT &b) {
+  using ::std::swap;
+  swap(a.rtcode, b.rtcode);
+  swap(a.pdttypelist, b.pdttypelist);
+  swap(a.__isset, b.__isset);
+}
+
+QueryAllProductTypeRT::QueryAllProductTypeRT(const QueryAllProductTypeRT& other38) {
+  rtcode = other38.rtcode;
+  pdttypelist = other38.pdttypelist;
+  __isset = other38.__isset;
+}
+QueryAllProductTypeRT& QueryAllProductTypeRT::operator=(const QueryAllProductTypeRT& other39) {
+  rtcode = other39.rtcode;
+  pdttypelist = other39.pdttypelist;
+  __isset = other39.__isset;
+  return *this;
+}
+void QueryAllProductTypeRT::printTo(std::ostream& out) const {
+  using ::apache::thrift::to_string;
+  out << "QueryAllProductTypeRT(";
+  out << "rtcode="; (__isset.rtcode ? (out << to_string(rtcode)) : (out << "<null>"));
+  out << ", " << "pdttypelist="; (__isset.pdttypelist ? (out << to_string(pdttypelist)) : (out << "<null>"));
+  out << ")";
+}
+
+
+AddOpenRequestRT::~AddOpenRequestRT() throw() {
+}
+
+
+void AddOpenRequestRT::__set_rtcode(const ProductRTInfo& val) {
+  this->rtcode = val;
+__isset.rtcode = true;
+}
+
+void AddOpenRequestRT::__set_strOpReqID(const std::string& val) {
+  this->strOpReqID = val;
+__isset.strOpReqID = true;
+}
+std::ostream& operator<<(std::ostream& out, const AddOpenRequestRT& obj)
+{
+  obj.printTo(out);
+  return out;
+}
+
+
+uint32_t AddOpenRequestRT::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->rtcode.read(iprot);
+          this->__isset.rtcode = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strOpReqID);
+          this->__isset.strOpReqID = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t AddOpenRequestRT::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("AddOpenRequestRT");
+
+  if (this->__isset.rtcode) {
+    xfer += oprot->writeFieldBegin("rtcode", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->rtcode.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strOpReqID) {
+    xfer += oprot->writeFieldBegin("strOpReqID", ::apache::thrift::protocol::T_STRING, 2);
+    xfer += oprot->writeString(this->strOpReqID);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(AddOpenRequestRT &a, AddOpenRequestRT &b) {
+  using ::std::swap;
+  swap(a.rtcode, b.rtcode);
+  swap(a.strOpReqID, b.strOpReqID);
+  swap(a.__isset, b.__isset);
+}
+
+AddOpenRequestRT::AddOpenRequestRT(const AddOpenRequestRT& other40) {
+  rtcode = other40.rtcode;
+  strOpReqID = other40.strOpReqID;
+  __isset = other40.__isset;
+}
+AddOpenRequestRT& AddOpenRequestRT::operator=(const AddOpenRequestRT& other41) {
+  rtcode = other41.rtcode;
+  strOpReqID = other41.strOpReqID;
+  __isset = other41.__isset;
+  return *this;
+}
+void AddOpenRequestRT::printTo(std::ostream& out) const {
+  using ::apache::thrift::to_string;
+  out << "AddOpenRequestRT(";
+  out << "rtcode="; (__isset.rtcode ? (out << to_string(rtcode)) : (out << "<null>"));
+  out << ", " << "strOpReqID="; (__isset.strOpReqID ? (out << to_string(strOpReqID)) : (out << "<null>"));
+  out << ")";
+}
+
+
+QueryOpenRequestRT::~QueryOpenRequestRT() throw() {
+}
+
+
+void QueryOpenRequestRT::__set_rtcode(const ProductRTInfo& val) {
+  this->rtcode = val;
+__isset.rtcode = true;
+}
+
+void QueryOpenRequestRT::__set_strReqUserID(const std::string& val) {
+  this->strReqUserID = val;
+__isset.strReqUserID = true;
+}
+
+void QueryOpenRequestRT::__set_strReqUserName(const std::string& val) {
+  this->strReqUserName = val;
+__isset.strReqUserName = true;
+}
+
+void QueryOpenRequestRT::__set_opreqlist(const std::vector<OpenRequest> & val) {
+  this->opreqlist = val;
+}
+std::ostream& operator<<(std::ostream& out, const QueryOpenRequestRT& obj)
+{
+  obj.printTo(out);
+  return out;
+}
+
+
+uint32_t QueryOpenRequestRT::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->rtcode.read(iprot);
+          this->__isset.rtcode = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strReqUserID);
+          this->__isset.strReqUserID = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strReqUserName);
+          this->__isset.strReqUserName = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->opreqlist.clear();
+            uint32_t _size42;
+            ::apache::thrift::protocol::TType _etype45;
+            xfer += iprot->readListBegin(_etype45, _size42);
+            this->opreqlist.resize(_size42);
+            uint32_t _i46;
+            for (_i46 = 0; _i46 < _size42; ++_i46)
+            {
+              xfer += this->opreqlist[_i46].read(iprot);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.opreqlist = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t QueryOpenRequestRT::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("QueryOpenRequestRT");
+
+  if (this->__isset.rtcode) {
+    xfer += oprot->writeFieldBegin("rtcode", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->rtcode.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strReqUserID) {
+    xfer += oprot->writeFieldBegin("strReqUserID", ::apache::thrift::protocol::T_STRING, 2);
+    xfer += oprot->writeString(this->strReqUserID);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strReqUserName) {
+    xfer += oprot->writeFieldBegin("strReqUserName", ::apache::thrift::protocol::T_STRING, 3);
+    xfer += oprot->writeString(this->strReqUserName);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldBegin("opreqlist", ::apache::thrift::protocol::T_LIST, 4);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->opreqlist.size()));
+    std::vector<OpenRequest> ::const_iterator _iter47;
+    for (_iter47 = this->opreqlist.begin(); _iter47 != this->opreqlist.end(); ++_iter47)
+    {
+      xfer += (*_iter47).write(oprot);
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(QueryOpenRequestRT &a, QueryOpenRequestRT &b) {
+  using ::std::swap;
+  swap(a.rtcode, b.rtcode);
+  swap(a.strReqUserID, b.strReqUserID);
+  swap(a.strReqUserName, b.strReqUserName);
+  swap(a.opreqlist, b.opreqlist);
+  swap(a.__isset, b.__isset);
+}
+
+QueryOpenRequestRT::QueryOpenRequestRT(const QueryOpenRequestRT& other48) {
+  rtcode = other48.rtcode;
+  strReqUserID = other48.strReqUserID;
+  strReqUserName = other48.strReqUserName;
+  opreqlist = other48.opreqlist;
+  __isset = other48.__isset;
+}
+QueryOpenRequestRT& QueryOpenRequestRT::operator=(const QueryOpenRequestRT& other49) {
+  rtcode = other49.rtcode;
+  strReqUserID = other49.strReqUserID;
+  strReqUserName = other49.strReqUserName;
+  opreqlist = other49.opreqlist;
+  __isset = other49.__isset;
+  return *this;
+}
+void QueryOpenRequestRT::printTo(std::ostream& out) const {
+  using ::apache::thrift::to_string;
+  out << "QueryOpenRequestRT(";
+  out << "rtcode="; (__isset.rtcode ? (out << to_string(rtcode)) : (out << "<null>"));
+  out << ", " << "strReqUserID="; (__isset.strReqUserID ? (out << to_string(strReqUserID)) : (out << "<null>"));
+  out << ", " << "strReqUserName="; (__isset.strReqUserName ? (out << to_string(strReqUserName)) : (out << "<null>"));
+  out << ", " << "opreqlist=" << to_string(opreqlist);
+  out << ")";
+}
+
+
+QueryAllOpenRequestRT::~QueryAllOpenRequestRT() throw() {
+}
+
+
+void QueryAllOpenRequestRT::__set_rtcode(const ProductRTInfo& val) {
+  this->rtcode = val;
+__isset.rtcode = true;
+}
+
+void QueryAllOpenRequestRT::__set_opreqlist(const std::vector<OpenRequest> & val) {
+  this->opreqlist = val;
+}
+std::ostream& operator<<(std::ostream& out, const QueryAllOpenRequestRT& obj)
+{
+  obj.printTo(out);
+  return out;
+}
+
+
+uint32_t QueryAllOpenRequestRT::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->rtcode.read(iprot);
+          this->__isset.rtcode = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->opreqlist.clear();
+            uint32_t _size50;
+            ::apache::thrift::protocol::TType _etype53;
+            xfer += iprot->readListBegin(_etype53, _size50);
+            this->opreqlist.resize(_size50);
+            uint32_t _i54;
+            for (_i54 = 0; _i54 < _size50; ++_i54)
+            {
+              xfer += this->opreqlist[_i54].read(iprot);
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.opreqlist = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t QueryAllOpenRequestRT::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("QueryAllOpenRequestRT");
+
+  if (this->__isset.rtcode) {
+    xfer += oprot->writeFieldBegin("rtcode", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->rtcode.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldBegin("opreqlist", ::apache::thrift::protocol::T_LIST, 2);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->opreqlist.size()));
+    std::vector<OpenRequest> ::const_iterator _iter55;
+    for (_iter55 = this->opreqlist.begin(); _iter55 != this->opreqlist.end(); ++_iter55)
+    {
+      xfer += (*_iter55).write(oprot);
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(QueryAllOpenRequestRT &a, QueryAllOpenRequestRT &b) {
+  using ::std::swap;
+  swap(a.rtcode, b.rtcode);
+  swap(a.opreqlist, b.opreqlist);
+  swap(a.__isset, b.__isset);
+}
+
+QueryAllOpenRequestRT::QueryAllOpenRequestRT(const QueryAllOpenRequestRT& other56) {
+  rtcode = other56.rtcode;
+  opreqlist = other56.opreqlist;
+  __isset = other56.__isset;
+}
+QueryAllOpenRequestRT& QueryAllOpenRequestRT::operator=(const QueryAllOpenRequestRT& other57) {
+  rtcode = other57.rtcode;
+  opreqlist = other57.opreqlist;
+  __isset = other57.__isset;
+  return *this;
+}
+void QueryAllOpenRequestRT::printTo(std::ostream& out) const {
+  using ::apache::thrift::to_string;
+  out << "QueryAllOpenRequestRT(";
+  out << "rtcode="; (__isset.rtcode ? (out << to_string(rtcode)) : (out << "<null>"));
+  out << ", " << "opreqlist=" << to_string(opreqlist);
+  out << ")";
+}
+
+
+QueryAllOpenRequestParam::~QueryAllOpenRequestParam() throw() {
+}
+
+
+void QueryAllOpenRequestParam::__set_iReqStatus(const int32_t val) {
+  this->iReqStatus = val;
+__isset.iReqStatus = true;
+}
+
+void QueryAllOpenRequestParam::__set_strBeginDate(const std::string& val) {
+  this->strBeginDate = val;
+__isset.strBeginDate = true;
+}
+
+void QueryAllOpenRequestParam::__set_strEndDate(const std::string& val) {
+  this->strEndDate = val;
+__isset.strEndDate = true;
+}
+
+void QueryAllOpenRequestParam::__set_strBeginIndex(const std::string& val) {
+  this->strBeginIndex = val;
+__isset.strBeginIndex = true;
+}
+std::ostream& operator<<(std::ostream& out, const QueryAllOpenRequestParam& obj)
+{
+  obj.printTo(out);
+  return out;
+}
+
+
+uint32_t QueryAllOpenRequestParam::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->iReqStatus);
+          this->__isset.iReqStatus = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strBeginDate);
+          this->__isset.strBeginDate = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strEndDate);
+          this->__isset.strEndDate = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->strBeginIndex);
+          this->__isset.strBeginIndex = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t QueryAllOpenRequestParam::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("QueryAllOpenRequestParam");
+
+  if (this->__isset.iReqStatus) {
+    xfer += oprot->writeFieldBegin("iReqStatus", ::apache::thrift::protocol::T_I32, 1);
+    xfer += oprot->writeI32(this->iReqStatus);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strBeginDate) {
+    xfer += oprot->writeFieldBegin("strBeginDate", ::apache::thrift::protocol::T_STRING, 2);
+    xfer += oprot->writeString(this->strBeginDate);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strEndDate) {
+    xfer += oprot->writeFieldBegin("strEndDate", ::apache::thrift::protocol::T_STRING, 3);
+    xfer += oprot->writeString(this->strEndDate);
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->__isset.strBeginIndex) {
+    xfer += oprot->writeFieldBegin("strBeginIndex", ::apache::thrift::protocol::T_STRING, 4);
+    xfer += oprot->writeString(this->strBeginIndex);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(QueryAllOpenRequestParam &a, QueryAllOpenRequestParam &b) {
+  using ::std::swap;
+  swap(a.iReqStatus, b.iReqStatus);
+  swap(a.strBeginDate, b.strBeginDate);
+  swap(a.strEndDate, b.strEndDate);
+  swap(a.strBeginIndex, b.strBeginIndex);
+  swap(a.__isset, b.__isset);
+}
+
+QueryAllOpenRequestParam::QueryAllOpenRequestParam(const QueryAllOpenRequestParam& other58) {
+  iReqStatus = other58.iReqStatus;
+  strBeginDate = other58.strBeginDate;
+  strEndDate = other58.strEndDate;
+  strBeginIndex = other58.strBeginIndex;
+  __isset = other58.__isset;
+}
+QueryAllOpenRequestParam& QueryAllOpenRequestParam::operator=(const QueryAllOpenRequestParam& other59) {
+  iReqStatus = other59.iReqStatus;
+  strBeginDate = other59.strBeginDate;
+  strEndDate = other59.strEndDate;
+  strBeginIndex = other59.strBeginIndex;
+  __isset = other59.__isset;
+  return *this;
+}
+void QueryAllOpenRequestParam::printTo(std::ostream& out) const {
+  using ::apache::thrift::to_string;
+  out << "QueryAllOpenRequestParam(";
+  out << "iReqStatus="; (__isset.iReqStatus ? (out << to_string(iReqStatus)) : (out << "<null>"));
+  out << ", " << "strBeginDate="; (__isset.strBeginDate ? (out << to_string(strBeginDate)) : (out << "<null>"));
+  out << ", " << "strEndDate="; (__isset.strEndDate ? (out << to_string(strEndDate)) : (out << "<null>"));
+  out << ", " << "strBeginIndex="; (__isset.strBeginIndex ? (out << to_string(strBeginIndex)) : (out << "<null>"));
+  out << ")";
+}
+
+
 AddProductRT::~AddProductRT() throw() {
 }
 
@@ -1634,15 +3020,15 @@ void swap(AddProductRT &a, AddProductRT &b) {
   swap(a.__isset, b.__isset);
 }
 
-AddProductRT::AddProductRT(const AddProductRT& other24) {
-  rtcode = other24.rtcode;
-  strPdtID = other24.strPdtID;
-  __isset = other24.__isset;
+AddProductRT::AddProductRT(const AddProductRT& other60) {
+  rtcode = other60.rtcode;
+  strPdtID = other60.strPdtID;
+  __isset = other60.__isset;
 }
-AddProductRT& AddProductRT::operator=(const AddProductRT& other25) {
-  rtcode = other25.rtcode;
-  strPdtID = other25.strPdtID;
-  __isset = other25.__isset;
+AddProductRT& AddProductRT::operator=(const AddProductRT& other61) {
+  rtcode = other61.rtcode;
+  strPdtID = other61.strPdtID;
+  __isset = other61.__isset;
   return *this;
 }
 void AddProductRT::printTo(std::ostream& out) const {
@@ -1750,15 +3136,15 @@ void swap(QueryProductRT &a, QueryProductRT &b) {
   swap(a.__isset, b.__isset);
 }
 
-QueryProductRT::QueryProductRT(const QueryProductRT& other26) {
-  rtcode = other26.rtcode;
-  pdt = other26.pdt;
-  __isset = other26.__isset;
+QueryProductRT::QueryProductRT(const QueryProductRT& other62) {
+  rtcode = other62.rtcode;
+  pdt = other62.pdt;
+  __isset = other62.__isset;
 }
-QueryProductRT& QueryProductRT::operator=(const QueryProductRT& other27) {
-  rtcode = other27.rtcode;
-  pdt = other27.pdt;
-  __isset = other27.__isset;
+QueryProductRT& QueryProductRT::operator=(const QueryProductRT& other63) {
+  rtcode = other63.rtcode;
+  pdt = other63.pdt;
+  __isset = other63.__isset;
   return *this;
 }
 void QueryProductRT::printTo(std::ostream& out) const {
@@ -1823,14 +3209,14 @@ uint32_t QueryAllProductRT::read(::apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->pdtlist.clear();
-            uint32_t _size28;
-            ::apache::thrift::protocol::TType _etype31;
-            xfer += iprot->readListBegin(_etype31, _size28);
-            this->pdtlist.resize(_size28);
-            uint32_t _i32;
-            for (_i32 = 0; _i32 < _size28; ++_i32)
+            uint32_t _size64;
+            ::apache::thrift::protocol::TType _etype67;
+            xfer += iprot->readListBegin(_etype67, _size64);
+            this->pdtlist.resize(_size64);
+            uint32_t _i68;
+            for (_i68 = 0; _i68 < _size64; ++_i68)
             {
-              xfer += this->pdtlist[_i32].read(iprot);
+              xfer += this->pdtlist[_i68].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -1865,10 +3251,10 @@ uint32_t QueryAllProductRT::write(::apache::thrift::protocol::TProtocol* oprot) 
     xfer += oprot->writeFieldBegin("pdtlist", ::apache::thrift::protocol::T_LIST, 2);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->pdtlist.size()));
-      std::vector<ProductInfo> ::const_iterator _iter33;
-      for (_iter33 = this->pdtlist.begin(); _iter33 != this->pdtlist.end(); ++_iter33)
+      std::vector<ProductInfo> ::const_iterator _iter69;
+      for (_iter69 = this->pdtlist.begin(); _iter69 != this->pdtlist.end(); ++_iter69)
       {
-        xfer += (*_iter33).write(oprot);
+        xfer += (*_iter69).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -1886,15 +3272,15 @@ void swap(QueryAllProductRT &a, QueryAllProductRT &b) {
   swap(a.__isset, b.__isset);
 }
 
-QueryAllProductRT::QueryAllProductRT(const QueryAllProductRT& other34) {
-  rtcode = other34.rtcode;
-  pdtlist = other34.pdtlist;
-  __isset = other34.__isset;
+QueryAllProductRT::QueryAllProductRT(const QueryAllProductRT& other70) {
+  rtcode = other70.rtcode;
+  pdtlist = other70.pdtlist;
+  __isset = other70.__isset;
 }
-QueryAllProductRT& QueryAllProductRT::operator=(const QueryAllProductRT& other35) {
-  rtcode = other35.rtcode;
-  pdtlist = other35.pdtlist;
-  __isset = other35.__isset;
+QueryAllProductRT& QueryAllProductRT::operator=(const QueryAllProductRT& other71) {
+  rtcode = other71.rtcode;
+  pdtlist = other71.pdtlist;
+  __isset = other71.__isset;
   return *this;
 }
 void QueryAllProductRT::printTo(std::ostream& out) const {
@@ -2002,15 +3388,15 @@ void swap(AddProductPropertyRT &a, AddProductPropertyRT &b) {
   swap(a.__isset, b.__isset);
 }
 
-AddProductPropertyRT::AddProductPropertyRT(const AddProductPropertyRT& other36) {
-  rtcode = other36.rtcode;
-  strPdtpptID = other36.strPdtpptID;
-  __isset = other36.__isset;
+AddProductPropertyRT::AddProductPropertyRT(const AddProductPropertyRT& other72) {
+  rtcode = other72.rtcode;
+  strPdtpptID = other72.strPdtpptID;
+  __isset = other72.__isset;
 }
-AddProductPropertyRT& AddProductPropertyRT::operator=(const AddProductPropertyRT& other37) {
-  rtcode = other37.rtcode;
-  strPdtpptID = other37.strPdtpptID;
-  __isset = other37.__isset;
+AddProductPropertyRT& AddProductPropertyRT::operator=(const AddProductPropertyRT& other73) {
+  rtcode = other73.rtcode;
+  strPdtpptID = other73.strPdtpptID;
+  __isset = other73.__isset;
   return *this;
 }
 void AddProductPropertyRT::printTo(std::ostream& out) const {
@@ -2118,15 +3504,15 @@ void swap(AddOrdRT &a, AddOrdRT &b) {
   swap(a.__isset, b.__isset);
 }
 
-AddOrdRT::AddOrdRT(const AddOrdRT& other38) {
-  rtcode = other38.rtcode;
-  strOrdID = other38.strOrdID;
-  __isset = other38.__isset;
+AddOrdRT::AddOrdRT(const AddOrdRT& other74) {
+  rtcode = other74.rtcode;
+  strOrdID = other74.strOrdID;
+  __isset = other74.__isset;
 }
-AddOrdRT& AddOrdRT::operator=(const AddOrdRT& other39) {
-  rtcode = other39.rtcode;
-  strOrdID = other39.strOrdID;
-  __isset = other39.__isset;
+AddOrdRT& AddOrdRT::operator=(const AddOrdRT& other75) {
+  rtcode = other75.rtcode;
+  strOrdID = other75.strOrdID;
+  __isset = other75.__isset;
   return *this;
 }
 void AddOrdRT::printTo(std::ostream& out) const {
@@ -2234,15 +3620,15 @@ void swap(AddOrdDetailRT &a, AddOrdDetailRT &b) {
   swap(a.__isset, b.__isset);
 }
 
-AddOrdDetailRT::AddOrdDetailRT(const AddOrdDetailRT& other40) {
-  rtcode = other40.rtcode;
-  strOrddtID = other40.strOrddtID;
-  __isset = other40.__isset;
+AddOrdDetailRT::AddOrdDetailRT(const AddOrdDetailRT& other76) {
+  rtcode = other76.rtcode;
+  strOrddtID = other76.strOrddtID;
+  __isset = other76.__isset;
 }
-AddOrdDetailRT& AddOrdDetailRT::operator=(const AddOrdDetailRT& other41) {
-  rtcode = other41.rtcode;
-  strOrddtID = other41.strOrddtID;
-  __isset = other41.__isset;
+AddOrdDetailRT& AddOrdDetailRT::operator=(const AddOrdDetailRT& other77) {
+  rtcode = other77.rtcode;
+  strOrddtID = other77.strOrddtID;
+  __isset = other77.__isset;
   return *this;
 }
 void AddOrdDetailRT::printTo(std::ostream& out) const {
@@ -2350,15 +3736,15 @@ void swap(QueryOrdRT &a, QueryOrdRT &b) {
   swap(a.__isset, b.__isset);
 }
 
-QueryOrdRT::QueryOrdRT(const QueryOrdRT& other42) {
-  rtcode = other42.rtcode;
-  ord = other42.ord;
-  __isset = other42.__isset;
+QueryOrdRT::QueryOrdRT(const QueryOrdRT& other78) {
+  rtcode = other78.rtcode;
+  ord = other78.ord;
+  __isset = other78.__isset;
 }
-QueryOrdRT& QueryOrdRT::operator=(const QueryOrdRT& other43) {
-  rtcode = other43.rtcode;
-  ord = other43.ord;
-  __isset = other43.__isset;
+QueryOrdRT& QueryOrdRT::operator=(const QueryOrdRT& other79) {
+  rtcode = other79.rtcode;
+  ord = other79.ord;
+  __isset = other79.__isset;
   return *this;
 }
 void QueryOrdRT::printTo(std::ostream& out) const {
@@ -2423,14 +3809,14 @@ uint32_t QueryAllOrdRT::read(::apache::thrift::protocol::TProtocol* iprot) {
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->ordlist.clear();
-            uint32_t _size44;
-            ::apache::thrift::protocol::TType _etype47;
-            xfer += iprot->readListBegin(_etype47, _size44);
-            this->ordlist.resize(_size44);
-            uint32_t _i48;
-            for (_i48 = 0; _i48 < _size44; ++_i48)
+            uint32_t _size80;
+            ::apache::thrift::protocol::TType _etype83;
+            xfer += iprot->readListBegin(_etype83, _size80);
+            this->ordlist.resize(_size80);
+            uint32_t _i84;
+            for (_i84 = 0; _i84 < _size80; ++_i84)
             {
-              xfer += this->ordlist[_i48].read(iprot);
+              xfer += this->ordlist[_i84].read(iprot);
             }
             xfer += iprot->readListEnd();
           }
@@ -2465,10 +3851,10 @@ uint32_t QueryAllOrdRT::write(::apache::thrift::protocol::TProtocol* oprot) cons
     xfer += oprot->writeFieldBegin("ordlist", ::apache::thrift::protocol::T_LIST, 2);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, static_cast<uint32_t>(this->ordlist.size()));
-      std::vector<OrderInfo> ::const_iterator _iter49;
-      for (_iter49 = this->ordlist.begin(); _iter49 != this->ordlist.end(); ++_iter49)
+      std::vector<OrderInfo> ::const_iterator _iter85;
+      for (_iter85 = this->ordlist.begin(); _iter85 != this->ordlist.end(); ++_iter85)
       {
-        xfer += (*_iter49).write(oprot);
+        xfer += (*_iter85).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -2486,15 +3872,15 @@ void swap(QueryAllOrdRT &a, QueryAllOrdRT &b) {
   swap(a.__isset, b.__isset);
 }
 
-QueryAllOrdRT::QueryAllOrdRT(const QueryAllOrdRT& other50) {
-  rtcode = other50.rtcode;
-  ordlist = other50.ordlist;
-  __isset = other50.__isset;
+QueryAllOrdRT::QueryAllOrdRT(const QueryAllOrdRT& other86) {
+  rtcode = other86.rtcode;
+  ordlist = other86.ordlist;
+  __isset = other86.__isset;
 }
-QueryAllOrdRT& QueryAllOrdRT::operator=(const QueryAllOrdRT& other51) {
-  rtcode = other51.rtcode;
-  ordlist = other51.ordlist;
-  __isset = other51.__isset;
+QueryAllOrdRT& QueryAllOrdRT::operator=(const QueryAllOrdRT& other87) {
+  rtcode = other87.rtcode;
+  ordlist = other87.ordlist;
+  __isset = other87.__isset;
   return *this;
 }
 void QueryAllOrdRT::printTo(std::ostream& out) const {
@@ -2716,27 +4102,27 @@ void swap(QueryAllOrdParam &a, QueryAllOrdParam &b) {
   swap(a.__isset, b.__isset);
 }
 
-QueryAllOrdParam::QueryAllOrdParam(const QueryAllOrdParam& other52) {
-  iType = other52.iType;
-  iOrdStatus = other52.iOrdStatus;
-  strReceiver = other52.strReceiver;
-  strPhone = other52.strPhone;
-  strPdtID = other52.strPdtID;
-  strBeginDate = other52.strBeginDate;
-  strEndDate = other52.strEndDate;
-  strBeginIndex = other52.strBeginIndex;
-  __isset = other52.__isset;
+QueryAllOrdParam::QueryAllOrdParam(const QueryAllOrdParam& other88) {
+  iType = other88.iType;
+  iOrdStatus = other88.iOrdStatus;
+  strReceiver = other88.strReceiver;
+  strPhone = other88.strPhone;
+  strPdtID = other88.strPdtID;
+  strBeginDate = other88.strBeginDate;
+  strEndDate = other88.strEndDate;
+  strBeginIndex = other88.strBeginIndex;
+  __isset = other88.__isset;
 }
-QueryAllOrdParam& QueryAllOrdParam::operator=(const QueryAllOrdParam& other53) {
-  iType = other53.iType;
-  iOrdStatus = other53.iOrdStatus;
-  strReceiver = other53.strReceiver;
-  strPhone = other53.strPhone;
-  strPdtID = other53.strPdtID;
-  strBeginDate = other53.strBeginDate;
-  strEndDate = other53.strEndDate;
-  strBeginIndex = other53.strBeginIndex;
-  __isset = other53.__isset;
+QueryAllOrdParam& QueryAllOrdParam::operator=(const QueryAllOrdParam& other89) {
+  iType = other89.iType;
+  iOrdStatus = other89.iOrdStatus;
+  strReceiver = other89.strReceiver;
+  strPhone = other89.strPhone;
+  strPdtID = other89.strPdtID;
+  strBeginDate = other89.strBeginDate;
+  strEndDate = other89.strEndDate;
+  strBeginIndex = other89.strBeginIndex;
+  __isset = other89.__isset;
   return *this;
 }
 void QueryAllOrdParam::printTo(std::ostream& out) const {

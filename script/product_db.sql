@@ -2,6 +2,36 @@ CREATE DATABASE IF NOT EXISTS ProductDB DEFAULT CHARSET utf8 COLLATE utf8_genera
 
 use ProductDB;
 
+DROP TABLE IF EXISTS `t_product_type`;
+CREATE TABLE `t_product_type` (
+  `id` varchar(36) NOT NULL,
+  `pdttpid` varchar(100) NOT NULL                    COMMENT '产品类型ID',
+  `typeinfo` int(11) NOT NULL DEFAULT '0'            COMMENT '产品类型',
+  `typename` varchar(200) NOT NULL DEFAULT ''        COMMENT '类型名称',
+  `pic` varchar(300) DEFAULT ''                      COMMENT '产品图片http地址',
+  `pdttpindex` int(11) NOT NULL DEFAULT '0'          COMMENT '业务索引',
+  `status` int(11) NOT NULL DEFAULT '0'              COMMENT '0正常，1删除',
+  `extend` varchar(4000) DEFAULT ''                  COMMENT '扩展信息',
+  PRIMARY KEY (`id`),
+  INDEX index_ref1(typeinfo)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `t_open_request`;
+CREATE TABLE `t_open_request` (
+  `id` varchar(36) NOT NULL,
+  `opreqid` varchar(100) NOT NULL                    COMMENT '开通申请ID',
+  `requserid` varchar(100) NOT NULL                  COMMENT '开通申请人用户ID',
+  `requsername` varchar(200) NOT NULL                COMMENT '开通申请人用户名称',
+  `reqstatus` int(11) NOT NULL DEFAULT '1'           COMMENT '1处理中，1申请成功，2申请被拒',
+  `info` varchar(4000) DEFAULT ''                    COMMENT '开通申请信息',
+  `reqdate` datetime default current_timestamp       COMMENT '创建日期',
+  `status` int(11) NOT NULL DEFAULT '0'              COMMENT '0正常，1删除',
+  `extend` varchar(4000) DEFAULT ''                  COMMENT '扩展信息',
+  PRIMARY KEY (`id`),
+  INDEX index_ref1(reqstatus),
+  INDEX index_ref2(reqstatus, reqdate)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `t_sale_company_info`;
 CREATE TABLE `t_sale_company_info` (
   `id` varchar(36) NOT NULL,

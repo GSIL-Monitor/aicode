@@ -47,8 +47,33 @@ public:
     static const int ADD_PRODUCT_PROPERTY_CMD = 5;
     static const int REMOVE_PRODUCT_PROPERTY_CMD = 6;
 
+    static const int ADD_PRODUCT_TYPE_CMD = 7;
+    static const int REMOVE_PRODUCT_TYPE_CMD = 8;
+    static const int MODIFY_PRODUCT_TYPE_CMD = 9;
+    static const int QUERY_PRODUCT_TYPE_CMD = 10;
+    static const int QUERY_ALL_PRODUCT_TYPE_CMD = 11;
+
+    static const int ADD_OPEN_REQUEST_CMD = 12;
+    static const int REMOVE_OPEN_REQUEST_CMD = 13;
+    static const int MODIFY_OPEN_REQUEST_CMD = 14;
+    static const int QUERY_OPEN_REQUEST_CMD = 15;
+    static const int QUERY_ALL_OPEN_REQUEST_CMD = 16;
+
+
     void SetBeforeHandler(BeforeHandler bh);
     void SetAfterHandler(AfterHandler ah);
+
+    virtual void AddProductType(AddProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype);
+    virtual void RemoveProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID);
+    virtual void ModifyProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype);
+    virtual void QueryProductType(QueryProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID);
+    virtual void QueryAllProductType(QueryAllProductTypeRT& _return, const std::string& strSid, const std::string& strUserID);
+    virtual void AddOpenRequest(AddOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq);
+    virtual void RemoveOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOpReqID);
+    virtual void ModifyOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq);
+    virtual void QueryOpenRequest(QueryOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strReqID, 
+        const std::string& strReqUserID, const std::string& strReqUserName);
+    virtual void QueryAllOpenRequest(QueryAllOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const QueryAllOpenRequestParam& qryparam);
 
     virtual void AddProduct(AddProductRT& _return, const std::string& strSid, const std::string& strUserID, const ProductInfo& pdt);
     virtual void RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID);
@@ -59,6 +84,19 @@ public:
         const ProductProperty& pdtppt);
     virtual void RemoveProductProperty(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, 
         const std::string& strPdtpptID);
+
+private:
+    template<bool blFlag>
+    struct Flag {};
+
+    template<typename T>
+    void BeforeProcess(int iCmd, const std::string &strSid, T &_return, Flag<true> flag);
+
+    template<typename T>
+    void BeforeProcess(int iCmd, const std::string &strSid, T &_return, Flag<false> flag);
+
+
+    void AfterProcess(int iCmd, const std::string &strSid);
 
 private:
     boost::shared_ptr<ProductServiceIf> m_pImpl;
@@ -90,6 +128,10 @@ public:
 
     virtual void AddOrdDetail(AddOrdDetailRT& _return, const std::string& strSid, const std::string& strUserID, const OrderDetail& orddt);
     virtual void RemoveOrdDetail(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const std::string& strOrddtID);
+
+private:
+    void BeforeProcess(int iCmd, const std::string &strSid, int *piRet);
+    void AfterProcess(int iCmd, const std::string &strSid);
 
 private:
     boost::shared_ptr<OrderServiceIf> m_pImpl;

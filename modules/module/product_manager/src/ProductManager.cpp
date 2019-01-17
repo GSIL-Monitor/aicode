@@ -95,6 +95,551 @@ bool ProductManager::Init()
     return true;
 }
 
+void ProductManager::AddProductType(AddProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype)
+{
+    std::string strTypeID = CreateUUID();
+    bool blResult = false;
+    BOOST_SCOPE_EXIT(&blResult, this_, &_return, &g_Product_constants, &strTypeID)
+    {
+        ProductRTInfo rtd;
+        rtd.__set_iRtCode(blResult ? g_Product_constants.PDT_SUCCESS_CODE : g_Product_constants.PDT_FAILED_CODE);
+        _return.__set_rtcode(rtd);
+
+        if (blResult)
+        {
+            _return.__set_strTypeID(strTypeID);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+    char sql[8192] = { 0 };
+    const char *sqlfmt = "insert into t_product_type (id, pdttpid, typeinfo, typename, pic, pdttpindex, extend)"
+        " values (uuid(), '%s', %d, '%s', '%s', %d, '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, strTypeID.c_str(), pdttype.iType, pdttype.strTypeName.c_str(), pdttype.strPic.c_str(),
+        pdttype.iIndex, pdttype.strExtend.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Add product type exec sql failed, sql is " << sql);
+        return;
+    }
+
+    blResult = true;
+}
+
+void ProductManager::RemoveProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID)
+{
+    int iFailCode = g_Product_constants.PDT_FAILED_CODE;
+    bool blResult = false;
+    BOOST_SCOPE_EXIT(&blResult, this_, &_return, &g_Product_constants, &iFailCode)
+    {
+        _return.__set_iRtCode(blResult ? g_Product_constants.PDT_SUCCESS_CODE : iFailCode);
+    }
+    BOOST_SCOPE_EXIT_END
+    
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "delete from t_product_type where pdttpid = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strTypeID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Remove product type exec sql failed, sql is " << sql);
+        return;
+    }
+
+    blResult = true;
+}
+
+void ProductManager::ModifyProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype)
+{
+    bool blResult = false;
+    BOOST_SCOPE_EXIT(&blResult, this_, &_return, &g_Product_constants)
+    {
+        _return.__set_iRtCode(blResult ? g_Product_constants.PDT_SUCCESS_CODE : g_Product_constants.PDT_FAILED_CODE);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    bool blModified = false;
+
+    char sql[8192] = { 0 };
+    int size = sizeof(sql);
+    int len = snprintf(sql, size, "update t_product_type set id = id");
+
+    if (-1 != pdttype.iIndex)
+    {
+        len += snprintf(sql + len, size - len, ", pdttpindex = %d", pdttype.iIndex);
+        blModified = true;
+    }
+
+    if (-1 != pdttype.iType)
+    {
+        len += snprintf(sql + len, size - len, ", typeinfo = %d", pdttype.iType);
+        blModified = true;
+    }
+
+    if (!pdttype.strTypeName.empty())
+    {
+        len += snprintf(sql + len, size - len, ", typename = '%s'", pdttype.strTypeName.c_str());
+        blModified = true;
+    }
+
+    if (!pdttype.strPic.empty())
+    {
+        len += snprintf(sql + len, size - len, ", pic = '%s'", pdttype.strPic.c_str());
+        blModified = true;
+    }
+
+    if (!pdttype.strExtend.empty())
+    {
+        len += snprintf(sql + len, size - len, ", extend = '%s'", pdttype.strExtend.c_str());
+        blModified = true;
+    }
+
+    if (!blModified)
+    {
+        LOG_INFO_RLD("Modify product type completed, product info is not changed");
+        return;
+    }
+
+    snprintf(sql + len, size - len, " where pdttpid = '%s'", pdttype.strPdtTpID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Modify product type exec sql failed, sql is " << sql);
+        return;
+    }
+
+    blResult = true;
+}
+
+void ProductManager::QueryProductType(QueryProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID)
+{
+    bool blResult = false;
+    BOOST_SCOPE_EXIT(&blResult, this_, &_return, &g_Product_constants)
+    {
+        ProductRTInfo rtd;
+        rtd.__set_iRtCode(blResult ? g_Product_constants.PDT_SUCCESS_CODE : g_Product_constants.PDT_FAILED_CODE);
+        _return.__set_rtcode(rtd);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select typeinfo, typename, pic, pdttpindex, extend from"
+        " t_product_type where pdttpid = '%s' and status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt, strTypeID.c_str());
+
+    ProductType pdttype;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            pdttype.__set_iType(boost::lexical_cast<int>(strColumn));
+            break;
+        case 1:
+            pdttype.__set_strTypeName(strColumn);
+            break;
+        case 2:
+            pdttype.__set_strPic(strColumn);
+            break;
+        case 3:
+            pdttype.__set_iIndex(boost::lexical_cast<int>(strColumn));
+            break;
+        case 4:
+            pdttype.__set_strExtend(strColumn);
+            break;
+
+        default:
+            LOG_ERROR_RLD("Query product type sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Query product exec sql failed, sql is " << sql);
+        return;
+    }
+
+    pdttype.__set_strPdtTpID(strTypeID);
+
+    _return.__set_pdttype(pdttype);
+
+    blResult = true;
+}
+
+void ProductManager::QueryAllProductType(QueryAllProductTypeRT& _return, const std::string& strSid, const std::string& strUserID)
+{
+    bool blResult = false;
+    BOOST_SCOPE_EXIT(&blResult, this_, &_return, &g_Product_constants)
+    {
+        ProductRTInfo rtd;
+        rtd.__set_iRtCode(blResult ? g_Product_constants.PDT_SUCCESS_CODE : g_Product_constants.PDT_FAILED_CODE);
+        _return.__set_rtcode(rtd);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select typeinfo, typename, pic, pdttpindex, extend, pdttpid from"
+        " t_product_type where status = 0";
+    snprintf(sql, sizeof(sql), sqlfmt);
+
+    std::vector<ProductType> pdttypelist;
+    ProductType pdttype;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            pdttype.__set_iType(boost::lexical_cast<int>(strColumn));
+            break;
+        case 1:
+            pdttype.__set_strTypeName(strColumn);
+            break;
+        case 2:
+            pdttype.__set_strPic(strColumn);
+            break;
+        case 3:
+            pdttype.__set_iIndex(boost::lexical_cast<int>(strColumn));
+            break;
+        case 4:
+            pdttype.__set_strExtend(strColumn);            
+            break;
+        case 5:
+            pdttype.__set_strPdtTpID(strColumn);
+            pdttypelist.push_back(pdttype);
+            break;
+
+        default:
+            LOG_ERROR_RLD("Query all product type sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Query product exec sql failed, sql is " << sql);
+        return;
+    }
+
+    _return.__set_pdttypelist(pdttypelist);
+
+    blResult = true;
+}
+
+void ProductManager::AddOpenRequest(AddOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq)
+{
+    std::string strReqID = CreateUUID();
+    bool blResult = false;
+    BOOST_SCOPE_EXIT(&blResult, this_, &_return, &g_Product_constants, &strReqID)
+    {
+        ProductRTInfo rtd;
+        rtd.__set_iRtCode(blResult ? g_Product_constants.PDT_SUCCESS_CODE : g_Product_constants.PDT_FAILED_CODE);
+        _return.__set_rtcode(rtd);
+
+        if (blResult)
+        {
+            _return.__set_strOpReqID(strReqID);
+        }
+    }
+    BOOST_SCOPE_EXIT_END
+
+        char sql[8192] = { 0 };
+    const char *sqlfmt = "insert into t_open_request (id, opreqid, requserid, requsername, reqstatus, info, reqdate, extend)"
+        " values (uuid(), '%s', '%s', '%s', %d, '%s', '%s', '%s')";
+    snprintf(sql, sizeof(sql), sqlfmt, strReqID.c_str(), opreq.strReqUserID.c_str(), opreq.strReqUserName.c_str(), opreq.iReqStatus,
+        opreq.strReqInfo.c_str(), opreq.strReqDate.c_str(), opreq.strExtend.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Add open request exec sql failed, sql is " << sql);
+        return;
+    }
+
+    blResult = true;
+}
+
+void ProductManager::RemoveOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOpReqID)
+{
+    int iFailCode = g_Product_constants.PDT_FAILED_CODE;
+    bool blResult = false;
+    BOOST_SCOPE_EXIT(&blResult, this_, &_return, &g_Product_constants, &iFailCode)
+    {
+        _return.__set_iRtCode(blResult ? g_Product_constants.PDT_SUCCESS_CODE : iFailCode);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "delete from t_open_request where opreqid = '%s'";
+    snprintf(sql, sizeof(sql), sqlfmt, strOpReqID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Remove open request exec sql failed, sql is " << sql);
+        return;
+    }
+
+    blResult = true;
+}
+
+void ProductManager::ModifyOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq)
+{
+    bool blResult = false;
+    BOOST_SCOPE_EXIT(&blResult, this_, &_return, &g_Product_constants)
+    {
+        _return.__set_iRtCode(blResult ? g_Product_constants.PDT_SUCCESS_CODE : g_Product_constants.PDT_FAILED_CODE);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    bool blModified = false;
+
+    char sql[8192] = { 0 };
+    int size = sizeof(sql);
+    int len = snprintf(sql, size, "update t_open_request set id = id");
+
+    if (!opreq.strReqUserID.empty())
+    {
+        len += snprintf(sql + len, size - len, ", requserid = '%s'", opreq.strReqUserID.c_str());
+        blModified = true;
+    }
+
+    if (!opreq.strReqUserName.empty())
+    {
+        len += snprintf(sql + len, size - len, ", requsername = '%s'", opreq.strReqUserName.c_str());
+        blModified = true;
+    }
+
+    if (-1 != opreq.iReqStatus)
+    {
+        len += snprintf(sql + len, size - len, ", reqstatus = %d", opreq.iReqStatus);
+        blModified = true;
+    }
+
+    if (!opreq.strReqInfo.empty())
+    {
+        len += snprintf(sql + len, size - len, ", info = '%s'", opreq.strReqInfo.c_str());
+        blModified = true;
+    }
+
+    if (!opreq.strReqDate.empty())
+    {
+        len += snprintf(sql + len, size - len, ", reqdate = '%s'", opreq.strReqDate.c_str());
+        blModified = true;
+    }
+
+    if (!opreq.strExtend.empty())
+    {
+        len += snprintf(sql + len, size - len, ", extend = '%s'", opreq.strExtend.c_str());
+        blModified = true;
+    }
+
+    if (!blModified)
+    {
+        LOG_INFO_RLD("Modify open request completed, product info is not changed");
+        return;
+    }
+
+    snprintf(sql + len, size - len, " where opreqid = '%s'", opreq.strOpReqID.c_str());
+
+    if (!m_pMysql->QueryExec(std::string(sql)))
+    {
+        LOG_ERROR_RLD("Modify open request exec sql failed, sql is " << sql);
+        return;
+    }
+
+    blResult = true;
+}
+
+void ProductManager::QueryOpenRequest(QueryOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strReqID, const std::string& strReqUserID, const std::string& strReqUserName)
+{
+    bool blResult = false;
+    BOOST_SCOPE_EXIT(&blResult, this_, &_return, &g_Product_constants)
+    {
+        ProductRTInfo rtd;
+        rtd.__set_iRtCode(blResult ? g_Product_constants.PDT_SUCCESS_CODE : g_Product_constants.PDT_FAILED_CODE);
+        _return.__set_rtcode(rtd);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select opreqid, requserid, requsername, reqstatus, info, reqdate, extend from"
+        " t_open_request where status = 0 ";
+    int len = snprintf(sql, sizeof(sql), sqlfmt);
+    int size = sizeof(sql);
+
+    if (!strReqUserID.empty())
+    {
+        len += snprintf(sql + len, size - len, " and requserid = '%s'", strReqUserID.c_str());
+    }
+
+    if (!strReqUserName.empty())
+    {
+        len += snprintf(sql + len, size - len, " and requsername = '%s'", strReqUserName.c_str());
+    }
+
+    if (!strReqID.empty())
+    {
+        len += snprintf(sql + len, size - len, " and opreqid = '%s'", strReqID.c_str());
+    }
+
+    snprintf(sql + len, size - len, " order by reqdate desc");
+
+    std::vector<OpenRequest> opreqlist;
+    OpenRequest opreq;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            opreq.__set_strOpReqID(strColumn);
+            break;
+
+        case 1:
+            opreq.__set_strReqUserID(strColumn);
+            break;
+
+        case 2:
+            opreq.__set_strReqUserName(strColumn);
+            break;
+
+        case 3:
+            opreq.__set_iReqStatus(boost::lexical_cast<int>(strColumn));
+            break;
+
+        case 4:
+            opreq.__set_strReqInfo(strColumn);
+            break;
+
+        case 5:
+            opreq.__set_strReqDate(strColumn);
+            break;
+
+        case 6:
+            opreq.__set_strExtend(strColumn);
+            opreqlist.push_back(opreq);
+            break;
+
+        default:
+            LOG_ERROR_RLD("Query open request sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Query open request sql failed, sql is " << sql);
+        return;
+    }
+
+    _return.__set_strReqUserID(strReqUserID);
+    _return.__set_strReqUserName(strReqUserName);
+    _return.__set_opreqlist(opreqlist);
+
+    blResult = true;
+}
+
+void ProductManager::QueryAllOpenRequest(QueryAllOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const QueryAllOpenRequestParam& qryparam)
+{
+    bool blResult = false;
+    BOOST_SCOPE_EXIT(&blResult, this_, &_return, &g_Product_constants)
+    {
+        ProductRTInfo rtd;
+        rtd.__set_iRtCode(blResult ? g_Product_constants.PDT_SUCCESS_CODE : g_Product_constants.PDT_FAILED_CODE);
+        _return.__set_rtcode(rtd);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    char sql[1024] = { 0 };
+    const char *sqlfmt = "select opreqid, requserid, requsername, reqstatus, info, reqdate, extend from"
+        " t_open_request where status = 0 ";
+    int len = snprintf(sql, sizeof(sql), sqlfmt);
+    int size = sizeof(sql);
+
+    if (-1 != qryparam.iReqStatus)
+    {
+        len += snprintf(sql + len, size - len, " and reqstatus = %d", qryparam.iReqStatus);
+    }
+
+    if (!qryparam.strBeginDate.empty())
+    {
+        len += snprintf(sql + len, size - len, " and reqdate >= '%s'", qryparam.strBeginDate.c_str());
+    }
+
+    if (!qryparam.strEndDate.empty())
+    {
+        len += snprintf(sql + len, size - len, " and reqdate <= '%s'", qryparam.strEndDate.c_str());
+    }
+
+    snprintf(sql + len, size - len, " order by reqdate desc limit %d, %d", boost::lexical_cast<unsigned int>(qryparam.strBeginIndex), 100);
+
+    std::vector<OpenRequest> opreqlist;
+    OpenRequest opreq;
+    auto SqlFunc = [&](const boost::uint32_t uiRowNum, const boost::uint32_t uiColumnNum, const std::string &strColumn, boost::any &result)
+    {
+        switch (uiColumnNum)
+        {
+        case 0:
+            opreq.__set_strOpReqID(strColumn);
+            break;
+
+        case 1:
+            opreq.__set_strReqUserID(strColumn);
+            break;
+
+        case 2:
+            opreq.__set_strReqUserName(strColumn);
+            break;
+
+        case 3:
+            opreq.__set_iReqStatus(boost::lexical_cast<int>(strColumn));
+            break;
+
+        case 4:
+            opreq.__set_strReqInfo(strColumn);
+            break;
+
+        case 5:
+            opreq.__set_strReqDate(strColumn);
+            break;
+
+        case 6:
+            opreq.__set_strExtend(strColumn);
+            opreqlist.push_back(opreq);
+            break;
+
+        default:
+            LOG_ERROR_RLD("Query all open request sql callback error, row num is " << uiRowNum
+                << " and column num is " << uiColumnNum
+                << " and value is " << strColumn);
+            break;
+        }
+    };
+
+    std::list<boost::any> ResultList;
+    if (!m_DBCache.QuerySql(std::string(sql), ResultList, SqlFunc, true))
+    {
+        LOG_ERROR_RLD("Query all open request sql failed, sql is " << sql);
+        return;
+    }
+
+    _return.__set_opreqlist(opreqlist);
+
+    blResult = true;
+}
+
 void ProductManager::AddProduct(AddProductRT& _return, const std::string& strSid, const std::string& strUserID, const ProductInfo& pdt)
 {
     std::string strPdtID = CreateUUID();

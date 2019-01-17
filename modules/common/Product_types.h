@@ -32,6 +32,24 @@ class OrderDetail;
 
 class OrderInfo;
 
+class OpenRequest;
+
+class ProductType;
+
+class AddProductTypeRT;
+
+class QueryProductTypeRT;
+
+class QueryAllProductTypeRT;
+
+class AddOpenRequestRT;
+
+class QueryOpenRequestRT;
+
+class QueryAllOpenRequestRT;
+
+class QueryAllOpenRequestParam;
+
 class AddProductRT;
 
 class QueryProductRT;
@@ -645,6 +663,574 @@ class OrderInfo : public virtual ::apache::thrift::TBase {
 void swap(OrderInfo &a, OrderInfo &b);
 
 std::ostream& operator<<(std::ostream& out, const OrderInfo& obj);
+
+typedef struct _OpenRequest__isset {
+  _OpenRequest__isset() : strOpReqID(false), strReqUserID(false), strReqUserName(false), iReqStatus(false), strReqInfo(false), strReqDate(false), strExtend(false) {}
+  bool strOpReqID :1;
+  bool strReqUserID :1;
+  bool strReqUserName :1;
+  bool iReqStatus :1;
+  bool strReqInfo :1;
+  bool strReqDate :1;
+  bool strExtend :1;
+} _OpenRequest__isset;
+
+class OpenRequest : public virtual ::apache::thrift::TBase {
+ public:
+
+  OpenRequest(const OpenRequest&);
+  OpenRequest& operator=(const OpenRequest&);
+  OpenRequest() : strOpReqID(), strReqUserID(), strReqUserName(), iReqStatus(0), strReqInfo(), strReqDate(), strExtend() {
+  }
+
+  virtual ~OpenRequest() throw();
+  std::string strOpReqID;
+  std::string strReqUserID;
+  std::string strReqUserName;
+  int32_t iReqStatus;
+  std::string strReqInfo;
+  std::string strReqDate;
+  std::string strExtend;
+
+  _OpenRequest__isset __isset;
+
+  void __set_strOpReqID(const std::string& val);
+
+  void __set_strReqUserID(const std::string& val);
+
+  void __set_strReqUserName(const std::string& val);
+
+  void __set_iReqStatus(const int32_t val);
+
+  void __set_strReqInfo(const std::string& val);
+
+  void __set_strReqDate(const std::string& val);
+
+  void __set_strExtend(const std::string& val);
+
+  bool operator == (const OpenRequest & rhs) const
+  {
+    if (__isset.strOpReqID != rhs.__isset.strOpReqID)
+      return false;
+    else if (__isset.strOpReqID && !(strOpReqID == rhs.strOpReqID))
+      return false;
+    if (__isset.strReqUserID != rhs.__isset.strReqUserID)
+      return false;
+    else if (__isset.strReqUserID && !(strReqUserID == rhs.strReqUserID))
+      return false;
+    if (__isset.strReqUserName != rhs.__isset.strReqUserName)
+      return false;
+    else if (__isset.strReqUserName && !(strReqUserName == rhs.strReqUserName))
+      return false;
+    if (__isset.iReqStatus != rhs.__isset.iReqStatus)
+      return false;
+    else if (__isset.iReqStatus && !(iReqStatus == rhs.iReqStatus))
+      return false;
+    if (__isset.strReqInfo != rhs.__isset.strReqInfo)
+      return false;
+    else if (__isset.strReqInfo && !(strReqInfo == rhs.strReqInfo))
+      return false;
+    if (__isset.strReqDate != rhs.__isset.strReqDate)
+      return false;
+    else if (__isset.strReqDate && !(strReqDate == rhs.strReqDate))
+      return false;
+    if (__isset.strExtend != rhs.__isset.strExtend)
+      return false;
+    else if (__isset.strExtend && !(strExtend == rhs.strExtend))
+      return false;
+    return true;
+  }
+  bool operator != (const OpenRequest &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const OpenRequest & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+  virtual void printTo(std::ostream& out) const;
+};
+
+void swap(OpenRequest &a, OpenRequest &b);
+
+std::ostream& operator<<(std::ostream& out, const OpenRequest& obj);
+
+typedef struct _ProductType__isset {
+  _ProductType__isset() : strPdtTpID(false), iType(false), strTypeName(false), strPic(false), iIndex(false), strExtend(false) {}
+  bool strPdtTpID :1;
+  bool iType :1;
+  bool strTypeName :1;
+  bool strPic :1;
+  bool iIndex :1;
+  bool strExtend :1;
+} _ProductType__isset;
+
+class ProductType : public virtual ::apache::thrift::TBase {
+ public:
+
+  ProductType(const ProductType&);
+  ProductType& operator=(const ProductType&);
+  ProductType() : strPdtTpID(), iType(0), strTypeName(), strPic(), iIndex(0), strExtend() {
+  }
+
+  virtual ~ProductType() throw();
+  std::string strPdtTpID;
+  int32_t iType;
+  std::string strTypeName;
+  std::string strPic;
+  int32_t iIndex;
+  std::string strExtend;
+
+  _ProductType__isset __isset;
+
+  void __set_strPdtTpID(const std::string& val);
+
+  void __set_iType(const int32_t val);
+
+  void __set_strTypeName(const std::string& val);
+
+  void __set_strPic(const std::string& val);
+
+  void __set_iIndex(const int32_t val);
+
+  void __set_strExtend(const std::string& val);
+
+  bool operator == (const ProductType & rhs) const
+  {
+    if (__isset.strPdtTpID != rhs.__isset.strPdtTpID)
+      return false;
+    else if (__isset.strPdtTpID && !(strPdtTpID == rhs.strPdtTpID))
+      return false;
+    if (__isset.iType != rhs.__isset.iType)
+      return false;
+    else if (__isset.iType && !(iType == rhs.iType))
+      return false;
+    if (__isset.strTypeName != rhs.__isset.strTypeName)
+      return false;
+    else if (__isset.strTypeName && !(strTypeName == rhs.strTypeName))
+      return false;
+    if (__isset.strPic != rhs.__isset.strPic)
+      return false;
+    else if (__isset.strPic && !(strPic == rhs.strPic))
+      return false;
+    if (__isset.iIndex != rhs.__isset.iIndex)
+      return false;
+    else if (__isset.iIndex && !(iIndex == rhs.iIndex))
+      return false;
+    if (__isset.strExtend != rhs.__isset.strExtend)
+      return false;
+    else if (__isset.strExtend && !(strExtend == rhs.strExtend))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductType &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductType & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+  virtual void printTo(std::ostream& out) const;
+};
+
+void swap(ProductType &a, ProductType &b);
+
+std::ostream& operator<<(std::ostream& out, const ProductType& obj);
+
+typedef struct _AddProductTypeRT__isset {
+  _AddProductTypeRT__isset() : rtcode(false), strTypeID(false) {}
+  bool rtcode :1;
+  bool strTypeID :1;
+} _AddProductTypeRT__isset;
+
+class AddProductTypeRT : public virtual ::apache::thrift::TBase {
+ public:
+
+  AddProductTypeRT(const AddProductTypeRT&);
+  AddProductTypeRT& operator=(const AddProductTypeRT&);
+  AddProductTypeRT() : strTypeID() {
+  }
+
+  virtual ~AddProductTypeRT() throw();
+  ProductRTInfo rtcode;
+  std::string strTypeID;
+
+  _AddProductTypeRT__isset __isset;
+
+  void __set_rtcode(const ProductRTInfo& val);
+
+  void __set_strTypeID(const std::string& val);
+
+  bool operator == (const AddProductTypeRT & rhs) const
+  {
+    if (__isset.rtcode != rhs.__isset.rtcode)
+      return false;
+    else if (__isset.rtcode && !(rtcode == rhs.rtcode))
+      return false;
+    if (__isset.strTypeID != rhs.__isset.strTypeID)
+      return false;
+    else if (__isset.strTypeID && !(strTypeID == rhs.strTypeID))
+      return false;
+    return true;
+  }
+  bool operator != (const AddProductTypeRT &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const AddProductTypeRT & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+  virtual void printTo(std::ostream& out) const;
+};
+
+void swap(AddProductTypeRT &a, AddProductTypeRT &b);
+
+std::ostream& operator<<(std::ostream& out, const AddProductTypeRT& obj);
+
+typedef struct _QueryProductTypeRT__isset {
+  _QueryProductTypeRT__isset() : rtcode(false), pdttype(false) {}
+  bool rtcode :1;
+  bool pdttype :1;
+} _QueryProductTypeRT__isset;
+
+class QueryProductTypeRT : public virtual ::apache::thrift::TBase {
+ public:
+
+  QueryProductTypeRT(const QueryProductTypeRT&);
+  QueryProductTypeRT& operator=(const QueryProductTypeRT&);
+  QueryProductTypeRT() {
+  }
+
+  virtual ~QueryProductTypeRT() throw();
+  ProductRTInfo rtcode;
+  ProductType pdttype;
+
+  _QueryProductTypeRT__isset __isset;
+
+  void __set_rtcode(const ProductRTInfo& val);
+
+  void __set_pdttype(const ProductType& val);
+
+  bool operator == (const QueryProductTypeRT & rhs) const
+  {
+    if (__isset.rtcode != rhs.__isset.rtcode)
+      return false;
+    else if (__isset.rtcode && !(rtcode == rhs.rtcode))
+      return false;
+    if (__isset.pdttype != rhs.__isset.pdttype)
+      return false;
+    else if (__isset.pdttype && !(pdttype == rhs.pdttype))
+      return false;
+    return true;
+  }
+  bool operator != (const QueryProductTypeRT &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const QueryProductTypeRT & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+  virtual void printTo(std::ostream& out) const;
+};
+
+void swap(QueryProductTypeRT &a, QueryProductTypeRT &b);
+
+std::ostream& operator<<(std::ostream& out, const QueryProductTypeRT& obj);
+
+typedef struct _QueryAllProductTypeRT__isset {
+  _QueryAllProductTypeRT__isset() : rtcode(false), pdttypelist(false) {}
+  bool rtcode :1;
+  bool pdttypelist :1;
+} _QueryAllProductTypeRT__isset;
+
+class QueryAllProductTypeRT : public virtual ::apache::thrift::TBase {
+ public:
+
+  QueryAllProductTypeRT(const QueryAllProductTypeRT&);
+  QueryAllProductTypeRT& operator=(const QueryAllProductTypeRT&);
+  QueryAllProductTypeRT() {
+  }
+
+  virtual ~QueryAllProductTypeRT() throw();
+  ProductRTInfo rtcode;
+  std::vector<ProductType>  pdttypelist;
+
+  _QueryAllProductTypeRT__isset __isset;
+
+  void __set_rtcode(const ProductRTInfo& val);
+
+  void __set_pdttypelist(const std::vector<ProductType> & val);
+
+  bool operator == (const QueryAllProductTypeRT & rhs) const
+  {
+    if (__isset.rtcode != rhs.__isset.rtcode)
+      return false;
+    else if (__isset.rtcode && !(rtcode == rhs.rtcode))
+      return false;
+    if (__isset.pdttypelist != rhs.__isset.pdttypelist)
+      return false;
+    else if (__isset.pdttypelist && !(pdttypelist == rhs.pdttypelist))
+      return false;
+    return true;
+  }
+  bool operator != (const QueryAllProductTypeRT &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const QueryAllProductTypeRT & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+  virtual void printTo(std::ostream& out) const;
+};
+
+void swap(QueryAllProductTypeRT &a, QueryAllProductTypeRT &b);
+
+std::ostream& operator<<(std::ostream& out, const QueryAllProductTypeRT& obj);
+
+typedef struct _AddOpenRequestRT__isset {
+  _AddOpenRequestRT__isset() : rtcode(false), strOpReqID(false) {}
+  bool rtcode :1;
+  bool strOpReqID :1;
+} _AddOpenRequestRT__isset;
+
+class AddOpenRequestRT : public virtual ::apache::thrift::TBase {
+ public:
+
+  AddOpenRequestRT(const AddOpenRequestRT&);
+  AddOpenRequestRT& operator=(const AddOpenRequestRT&);
+  AddOpenRequestRT() : strOpReqID() {
+  }
+
+  virtual ~AddOpenRequestRT() throw();
+  ProductRTInfo rtcode;
+  std::string strOpReqID;
+
+  _AddOpenRequestRT__isset __isset;
+
+  void __set_rtcode(const ProductRTInfo& val);
+
+  void __set_strOpReqID(const std::string& val);
+
+  bool operator == (const AddOpenRequestRT & rhs) const
+  {
+    if (__isset.rtcode != rhs.__isset.rtcode)
+      return false;
+    else if (__isset.rtcode && !(rtcode == rhs.rtcode))
+      return false;
+    if (__isset.strOpReqID != rhs.__isset.strOpReqID)
+      return false;
+    else if (__isset.strOpReqID && !(strOpReqID == rhs.strOpReqID))
+      return false;
+    return true;
+  }
+  bool operator != (const AddOpenRequestRT &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const AddOpenRequestRT & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+  virtual void printTo(std::ostream& out) const;
+};
+
+void swap(AddOpenRequestRT &a, AddOpenRequestRT &b);
+
+std::ostream& operator<<(std::ostream& out, const AddOpenRequestRT& obj);
+
+typedef struct _QueryOpenRequestRT__isset {
+  _QueryOpenRequestRT__isset() : rtcode(false), strReqUserID(false), strReqUserName(false), opreqlist(false) {}
+  bool rtcode :1;
+  bool strReqUserID :1;
+  bool strReqUserName :1;
+  bool opreqlist :1;
+} _QueryOpenRequestRT__isset;
+
+class QueryOpenRequestRT : public virtual ::apache::thrift::TBase {
+ public:
+
+  QueryOpenRequestRT(const QueryOpenRequestRT&);
+  QueryOpenRequestRT& operator=(const QueryOpenRequestRT&);
+  QueryOpenRequestRT() : strReqUserID(), strReqUserName() {
+  }
+
+  virtual ~QueryOpenRequestRT() throw();
+  ProductRTInfo rtcode;
+  std::string strReqUserID;
+  std::string strReqUserName;
+  std::vector<OpenRequest>  opreqlist;
+
+  _QueryOpenRequestRT__isset __isset;
+
+  void __set_rtcode(const ProductRTInfo& val);
+
+  void __set_strReqUserID(const std::string& val);
+
+  void __set_strReqUserName(const std::string& val);
+
+  void __set_opreqlist(const std::vector<OpenRequest> & val);
+
+  bool operator == (const QueryOpenRequestRT & rhs) const
+  {
+    if (__isset.rtcode != rhs.__isset.rtcode)
+      return false;
+    else if (__isset.rtcode && !(rtcode == rhs.rtcode))
+      return false;
+    if (__isset.strReqUserID != rhs.__isset.strReqUserID)
+      return false;
+    else if (__isset.strReqUserID && !(strReqUserID == rhs.strReqUserID))
+      return false;
+    if (__isset.strReqUserName != rhs.__isset.strReqUserName)
+      return false;
+    else if (__isset.strReqUserName && !(strReqUserName == rhs.strReqUserName))
+      return false;
+    if (!(opreqlist == rhs.opreqlist))
+      return false;
+    return true;
+  }
+  bool operator != (const QueryOpenRequestRT &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const QueryOpenRequestRT & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+  virtual void printTo(std::ostream& out) const;
+};
+
+void swap(QueryOpenRequestRT &a, QueryOpenRequestRT &b);
+
+std::ostream& operator<<(std::ostream& out, const QueryOpenRequestRT& obj);
+
+typedef struct _QueryAllOpenRequestRT__isset {
+  _QueryAllOpenRequestRT__isset() : rtcode(false), opreqlist(false) {}
+  bool rtcode :1;
+  bool opreqlist :1;
+} _QueryAllOpenRequestRT__isset;
+
+class QueryAllOpenRequestRT : public virtual ::apache::thrift::TBase {
+ public:
+
+  QueryAllOpenRequestRT(const QueryAllOpenRequestRT&);
+  QueryAllOpenRequestRT& operator=(const QueryAllOpenRequestRT&);
+  QueryAllOpenRequestRT() {
+  }
+
+  virtual ~QueryAllOpenRequestRT() throw();
+  ProductRTInfo rtcode;
+  std::vector<OpenRequest>  opreqlist;
+
+  _QueryAllOpenRequestRT__isset __isset;
+
+  void __set_rtcode(const ProductRTInfo& val);
+
+  void __set_opreqlist(const std::vector<OpenRequest> & val);
+
+  bool operator == (const QueryAllOpenRequestRT & rhs) const
+  {
+    if (__isset.rtcode != rhs.__isset.rtcode)
+      return false;
+    else if (__isset.rtcode && !(rtcode == rhs.rtcode))
+      return false;
+    if (!(opreqlist == rhs.opreqlist))
+      return false;
+    return true;
+  }
+  bool operator != (const QueryAllOpenRequestRT &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const QueryAllOpenRequestRT & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+  virtual void printTo(std::ostream& out) const;
+};
+
+void swap(QueryAllOpenRequestRT &a, QueryAllOpenRequestRT &b);
+
+std::ostream& operator<<(std::ostream& out, const QueryAllOpenRequestRT& obj);
+
+typedef struct _QueryAllOpenRequestParam__isset {
+  _QueryAllOpenRequestParam__isset() : iReqStatus(false), strBeginDate(false), strEndDate(false), strBeginIndex(false) {}
+  bool iReqStatus :1;
+  bool strBeginDate :1;
+  bool strEndDate :1;
+  bool strBeginIndex :1;
+} _QueryAllOpenRequestParam__isset;
+
+class QueryAllOpenRequestParam : public virtual ::apache::thrift::TBase {
+ public:
+
+  QueryAllOpenRequestParam(const QueryAllOpenRequestParam&);
+  QueryAllOpenRequestParam& operator=(const QueryAllOpenRequestParam&);
+  QueryAllOpenRequestParam() : iReqStatus(0), strBeginDate(), strEndDate(), strBeginIndex() {
+  }
+
+  virtual ~QueryAllOpenRequestParam() throw();
+  int32_t iReqStatus;
+  std::string strBeginDate;
+  std::string strEndDate;
+  std::string strBeginIndex;
+
+  _QueryAllOpenRequestParam__isset __isset;
+
+  void __set_iReqStatus(const int32_t val);
+
+  void __set_strBeginDate(const std::string& val);
+
+  void __set_strEndDate(const std::string& val);
+
+  void __set_strBeginIndex(const std::string& val);
+
+  bool operator == (const QueryAllOpenRequestParam & rhs) const
+  {
+    if (__isset.iReqStatus != rhs.__isset.iReqStatus)
+      return false;
+    else if (__isset.iReqStatus && !(iReqStatus == rhs.iReqStatus))
+      return false;
+    if (__isset.strBeginDate != rhs.__isset.strBeginDate)
+      return false;
+    else if (__isset.strBeginDate && !(strBeginDate == rhs.strBeginDate))
+      return false;
+    if (__isset.strEndDate != rhs.__isset.strEndDate)
+      return false;
+    else if (__isset.strEndDate && !(strEndDate == rhs.strEndDate))
+      return false;
+    if (__isset.strBeginIndex != rhs.__isset.strBeginIndex)
+      return false;
+    else if (__isset.strBeginIndex && !(strBeginIndex == rhs.strBeginIndex))
+      return false;
+    return true;
+  }
+  bool operator != (const QueryAllOpenRequestParam &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const QueryAllOpenRequestParam & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+  virtual void printTo(std::ostream& out) const;
+};
+
+void swap(QueryAllOpenRequestParam &a, QueryAllOpenRequestParam &b);
+
+std::ostream& operator<<(std::ostream& out, const QueryAllOpenRequestParam& obj);
 
 typedef struct _AddProductRT__isset {
   _AddProductRT__isset() : rtcode(false), strPdtID(false) {}

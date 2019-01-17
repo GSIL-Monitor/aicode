@@ -21,6 +21,16 @@ namespace Product { namespace Service {
 class ProductServiceIf {
  public:
   virtual ~ProductServiceIf() {}
+  virtual void AddProductType(AddProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype) = 0;
+  virtual void RemoveProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID) = 0;
+  virtual void ModifyProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype) = 0;
+  virtual void QueryProductType(QueryProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID) = 0;
+  virtual void QueryAllProductType(QueryAllProductTypeRT& _return, const std::string& strSid, const std::string& strUserID) = 0;
+  virtual void AddOpenRequest(AddOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq) = 0;
+  virtual void RemoveOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOpReqID) = 0;
+  virtual void ModifyOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq) = 0;
+  virtual void QueryOpenRequest(QueryOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strReqID, const std::string& strReqUserID, const std::string& strReqUserName) = 0;
+  virtual void QueryAllOpenRequest(QueryAllOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const QueryAllOpenRequestParam& qryparam) = 0;
   virtual void AddProduct(AddProductRT& _return, const std::string& strSid, const std::string& strUserID, const ProductInfo& pdt) = 0;
   virtual void RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID) = 0;
   virtual void ModifyProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const ProductInfo& pdt) = 0;
@@ -57,6 +67,36 @@ class ProductServiceIfSingletonFactory : virtual public ProductServiceIfFactory 
 class ProductServiceNull : virtual public ProductServiceIf {
  public:
   virtual ~ProductServiceNull() {}
+  void AddProductType(AddProductTypeRT& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const ProductType& /* pdttype */) {
+    return;
+  }
+  void RemoveProductType(ProductRTInfo& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const std::string& /* strTypeID */) {
+    return;
+  }
+  void ModifyProductType(ProductRTInfo& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const ProductType& /* pdttype */) {
+    return;
+  }
+  void QueryProductType(QueryProductTypeRT& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const std::string& /* strTypeID */) {
+    return;
+  }
+  void QueryAllProductType(QueryAllProductTypeRT& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */) {
+    return;
+  }
+  void AddOpenRequest(AddOpenRequestRT& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const OpenRequest& /* opreq */) {
+    return;
+  }
+  void RemoveOpenRequest(ProductRTInfo& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const std::string& /* strOpReqID */) {
+    return;
+  }
+  void ModifyOpenRequest(ProductRTInfo& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const OpenRequest& /* opreq */) {
+    return;
+  }
+  void QueryOpenRequest(QueryOpenRequestRT& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const std::string& /* strReqID */, const std::string& /* strReqUserID */, const std::string& /* strReqUserName */) {
+    return;
+  }
+  void QueryAllOpenRequest(QueryAllOpenRequestRT& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const QueryAllOpenRequestParam& /* qryparam */) {
+    return;
+  }
   void AddProduct(AddProductRT& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const ProductInfo& /* pdt */) {
     return;
   }
@@ -78,6 +118,1193 @@ class ProductServiceNull : virtual public ProductServiceIf {
   void RemoveProductProperty(ProductRTInfo& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const std::string& /* strPdtID */, const std::string& /* strPdtpptID */) {
     return;
   }
+};
+
+typedef struct _ProductService_AddProductType_args__isset {
+  _ProductService_AddProductType_args__isset() : strSid(false), strUserID(false), pdttype(false) {}
+  bool strSid :1;
+  bool strUserID :1;
+  bool pdttype :1;
+} _ProductService_AddProductType_args__isset;
+
+class ProductService_AddProductType_args {
+ public:
+
+  ProductService_AddProductType_args(const ProductService_AddProductType_args&);
+  ProductService_AddProductType_args& operator=(const ProductService_AddProductType_args&);
+  ProductService_AddProductType_args() : strSid(), strUserID() {
+  }
+
+  virtual ~ProductService_AddProductType_args() throw();
+  std::string strSid;
+  std::string strUserID;
+  ProductType pdttype;
+
+  _ProductService_AddProductType_args__isset __isset;
+
+  void __set_strSid(const std::string& val);
+
+  void __set_strUserID(const std::string& val);
+
+  void __set_pdttype(const ProductType& val);
+
+  bool operator == (const ProductService_AddProductType_args & rhs) const
+  {
+    if (!(strSid == rhs.strSid))
+      return false;
+    if (!(strUserID == rhs.strUserID))
+      return false;
+    if (!(pdttype == rhs.pdttype))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_AddProductType_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_AddProductType_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ProductService_AddProductType_pargs {
+ public:
+
+
+  virtual ~ProductService_AddProductType_pargs() throw();
+  const std::string* strSid;
+  const std::string* strUserID;
+  const ProductType* pdttype;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_AddProductType_result__isset {
+  _ProductService_AddProductType_result__isset() : success(false) {}
+  bool success :1;
+} _ProductService_AddProductType_result__isset;
+
+class ProductService_AddProductType_result {
+ public:
+
+  ProductService_AddProductType_result(const ProductService_AddProductType_result&);
+  ProductService_AddProductType_result& operator=(const ProductService_AddProductType_result&);
+  ProductService_AddProductType_result() {
+  }
+
+  virtual ~ProductService_AddProductType_result() throw();
+  AddProductTypeRT success;
+
+  _ProductService_AddProductType_result__isset __isset;
+
+  void __set_success(const AddProductTypeRT& val);
+
+  bool operator == (const ProductService_AddProductType_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_AddProductType_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_AddProductType_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_AddProductType_presult__isset {
+  _ProductService_AddProductType_presult__isset() : success(false) {}
+  bool success :1;
+} _ProductService_AddProductType_presult__isset;
+
+class ProductService_AddProductType_presult {
+ public:
+
+
+  virtual ~ProductService_AddProductType_presult() throw();
+  AddProductTypeRT* success;
+
+  _ProductService_AddProductType_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _ProductService_RemoveProductType_args__isset {
+  _ProductService_RemoveProductType_args__isset() : strSid(false), strUserID(false), strTypeID(false) {}
+  bool strSid :1;
+  bool strUserID :1;
+  bool strTypeID :1;
+} _ProductService_RemoveProductType_args__isset;
+
+class ProductService_RemoveProductType_args {
+ public:
+
+  ProductService_RemoveProductType_args(const ProductService_RemoveProductType_args&);
+  ProductService_RemoveProductType_args& operator=(const ProductService_RemoveProductType_args&);
+  ProductService_RemoveProductType_args() : strSid(), strUserID(), strTypeID() {
+  }
+
+  virtual ~ProductService_RemoveProductType_args() throw();
+  std::string strSid;
+  std::string strUserID;
+  std::string strTypeID;
+
+  _ProductService_RemoveProductType_args__isset __isset;
+
+  void __set_strSid(const std::string& val);
+
+  void __set_strUserID(const std::string& val);
+
+  void __set_strTypeID(const std::string& val);
+
+  bool operator == (const ProductService_RemoveProductType_args & rhs) const
+  {
+    if (!(strSid == rhs.strSid))
+      return false;
+    if (!(strUserID == rhs.strUserID))
+      return false;
+    if (!(strTypeID == rhs.strTypeID))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_RemoveProductType_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_RemoveProductType_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ProductService_RemoveProductType_pargs {
+ public:
+
+
+  virtual ~ProductService_RemoveProductType_pargs() throw();
+  const std::string* strSid;
+  const std::string* strUserID;
+  const std::string* strTypeID;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_RemoveProductType_result__isset {
+  _ProductService_RemoveProductType_result__isset() : success(false) {}
+  bool success :1;
+} _ProductService_RemoveProductType_result__isset;
+
+class ProductService_RemoveProductType_result {
+ public:
+
+  ProductService_RemoveProductType_result(const ProductService_RemoveProductType_result&);
+  ProductService_RemoveProductType_result& operator=(const ProductService_RemoveProductType_result&);
+  ProductService_RemoveProductType_result() {
+  }
+
+  virtual ~ProductService_RemoveProductType_result() throw();
+  ProductRTInfo success;
+
+  _ProductService_RemoveProductType_result__isset __isset;
+
+  void __set_success(const ProductRTInfo& val);
+
+  bool operator == (const ProductService_RemoveProductType_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_RemoveProductType_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_RemoveProductType_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_RemoveProductType_presult__isset {
+  _ProductService_RemoveProductType_presult__isset() : success(false) {}
+  bool success :1;
+} _ProductService_RemoveProductType_presult__isset;
+
+class ProductService_RemoveProductType_presult {
+ public:
+
+
+  virtual ~ProductService_RemoveProductType_presult() throw();
+  ProductRTInfo* success;
+
+  _ProductService_RemoveProductType_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _ProductService_ModifyProductType_args__isset {
+  _ProductService_ModifyProductType_args__isset() : strSid(false), strUserID(false), pdttype(false) {}
+  bool strSid :1;
+  bool strUserID :1;
+  bool pdttype :1;
+} _ProductService_ModifyProductType_args__isset;
+
+class ProductService_ModifyProductType_args {
+ public:
+
+  ProductService_ModifyProductType_args(const ProductService_ModifyProductType_args&);
+  ProductService_ModifyProductType_args& operator=(const ProductService_ModifyProductType_args&);
+  ProductService_ModifyProductType_args() : strSid(), strUserID() {
+  }
+
+  virtual ~ProductService_ModifyProductType_args() throw();
+  std::string strSid;
+  std::string strUserID;
+  ProductType pdttype;
+
+  _ProductService_ModifyProductType_args__isset __isset;
+
+  void __set_strSid(const std::string& val);
+
+  void __set_strUserID(const std::string& val);
+
+  void __set_pdttype(const ProductType& val);
+
+  bool operator == (const ProductService_ModifyProductType_args & rhs) const
+  {
+    if (!(strSid == rhs.strSid))
+      return false;
+    if (!(strUserID == rhs.strUserID))
+      return false;
+    if (!(pdttype == rhs.pdttype))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_ModifyProductType_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_ModifyProductType_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ProductService_ModifyProductType_pargs {
+ public:
+
+
+  virtual ~ProductService_ModifyProductType_pargs() throw();
+  const std::string* strSid;
+  const std::string* strUserID;
+  const ProductType* pdttype;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_ModifyProductType_result__isset {
+  _ProductService_ModifyProductType_result__isset() : success(false) {}
+  bool success :1;
+} _ProductService_ModifyProductType_result__isset;
+
+class ProductService_ModifyProductType_result {
+ public:
+
+  ProductService_ModifyProductType_result(const ProductService_ModifyProductType_result&);
+  ProductService_ModifyProductType_result& operator=(const ProductService_ModifyProductType_result&);
+  ProductService_ModifyProductType_result() {
+  }
+
+  virtual ~ProductService_ModifyProductType_result() throw();
+  ProductRTInfo success;
+
+  _ProductService_ModifyProductType_result__isset __isset;
+
+  void __set_success(const ProductRTInfo& val);
+
+  bool operator == (const ProductService_ModifyProductType_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_ModifyProductType_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_ModifyProductType_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_ModifyProductType_presult__isset {
+  _ProductService_ModifyProductType_presult__isset() : success(false) {}
+  bool success :1;
+} _ProductService_ModifyProductType_presult__isset;
+
+class ProductService_ModifyProductType_presult {
+ public:
+
+
+  virtual ~ProductService_ModifyProductType_presult() throw();
+  ProductRTInfo* success;
+
+  _ProductService_ModifyProductType_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _ProductService_QueryProductType_args__isset {
+  _ProductService_QueryProductType_args__isset() : strSid(false), strUserID(false), strTypeID(false) {}
+  bool strSid :1;
+  bool strUserID :1;
+  bool strTypeID :1;
+} _ProductService_QueryProductType_args__isset;
+
+class ProductService_QueryProductType_args {
+ public:
+
+  ProductService_QueryProductType_args(const ProductService_QueryProductType_args&);
+  ProductService_QueryProductType_args& operator=(const ProductService_QueryProductType_args&);
+  ProductService_QueryProductType_args() : strSid(), strUserID(), strTypeID() {
+  }
+
+  virtual ~ProductService_QueryProductType_args() throw();
+  std::string strSid;
+  std::string strUserID;
+  std::string strTypeID;
+
+  _ProductService_QueryProductType_args__isset __isset;
+
+  void __set_strSid(const std::string& val);
+
+  void __set_strUserID(const std::string& val);
+
+  void __set_strTypeID(const std::string& val);
+
+  bool operator == (const ProductService_QueryProductType_args & rhs) const
+  {
+    if (!(strSid == rhs.strSid))
+      return false;
+    if (!(strUserID == rhs.strUserID))
+      return false;
+    if (!(strTypeID == rhs.strTypeID))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_QueryProductType_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_QueryProductType_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ProductService_QueryProductType_pargs {
+ public:
+
+
+  virtual ~ProductService_QueryProductType_pargs() throw();
+  const std::string* strSid;
+  const std::string* strUserID;
+  const std::string* strTypeID;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_QueryProductType_result__isset {
+  _ProductService_QueryProductType_result__isset() : success(false) {}
+  bool success :1;
+} _ProductService_QueryProductType_result__isset;
+
+class ProductService_QueryProductType_result {
+ public:
+
+  ProductService_QueryProductType_result(const ProductService_QueryProductType_result&);
+  ProductService_QueryProductType_result& operator=(const ProductService_QueryProductType_result&);
+  ProductService_QueryProductType_result() {
+  }
+
+  virtual ~ProductService_QueryProductType_result() throw();
+  QueryProductTypeRT success;
+
+  _ProductService_QueryProductType_result__isset __isset;
+
+  void __set_success(const QueryProductTypeRT& val);
+
+  bool operator == (const ProductService_QueryProductType_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_QueryProductType_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_QueryProductType_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_QueryProductType_presult__isset {
+  _ProductService_QueryProductType_presult__isset() : success(false) {}
+  bool success :1;
+} _ProductService_QueryProductType_presult__isset;
+
+class ProductService_QueryProductType_presult {
+ public:
+
+
+  virtual ~ProductService_QueryProductType_presult() throw();
+  QueryProductTypeRT* success;
+
+  _ProductService_QueryProductType_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _ProductService_QueryAllProductType_args__isset {
+  _ProductService_QueryAllProductType_args__isset() : strSid(false), strUserID(false) {}
+  bool strSid :1;
+  bool strUserID :1;
+} _ProductService_QueryAllProductType_args__isset;
+
+class ProductService_QueryAllProductType_args {
+ public:
+
+  ProductService_QueryAllProductType_args(const ProductService_QueryAllProductType_args&);
+  ProductService_QueryAllProductType_args& operator=(const ProductService_QueryAllProductType_args&);
+  ProductService_QueryAllProductType_args() : strSid(), strUserID() {
+  }
+
+  virtual ~ProductService_QueryAllProductType_args() throw();
+  std::string strSid;
+  std::string strUserID;
+
+  _ProductService_QueryAllProductType_args__isset __isset;
+
+  void __set_strSid(const std::string& val);
+
+  void __set_strUserID(const std::string& val);
+
+  bool operator == (const ProductService_QueryAllProductType_args & rhs) const
+  {
+    if (!(strSid == rhs.strSid))
+      return false;
+    if (!(strUserID == rhs.strUserID))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_QueryAllProductType_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_QueryAllProductType_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ProductService_QueryAllProductType_pargs {
+ public:
+
+
+  virtual ~ProductService_QueryAllProductType_pargs() throw();
+  const std::string* strSid;
+  const std::string* strUserID;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_QueryAllProductType_result__isset {
+  _ProductService_QueryAllProductType_result__isset() : success(false) {}
+  bool success :1;
+} _ProductService_QueryAllProductType_result__isset;
+
+class ProductService_QueryAllProductType_result {
+ public:
+
+  ProductService_QueryAllProductType_result(const ProductService_QueryAllProductType_result&);
+  ProductService_QueryAllProductType_result& operator=(const ProductService_QueryAllProductType_result&);
+  ProductService_QueryAllProductType_result() {
+  }
+
+  virtual ~ProductService_QueryAllProductType_result() throw();
+  QueryAllProductTypeRT success;
+
+  _ProductService_QueryAllProductType_result__isset __isset;
+
+  void __set_success(const QueryAllProductTypeRT& val);
+
+  bool operator == (const ProductService_QueryAllProductType_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_QueryAllProductType_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_QueryAllProductType_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_QueryAllProductType_presult__isset {
+  _ProductService_QueryAllProductType_presult__isset() : success(false) {}
+  bool success :1;
+} _ProductService_QueryAllProductType_presult__isset;
+
+class ProductService_QueryAllProductType_presult {
+ public:
+
+
+  virtual ~ProductService_QueryAllProductType_presult() throw();
+  QueryAllProductTypeRT* success;
+
+  _ProductService_QueryAllProductType_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _ProductService_AddOpenRequest_args__isset {
+  _ProductService_AddOpenRequest_args__isset() : strSid(false), strUserID(false), opreq(false) {}
+  bool strSid :1;
+  bool strUserID :1;
+  bool opreq :1;
+} _ProductService_AddOpenRequest_args__isset;
+
+class ProductService_AddOpenRequest_args {
+ public:
+
+  ProductService_AddOpenRequest_args(const ProductService_AddOpenRequest_args&);
+  ProductService_AddOpenRequest_args& operator=(const ProductService_AddOpenRequest_args&);
+  ProductService_AddOpenRequest_args() : strSid(), strUserID() {
+  }
+
+  virtual ~ProductService_AddOpenRequest_args() throw();
+  std::string strSid;
+  std::string strUserID;
+  OpenRequest opreq;
+
+  _ProductService_AddOpenRequest_args__isset __isset;
+
+  void __set_strSid(const std::string& val);
+
+  void __set_strUserID(const std::string& val);
+
+  void __set_opreq(const OpenRequest& val);
+
+  bool operator == (const ProductService_AddOpenRequest_args & rhs) const
+  {
+    if (!(strSid == rhs.strSid))
+      return false;
+    if (!(strUserID == rhs.strUserID))
+      return false;
+    if (!(opreq == rhs.opreq))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_AddOpenRequest_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_AddOpenRequest_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ProductService_AddOpenRequest_pargs {
+ public:
+
+
+  virtual ~ProductService_AddOpenRequest_pargs() throw();
+  const std::string* strSid;
+  const std::string* strUserID;
+  const OpenRequest* opreq;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_AddOpenRequest_result__isset {
+  _ProductService_AddOpenRequest_result__isset() : success(false) {}
+  bool success :1;
+} _ProductService_AddOpenRequest_result__isset;
+
+class ProductService_AddOpenRequest_result {
+ public:
+
+  ProductService_AddOpenRequest_result(const ProductService_AddOpenRequest_result&);
+  ProductService_AddOpenRequest_result& operator=(const ProductService_AddOpenRequest_result&);
+  ProductService_AddOpenRequest_result() {
+  }
+
+  virtual ~ProductService_AddOpenRequest_result() throw();
+  AddOpenRequestRT success;
+
+  _ProductService_AddOpenRequest_result__isset __isset;
+
+  void __set_success(const AddOpenRequestRT& val);
+
+  bool operator == (const ProductService_AddOpenRequest_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_AddOpenRequest_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_AddOpenRequest_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_AddOpenRequest_presult__isset {
+  _ProductService_AddOpenRequest_presult__isset() : success(false) {}
+  bool success :1;
+} _ProductService_AddOpenRequest_presult__isset;
+
+class ProductService_AddOpenRequest_presult {
+ public:
+
+
+  virtual ~ProductService_AddOpenRequest_presult() throw();
+  AddOpenRequestRT* success;
+
+  _ProductService_AddOpenRequest_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _ProductService_RemoveOpenRequest_args__isset {
+  _ProductService_RemoveOpenRequest_args__isset() : strSid(false), strUserID(false), strOpReqID(false) {}
+  bool strSid :1;
+  bool strUserID :1;
+  bool strOpReqID :1;
+} _ProductService_RemoveOpenRequest_args__isset;
+
+class ProductService_RemoveOpenRequest_args {
+ public:
+
+  ProductService_RemoveOpenRequest_args(const ProductService_RemoveOpenRequest_args&);
+  ProductService_RemoveOpenRequest_args& operator=(const ProductService_RemoveOpenRequest_args&);
+  ProductService_RemoveOpenRequest_args() : strSid(), strUserID(), strOpReqID() {
+  }
+
+  virtual ~ProductService_RemoveOpenRequest_args() throw();
+  std::string strSid;
+  std::string strUserID;
+  std::string strOpReqID;
+
+  _ProductService_RemoveOpenRequest_args__isset __isset;
+
+  void __set_strSid(const std::string& val);
+
+  void __set_strUserID(const std::string& val);
+
+  void __set_strOpReqID(const std::string& val);
+
+  bool operator == (const ProductService_RemoveOpenRequest_args & rhs) const
+  {
+    if (!(strSid == rhs.strSid))
+      return false;
+    if (!(strUserID == rhs.strUserID))
+      return false;
+    if (!(strOpReqID == rhs.strOpReqID))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_RemoveOpenRequest_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_RemoveOpenRequest_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ProductService_RemoveOpenRequest_pargs {
+ public:
+
+
+  virtual ~ProductService_RemoveOpenRequest_pargs() throw();
+  const std::string* strSid;
+  const std::string* strUserID;
+  const std::string* strOpReqID;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_RemoveOpenRequest_result__isset {
+  _ProductService_RemoveOpenRequest_result__isset() : success(false) {}
+  bool success :1;
+} _ProductService_RemoveOpenRequest_result__isset;
+
+class ProductService_RemoveOpenRequest_result {
+ public:
+
+  ProductService_RemoveOpenRequest_result(const ProductService_RemoveOpenRequest_result&);
+  ProductService_RemoveOpenRequest_result& operator=(const ProductService_RemoveOpenRequest_result&);
+  ProductService_RemoveOpenRequest_result() {
+  }
+
+  virtual ~ProductService_RemoveOpenRequest_result() throw();
+  ProductRTInfo success;
+
+  _ProductService_RemoveOpenRequest_result__isset __isset;
+
+  void __set_success(const ProductRTInfo& val);
+
+  bool operator == (const ProductService_RemoveOpenRequest_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_RemoveOpenRequest_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_RemoveOpenRequest_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_RemoveOpenRequest_presult__isset {
+  _ProductService_RemoveOpenRequest_presult__isset() : success(false) {}
+  bool success :1;
+} _ProductService_RemoveOpenRequest_presult__isset;
+
+class ProductService_RemoveOpenRequest_presult {
+ public:
+
+
+  virtual ~ProductService_RemoveOpenRequest_presult() throw();
+  ProductRTInfo* success;
+
+  _ProductService_RemoveOpenRequest_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _ProductService_ModifyOpenRequest_args__isset {
+  _ProductService_ModifyOpenRequest_args__isset() : strSid(false), strUserID(false), opreq(false) {}
+  bool strSid :1;
+  bool strUserID :1;
+  bool opreq :1;
+} _ProductService_ModifyOpenRequest_args__isset;
+
+class ProductService_ModifyOpenRequest_args {
+ public:
+
+  ProductService_ModifyOpenRequest_args(const ProductService_ModifyOpenRequest_args&);
+  ProductService_ModifyOpenRequest_args& operator=(const ProductService_ModifyOpenRequest_args&);
+  ProductService_ModifyOpenRequest_args() : strSid(), strUserID() {
+  }
+
+  virtual ~ProductService_ModifyOpenRequest_args() throw();
+  std::string strSid;
+  std::string strUserID;
+  OpenRequest opreq;
+
+  _ProductService_ModifyOpenRequest_args__isset __isset;
+
+  void __set_strSid(const std::string& val);
+
+  void __set_strUserID(const std::string& val);
+
+  void __set_opreq(const OpenRequest& val);
+
+  bool operator == (const ProductService_ModifyOpenRequest_args & rhs) const
+  {
+    if (!(strSid == rhs.strSid))
+      return false;
+    if (!(strUserID == rhs.strUserID))
+      return false;
+    if (!(opreq == rhs.opreq))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_ModifyOpenRequest_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_ModifyOpenRequest_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ProductService_ModifyOpenRequest_pargs {
+ public:
+
+
+  virtual ~ProductService_ModifyOpenRequest_pargs() throw();
+  const std::string* strSid;
+  const std::string* strUserID;
+  const OpenRequest* opreq;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_ModifyOpenRequest_result__isset {
+  _ProductService_ModifyOpenRequest_result__isset() : success(false) {}
+  bool success :1;
+} _ProductService_ModifyOpenRequest_result__isset;
+
+class ProductService_ModifyOpenRequest_result {
+ public:
+
+  ProductService_ModifyOpenRequest_result(const ProductService_ModifyOpenRequest_result&);
+  ProductService_ModifyOpenRequest_result& operator=(const ProductService_ModifyOpenRequest_result&);
+  ProductService_ModifyOpenRequest_result() {
+  }
+
+  virtual ~ProductService_ModifyOpenRequest_result() throw();
+  ProductRTInfo success;
+
+  _ProductService_ModifyOpenRequest_result__isset __isset;
+
+  void __set_success(const ProductRTInfo& val);
+
+  bool operator == (const ProductService_ModifyOpenRequest_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_ModifyOpenRequest_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_ModifyOpenRequest_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_ModifyOpenRequest_presult__isset {
+  _ProductService_ModifyOpenRequest_presult__isset() : success(false) {}
+  bool success :1;
+} _ProductService_ModifyOpenRequest_presult__isset;
+
+class ProductService_ModifyOpenRequest_presult {
+ public:
+
+
+  virtual ~ProductService_ModifyOpenRequest_presult() throw();
+  ProductRTInfo* success;
+
+  _ProductService_ModifyOpenRequest_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _ProductService_QueryOpenRequest_args__isset {
+  _ProductService_QueryOpenRequest_args__isset() : strSid(false), strUserID(false), strReqID(false), strReqUserID(false), strReqUserName(false) {}
+  bool strSid :1;
+  bool strUserID :1;
+  bool strReqID :1;
+  bool strReqUserID :1;
+  bool strReqUserName :1;
+} _ProductService_QueryOpenRequest_args__isset;
+
+class ProductService_QueryOpenRequest_args {
+ public:
+
+  ProductService_QueryOpenRequest_args(const ProductService_QueryOpenRequest_args&);
+  ProductService_QueryOpenRequest_args& operator=(const ProductService_QueryOpenRequest_args&);
+  ProductService_QueryOpenRequest_args() : strSid(), strUserID(), strReqID(), strReqUserID(), strReqUserName() {
+  }
+
+  virtual ~ProductService_QueryOpenRequest_args() throw();
+  std::string strSid;
+  std::string strUserID;
+  std::string strReqID;
+  std::string strReqUserID;
+  std::string strReqUserName;
+
+  _ProductService_QueryOpenRequest_args__isset __isset;
+
+  void __set_strSid(const std::string& val);
+
+  void __set_strUserID(const std::string& val);
+
+  void __set_strReqID(const std::string& val);
+
+  void __set_strReqUserID(const std::string& val);
+
+  void __set_strReqUserName(const std::string& val);
+
+  bool operator == (const ProductService_QueryOpenRequest_args & rhs) const
+  {
+    if (!(strSid == rhs.strSid))
+      return false;
+    if (!(strUserID == rhs.strUserID))
+      return false;
+    if (!(strReqID == rhs.strReqID))
+      return false;
+    if (!(strReqUserID == rhs.strReqUserID))
+      return false;
+    if (!(strReqUserName == rhs.strReqUserName))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_QueryOpenRequest_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_QueryOpenRequest_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ProductService_QueryOpenRequest_pargs {
+ public:
+
+
+  virtual ~ProductService_QueryOpenRequest_pargs() throw();
+  const std::string* strSid;
+  const std::string* strUserID;
+  const std::string* strReqID;
+  const std::string* strReqUserID;
+  const std::string* strReqUserName;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_QueryOpenRequest_result__isset {
+  _ProductService_QueryOpenRequest_result__isset() : success(false) {}
+  bool success :1;
+} _ProductService_QueryOpenRequest_result__isset;
+
+class ProductService_QueryOpenRequest_result {
+ public:
+
+  ProductService_QueryOpenRequest_result(const ProductService_QueryOpenRequest_result&);
+  ProductService_QueryOpenRequest_result& operator=(const ProductService_QueryOpenRequest_result&);
+  ProductService_QueryOpenRequest_result() {
+  }
+
+  virtual ~ProductService_QueryOpenRequest_result() throw();
+  QueryOpenRequestRT success;
+
+  _ProductService_QueryOpenRequest_result__isset __isset;
+
+  void __set_success(const QueryOpenRequestRT& val);
+
+  bool operator == (const ProductService_QueryOpenRequest_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_QueryOpenRequest_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_QueryOpenRequest_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_QueryOpenRequest_presult__isset {
+  _ProductService_QueryOpenRequest_presult__isset() : success(false) {}
+  bool success :1;
+} _ProductService_QueryOpenRequest_presult__isset;
+
+class ProductService_QueryOpenRequest_presult {
+ public:
+
+
+  virtual ~ProductService_QueryOpenRequest_presult() throw();
+  QueryOpenRequestRT* success;
+
+  _ProductService_QueryOpenRequest_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
+typedef struct _ProductService_QueryAllOpenRequest_args__isset {
+  _ProductService_QueryAllOpenRequest_args__isset() : strSid(false), strUserID(false), qryparam(false) {}
+  bool strSid :1;
+  bool strUserID :1;
+  bool qryparam :1;
+} _ProductService_QueryAllOpenRequest_args__isset;
+
+class ProductService_QueryAllOpenRequest_args {
+ public:
+
+  ProductService_QueryAllOpenRequest_args(const ProductService_QueryAllOpenRequest_args&);
+  ProductService_QueryAllOpenRequest_args& operator=(const ProductService_QueryAllOpenRequest_args&);
+  ProductService_QueryAllOpenRequest_args() : strSid(), strUserID() {
+  }
+
+  virtual ~ProductService_QueryAllOpenRequest_args() throw();
+  std::string strSid;
+  std::string strUserID;
+  QueryAllOpenRequestParam qryparam;
+
+  _ProductService_QueryAllOpenRequest_args__isset __isset;
+
+  void __set_strSid(const std::string& val);
+
+  void __set_strUserID(const std::string& val);
+
+  void __set_qryparam(const QueryAllOpenRequestParam& val);
+
+  bool operator == (const ProductService_QueryAllOpenRequest_args & rhs) const
+  {
+    if (!(strSid == rhs.strSid))
+      return false;
+    if (!(strUserID == rhs.strUserID))
+      return false;
+    if (!(qryparam == rhs.qryparam))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_QueryAllOpenRequest_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_QueryAllOpenRequest_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class ProductService_QueryAllOpenRequest_pargs {
+ public:
+
+
+  virtual ~ProductService_QueryAllOpenRequest_pargs() throw();
+  const std::string* strSid;
+  const std::string* strUserID;
+  const QueryAllOpenRequestParam* qryparam;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_QueryAllOpenRequest_result__isset {
+  _ProductService_QueryAllOpenRequest_result__isset() : success(false) {}
+  bool success :1;
+} _ProductService_QueryAllOpenRequest_result__isset;
+
+class ProductService_QueryAllOpenRequest_result {
+ public:
+
+  ProductService_QueryAllOpenRequest_result(const ProductService_QueryAllOpenRequest_result&);
+  ProductService_QueryAllOpenRequest_result& operator=(const ProductService_QueryAllOpenRequest_result&);
+  ProductService_QueryAllOpenRequest_result() {
+  }
+
+  virtual ~ProductService_QueryAllOpenRequest_result() throw();
+  QueryAllOpenRequestRT success;
+
+  _ProductService_QueryAllOpenRequest_result__isset __isset;
+
+  void __set_success(const QueryAllOpenRequestRT& val);
+
+  bool operator == (const ProductService_QueryAllOpenRequest_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const ProductService_QueryAllOpenRequest_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ProductService_QueryAllOpenRequest_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _ProductService_QueryAllOpenRequest_presult__isset {
+  _ProductService_QueryAllOpenRequest_presult__isset() : success(false) {}
+  bool success :1;
+} _ProductService_QueryAllOpenRequest_presult__isset;
+
+class ProductService_QueryAllOpenRequest_presult {
+ public:
+
+
+  virtual ~ProductService_QueryAllOpenRequest_presult() throw();
+  QueryAllOpenRequestRT* success;
+
+  _ProductService_QueryAllOpenRequest_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
 };
 
 typedef struct _ProductService_AddProduct_args__isset {
@@ -945,6 +2172,36 @@ class ProductServiceClient : virtual public ProductServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
+  void AddProductType(AddProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype);
+  void send_AddProductType(const std::string& strSid, const std::string& strUserID, const ProductType& pdttype);
+  void recv_AddProductType(AddProductTypeRT& _return);
+  void RemoveProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID);
+  void send_RemoveProductType(const std::string& strSid, const std::string& strUserID, const std::string& strTypeID);
+  void recv_RemoveProductType(ProductRTInfo& _return);
+  void ModifyProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype);
+  void send_ModifyProductType(const std::string& strSid, const std::string& strUserID, const ProductType& pdttype);
+  void recv_ModifyProductType(ProductRTInfo& _return);
+  void QueryProductType(QueryProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID);
+  void send_QueryProductType(const std::string& strSid, const std::string& strUserID, const std::string& strTypeID);
+  void recv_QueryProductType(QueryProductTypeRT& _return);
+  void QueryAllProductType(QueryAllProductTypeRT& _return, const std::string& strSid, const std::string& strUserID);
+  void send_QueryAllProductType(const std::string& strSid, const std::string& strUserID);
+  void recv_QueryAllProductType(QueryAllProductTypeRT& _return);
+  void AddOpenRequest(AddOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq);
+  void send_AddOpenRequest(const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq);
+  void recv_AddOpenRequest(AddOpenRequestRT& _return);
+  void RemoveOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOpReqID);
+  void send_RemoveOpenRequest(const std::string& strSid, const std::string& strUserID, const std::string& strOpReqID);
+  void recv_RemoveOpenRequest(ProductRTInfo& _return);
+  void ModifyOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq);
+  void send_ModifyOpenRequest(const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq);
+  void recv_ModifyOpenRequest(ProductRTInfo& _return);
+  void QueryOpenRequest(QueryOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strReqID, const std::string& strReqUserID, const std::string& strReqUserName);
+  void send_QueryOpenRequest(const std::string& strSid, const std::string& strUserID, const std::string& strReqID, const std::string& strReqUserID, const std::string& strReqUserName);
+  void recv_QueryOpenRequest(QueryOpenRequestRT& _return);
+  void QueryAllOpenRequest(QueryAllOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const QueryAllOpenRequestParam& qryparam);
+  void send_QueryAllOpenRequest(const std::string& strSid, const std::string& strUserID, const QueryAllOpenRequestParam& qryparam);
+  void recv_QueryAllOpenRequest(QueryAllOpenRequestRT& _return);
   void AddProduct(AddProductRT& _return, const std::string& strSid, const std::string& strUserID, const ProductInfo& pdt);
   void send_AddProduct(const std::string& strSid, const std::string& strUserID, const ProductInfo& pdt);
   void recv_AddProduct(AddProductRT& _return);
@@ -981,6 +2238,16 @@ class ProductServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   typedef  void (ProductServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
+  void process_AddProductType(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_RemoveProductType(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_ModifyProductType(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_QueryProductType(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_QueryAllProductType(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_AddOpenRequest(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_RemoveOpenRequest(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_ModifyOpenRequest(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_QueryOpenRequest(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_QueryAllOpenRequest(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_AddProduct(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_RemoveProduct(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_ModifyProduct(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -991,6 +2258,16 @@ class ProductServiceProcessor : public ::apache::thrift::TDispatchProcessor {
  public:
   ProductServiceProcessor(::apache::thrift::stdcxx::shared_ptr<ProductServiceIf> iface) :
     iface_(iface) {
+    processMap_["AddProductType"] = &ProductServiceProcessor::process_AddProductType;
+    processMap_["RemoveProductType"] = &ProductServiceProcessor::process_RemoveProductType;
+    processMap_["ModifyProductType"] = &ProductServiceProcessor::process_ModifyProductType;
+    processMap_["QueryProductType"] = &ProductServiceProcessor::process_QueryProductType;
+    processMap_["QueryAllProductType"] = &ProductServiceProcessor::process_QueryAllProductType;
+    processMap_["AddOpenRequest"] = &ProductServiceProcessor::process_AddOpenRequest;
+    processMap_["RemoveOpenRequest"] = &ProductServiceProcessor::process_RemoveOpenRequest;
+    processMap_["ModifyOpenRequest"] = &ProductServiceProcessor::process_ModifyOpenRequest;
+    processMap_["QueryOpenRequest"] = &ProductServiceProcessor::process_QueryOpenRequest;
+    processMap_["QueryAllOpenRequest"] = &ProductServiceProcessor::process_QueryAllOpenRequest;
     processMap_["AddProduct"] = &ProductServiceProcessor::process_AddProduct;
     processMap_["RemoveProduct"] = &ProductServiceProcessor::process_RemoveProduct;
     processMap_["ModifyProduct"] = &ProductServiceProcessor::process_ModifyProduct;
@@ -1026,6 +2303,106 @@ class ProductServiceMultiface : virtual public ProductServiceIf {
     ifaces_.push_back(iface);
   }
  public:
+  void AddProductType(AddProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->AddProductType(_return, strSid, strUserID, pdttype);
+    }
+    ifaces_[i]->AddProductType(_return, strSid, strUserID, pdttype);
+    return;
+  }
+
+  void RemoveProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->RemoveProductType(_return, strSid, strUserID, strTypeID);
+    }
+    ifaces_[i]->RemoveProductType(_return, strSid, strUserID, strTypeID);
+    return;
+  }
+
+  void ModifyProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->ModifyProductType(_return, strSid, strUserID, pdttype);
+    }
+    ifaces_[i]->ModifyProductType(_return, strSid, strUserID, pdttype);
+    return;
+  }
+
+  void QueryProductType(QueryProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->QueryProductType(_return, strSid, strUserID, strTypeID);
+    }
+    ifaces_[i]->QueryProductType(_return, strSid, strUserID, strTypeID);
+    return;
+  }
+
+  void QueryAllProductType(QueryAllProductTypeRT& _return, const std::string& strSid, const std::string& strUserID) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->QueryAllProductType(_return, strSid, strUserID);
+    }
+    ifaces_[i]->QueryAllProductType(_return, strSid, strUserID);
+    return;
+  }
+
+  void AddOpenRequest(AddOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->AddOpenRequest(_return, strSid, strUserID, opreq);
+    }
+    ifaces_[i]->AddOpenRequest(_return, strSid, strUserID, opreq);
+    return;
+  }
+
+  void RemoveOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOpReqID) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->RemoveOpenRequest(_return, strSid, strUserID, strOpReqID);
+    }
+    ifaces_[i]->RemoveOpenRequest(_return, strSid, strUserID, strOpReqID);
+    return;
+  }
+
+  void ModifyOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->ModifyOpenRequest(_return, strSid, strUserID, opreq);
+    }
+    ifaces_[i]->ModifyOpenRequest(_return, strSid, strUserID, opreq);
+    return;
+  }
+
+  void QueryOpenRequest(QueryOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strReqID, const std::string& strReqUserID, const std::string& strReqUserName) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->QueryOpenRequest(_return, strSid, strUserID, strReqID, strReqUserID, strReqUserName);
+    }
+    ifaces_[i]->QueryOpenRequest(_return, strSid, strUserID, strReqID, strReqUserID, strReqUserName);
+    return;
+  }
+
+  void QueryAllOpenRequest(QueryAllOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const QueryAllOpenRequestParam& qryparam) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->QueryAllOpenRequest(_return, strSid, strUserID, qryparam);
+    }
+    ifaces_[i]->QueryAllOpenRequest(_return, strSid, strUserID, qryparam);
+    return;
+  }
+
   void AddProduct(AddProductRT& _return, const std::string& strSid, const std::string& strUserID, const ProductInfo& pdt) {
     size_t sz = ifaces_.size();
     size_t i = 0;
@@ -1126,6 +2503,36 @@ class ProductServiceConcurrentClient : virtual public ProductServiceIf {
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
+  void AddProductType(AddProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype);
+  int32_t send_AddProductType(const std::string& strSid, const std::string& strUserID, const ProductType& pdttype);
+  void recv_AddProductType(AddProductTypeRT& _return, const int32_t seqid);
+  void RemoveProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID);
+  int32_t send_RemoveProductType(const std::string& strSid, const std::string& strUserID, const std::string& strTypeID);
+  void recv_RemoveProductType(ProductRTInfo& _return, const int32_t seqid);
+  void ModifyProductType(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const ProductType& pdttype);
+  int32_t send_ModifyProductType(const std::string& strSid, const std::string& strUserID, const ProductType& pdttype);
+  void recv_ModifyProductType(ProductRTInfo& _return, const int32_t seqid);
+  void QueryProductType(QueryProductTypeRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strTypeID);
+  int32_t send_QueryProductType(const std::string& strSid, const std::string& strUserID, const std::string& strTypeID);
+  void recv_QueryProductType(QueryProductTypeRT& _return, const int32_t seqid);
+  void QueryAllProductType(QueryAllProductTypeRT& _return, const std::string& strSid, const std::string& strUserID);
+  int32_t send_QueryAllProductType(const std::string& strSid, const std::string& strUserID);
+  void recv_QueryAllProductType(QueryAllProductTypeRT& _return, const int32_t seqid);
+  void AddOpenRequest(AddOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq);
+  int32_t send_AddOpenRequest(const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq);
+  void recv_AddOpenRequest(AddOpenRequestRT& _return, const int32_t seqid);
+  void RemoveOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOpReqID);
+  int32_t send_RemoveOpenRequest(const std::string& strSid, const std::string& strUserID, const std::string& strOpReqID);
+  void recv_RemoveOpenRequest(ProductRTInfo& _return, const int32_t seqid);
+  void ModifyOpenRequest(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq);
+  int32_t send_ModifyOpenRequest(const std::string& strSid, const std::string& strUserID, const OpenRequest& opreq);
+  void recv_ModifyOpenRequest(ProductRTInfo& _return, const int32_t seqid);
+  void QueryOpenRequest(QueryOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strReqID, const std::string& strReqUserID, const std::string& strReqUserName);
+  int32_t send_QueryOpenRequest(const std::string& strSid, const std::string& strUserID, const std::string& strReqID, const std::string& strReqUserID, const std::string& strReqUserName);
+  void recv_QueryOpenRequest(QueryOpenRequestRT& _return, const int32_t seqid);
+  void QueryAllOpenRequest(QueryAllOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const QueryAllOpenRequestParam& qryparam);
+  int32_t send_QueryAllOpenRequest(const std::string& strSid, const std::string& strUserID, const QueryAllOpenRequestParam& qryparam);
+  void recv_QueryAllOpenRequest(QueryAllOpenRequestRT& _return, const int32_t seqid);
   void AddProduct(AddProductRT& _return, const std::string& strSid, const std::string& strUserID, const ProductInfo& pdt);
   int32_t send_AddProduct(const std::string& strSid, const std::string& strUserID, const ProductInfo& pdt);
   void recv_AddProduct(AddProductRT& _return, const int32_t seqid);

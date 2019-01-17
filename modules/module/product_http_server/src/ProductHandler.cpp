@@ -21,6 +21,26 @@ const std::string ProductHandler::FAILED_CODE = "-1";
 const std::string ProductHandler::FAILED_MSG = "Inner failed";
 
 
+const std::string ProductHandler::ADD_PRODUCT_TYPE_ACTION("add_product_type");
+
+const std::string ProductHandler::REMOVE_PRODUCT_TYPE_ACTION("remove_product_type");
+
+const std::string ProductHandler::MOD_PRODUCT_TYPE_ACTION("modify_product_type");
+
+const std::string ProductHandler::QUERY_PRODUCT_TYPE_ACTION("query_product_type");
+
+const std::string ProductHandler::QUERY_ALL_PRODUCT_TYPE_ACTION("query_all_product_type");
+
+const std::string ProductHandler::ADD_OPEN_REQUEST_ACTION("add_open_request");
+
+const std::string ProductHandler::REMOVE_OPEN_REQUEST_ACTION("remove_open_request");
+
+const std::string ProductHandler::MOD_OPEN_REQUEST_ACTION("modify_open_request");
+
+const std::string ProductHandler::QUERY_OPEN_REQUEST_ACTION("query_open_request");
+
+const std::string ProductHandler::QUERY_ALL_OPEN_REQUEST_ACTION("query_all_open_request");
+
 const std::string ProductHandler::ADD_PRODUCT_ACTION("add_product");
 
 const std::string ProductHandler::REMOVE_PRODUCT_ACTION("remove_product");
@@ -113,6 +133,1184 @@ bool ProductHandler::PreCommonHandler(const std::string &strMsgReceived, int &iR
     //}
 
     return true;
+}
+
+bool ProductHandler::AddProductTypeHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("type");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Product type not found.");
+        return blResult;
+    }
+    int iType = 0;
+    if (!ValidType<int>(itFind->second, iType))
+    {
+        LOG_ERROR_RLD("Product type is error and input value is " << itFind->second);
+        return blResult;
+    }
+
+    itFind = pMsgInfoMap->find("type_name");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Type name not found.");
+        return blResult;
+    }
+    const std::string strTypeName = itFind->second;
+
+    std::string strPic;
+    itFind = pMsgInfoMap->find("pic");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPic = itFind->second;
+    }
+
+    itFind = pMsgInfoMap->find("index");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Product type index not found.");
+        return blResult;
+    }
+    int iIndex = 0;
+    if (!ValidType<int>(itFind->second, iIndex))
+    {
+        LOG_ERROR_RLD("Product type index is error and input value is " << itFind->second);
+        return blResult;
+    }
+
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Add product type info received and session id is " << strSid << " and user id is " << strUserID
+        << " and type is " << iType << " and type name is " << strTypeName << " and index is " << iIndex
+        << " and extend is " << strExtend << " and pic is " << strPic);
+
+    ProductClient pclient;
+    ProductClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort);
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!pclient.Init(pam))
+    {
+        LOG_ERROR_RLD("Product client init failed and server ip is " << pam.m_strServerIp << " and server port is " << pam.m_iServerPort);
+        return false;
+    }
+
+    ProductType pdttype;
+    pdttype.__set_iIndex(iIndex);
+    pdttype.__set_iType(iType);
+    pdttype.__set_strExtend(strExtend);
+    pdttype.__set_strPic(strPic);
+    pdttype.__set_strTypeName(strTypeName);
+
+
+    AddProductTypeRT adrt;
+    pclient.AddProductType(adrt, strSid, strUserID, pdttype);
+
+    if (adrt.rtcode.iRtCode != g_Product_constants.PDT_SUCCESS_CODE)
+    {
+        LOG_ERROR_RLD("Add product type call failed" << " and return code is " << adrt.rtcode.iRtCode);
+
+        ReturnInfo::RetCode(adrt.rtcode.iRtCode);
+        pclient.Close();
+        return blResult;
+    }
+    pclient.Close();
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("tid", adrt.strTypeID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+
+bool ProductHandler::RemoveProductTypeHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("tid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Product type id not found.");
+        return blResult;
+    }
+    const std::string strTypeID = itFind->second;
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete product type info received and session id is " << strSid << " and user id is " << strUserID << " and product type id is " << strTypeID);
+
+    ProductClient pclient;
+    ProductClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort);
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!pclient.Init(pam))
+    {
+        LOG_ERROR_RLD("Product client init failed and server ip is " << pam.m_strServerIp << " and server port is " << pam.m_iServerPort);
+        return false;
+    }
+
+    ProductRTInfo pdtrt;
+    pclient.RemoveProductType(pdtrt, strSid, strUserID, strTypeID);
+    if (pdtrt.iRtCode != g_Product_constants.PDT_SUCCESS_CODE)
+    {
+        LOG_ERROR_RLD("Remove product type call failed" << " and return code is " << pdtrt.iRtCode);
+
+        ReturnInfo::RetCode(pdtrt.iRtCode);
+        pclient.Close();
+        return blResult;
+    }
+    pclient.Close();
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool ProductHandler::ModifyProductTypeHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("tid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Type id not found.");
+        return blResult;
+    }
+    const std::string strTypeID = itFind->second;
+    
+    int iType = -1;
+    itFind = pMsgInfoMap->find("type");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidType<int>(itFind->second, iType))
+        {
+            LOG_ERROR_RLD("Product type is error and input value is " << itFind->second);
+            return blResult;
+        }        
+    }
+    
+    std::string strTypeName;
+    itFind = pMsgInfoMap->find("type_name");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strTypeName = itFind->second;
+    }
+    
+    std::string strPic;
+    itFind = pMsgInfoMap->find("pic");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strPic = itFind->second;
+    }
+
+    int iIndex = -1;
+    itFind = pMsgInfoMap->find("index");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidType<int>(itFind->second, iIndex))
+        {
+            LOG_ERROR_RLD("Product type index is error and input value is " << itFind->second);
+            return blResult;
+        }        
+    }
+    
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify product type info received and session id is " << strSid << " and user id is " << strUserID
+        << " and type is " << iType << " and type name is " << strTypeName << " and index is " << iIndex
+        << " and extend is " << strExtend << " and pic is " << strPic);
+
+    ProductClient pclient;
+    ProductClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort);
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!pclient.Init(pam))
+    {
+        LOG_ERROR_RLD("Product client init failed and server ip is " << pam.m_strServerIp << " and server port is " << pam.m_iServerPort);
+        return false;
+    }
+
+    ProductType pdttype;
+    pdttype.__set_strPdtTpID(strTypeID);
+    pdttype.__set_iIndex(iIndex);
+    pdttype.__set_iType(iType);
+    pdttype.__set_strExtend(strExtend);
+    pdttype.__set_strPic(strPic);
+    pdttype.__set_strTypeName(strTypeName);
+
+
+    ProductRTInfo pdrt;
+    pclient.ModifyProductType(pdrt, strSid, strUserID, pdttype);
+
+    if (pdrt.iRtCode != g_Product_constants.PDT_SUCCESS_CODE)
+    {
+        LOG_ERROR_RLD("Modify product type call failed" << " and return code is " << pdrt.iRtCode);
+
+        ReturnInfo::RetCode(pdrt.iRtCode);
+        pclient.Close();
+        return blResult;
+    }
+    pclient.Close();
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool ProductHandler::QueryProductTypeHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("tid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Product type id not found.");
+        return blResult;
+    }
+    const std::string strTypeID = itFind->second;
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query product type info received and session id is " << strSid << " and user id is " << strUserID << " and product type id is " << strTypeID);
+
+    ProductClient pclient;
+    ProductClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort);
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!pclient.Init(pam))
+    {
+        LOG_ERROR_RLD("Product client init failed and server ip is " << pam.m_strServerIp << " and server port is " << pam.m_iServerPort);
+        return false;
+    }
+
+    QueryProductTypeRT qrypdtrt;
+    pclient.QueryProductType(qrypdtrt, strSid, strUserID, strTypeID);
+    if (qrypdtrt.rtcode.iRtCode != g_Product_constants.PDT_SUCCESS_CODE)
+    {
+        LOG_ERROR_RLD("Query product type call failed" << " and return code is " << qrypdtrt.rtcode.iRtCode);
+
+        ReturnInfo::RetCode(qrypdtrt.rtcode.iRtCode);
+        pclient.Close();
+        return blResult;
+    }
+    pclient.Close();
+
+    
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("tid", qrypdtrt.pdttype.strPdtTpID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("type", boost::lexical_cast<std::string>(qrypdtrt.pdttype.iType)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("type_name", qrypdtrt.pdttype.strTypeName));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("index", boost::lexical_cast<std::string>(qrypdtrt.pdttype.iIndex)));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("extend", qrypdtrt.pdttype.strExtend));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("pic", qrypdtrt.pdttype.strPic));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool ProductHandler::QueryAllProductTypeHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsPdtTypeInfoList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsPdtTypeInfoList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["type_info"] = jsPdtTypeInfoList;
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query all product type info received and session id is " << strSid << " and user id is " << strUserID);
+
+    ProductClient pclient;
+    ProductClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort);
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!pclient.Init(pam))
+    {
+        LOG_ERROR_RLD("Product client init failed and server ip is " << pam.m_strServerIp << " and server port is " << pam.m_iServerPort);
+        return false;
+    }
+
+    QueryAllProductTypeRT qryallpdtrt;
+    pclient.QueryAllProductType(qryallpdtrt, strSid, strUserID);
+    if (qryallpdtrt.rtcode.iRtCode != g_Product_constants.PDT_SUCCESS_CODE)
+    {
+        LOG_ERROR_RLD("Query all product type call failed" << " and return code is " << qryallpdtrt.rtcode.iRtCode);
+
+        ReturnInfo::RetCode(qryallpdtrt.rtcode.iRtCode);
+        pclient.Close();
+        return blResult;
+    }
+    pclient.Close();
+
+    for (auto itBegin = qryallpdtrt.pdttypelist.begin(), itEnd = qryallpdtrt.pdttypelist.end(); itBegin != itEnd; ++itBegin)
+    {
+        
+        Json::Value jsProduct;
+        jsProduct["tid"] = itBegin->strPdtTpID;        
+        jsProduct["type"] = boost::lexical_cast<std::string>(itBegin->iType);
+        jsProduct["type_name"] = itBegin->strTypeName;
+        jsProduct["index"] = boost::lexical_cast<std::string>(itBegin->iIndex);
+        jsProduct["extend"] = itBegin->strExtend;
+        jsProduct["pic"] = itBegin->strPic;
+        
+        jsPdtTypeInfoList.append(jsProduct);
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool ProductHandler::AddOpenRequestHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("req_userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Req user id not found.");
+        return blResult;
+    }
+    const std::string strReqUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("req_username");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Req user name not found.");
+        return blResult;
+    }
+    const std::string strReqUserName = itFind->second;
+
+    itFind = pMsgInfoMap->find("req_info");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Req info not found.");
+        return blResult;
+    }
+    const std::string strReqInfo = itFind->second;
+
+    itFind = pMsgInfoMap->find("req_date");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Req date not found.");
+        return blResult;
+    }
+    const std::string strReqDate = itFind->second;
+
+    if (!ValidDatetime(strReqDate))
+    {
+        LOG_ERROR_RLD("Req date is invalid and input date is " << strReqDate);
+        return blResult;
+    }
+
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Add open request info received and session id is " << strSid << " and user id is " << strUserID
+        << " and req user id is " << strReqUserID << " and req user name is " << strReqUserName << " and req info is " << strReqInfo
+        << " and req date is " << strReqDate << " and extend is " << strExtend);
+
+    ProductClient pclient;
+    ProductClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort);
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!pclient.Init(pam))
+    {
+        LOG_ERROR_RLD("Product client init failed and server ip is " << pam.m_strServerIp << " and server port is " << pam.m_iServerPort);
+        return false;
+    }
+
+    OpenRequest opreq;
+    opreq.__set_iReqStatus(1); //´¦ÀíÖÐ×´Ì¬
+    opreq.__set_strExtend(strExtend);
+    opreq.__set_strReqDate(strReqDate);
+    opreq.__set_strReqInfo(strReqInfo);
+    opreq.__set_strReqUserID(strReqUserID);
+    opreq.__set_strReqUserName(strReqUserName);
+
+    AddOpenRequestRT adrt;
+    pclient.AddOpenRequest(adrt, strSid, strUserID, opreq);
+
+    if (adrt.rtcode.iRtCode != g_Product_constants.PDT_SUCCESS_CODE)
+    {
+        LOG_ERROR_RLD("Add open request call failed" << " and return code is " << adrt.rtcode.iRtCode);
+
+        ReturnInfo::RetCode(adrt.rtcode.iRtCode);
+        pclient.Close();
+        return blResult;
+    }
+    pclient.Close();
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("reqid", adrt.strOpReqID));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool ProductHandler::RemoveOpenRequestHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("reqid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Request id not found.");
+        return blResult;
+    }
+    const std::string strReqID = itFind->second;
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Delete open request info received and session id is " << strSid << " and user id is " << strUserID << " and request id is " << strReqID);
+
+    ProductClient pclient;
+    ProductClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort);
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!pclient.Init(pam))
+    {
+        LOG_ERROR_RLD("Product client init failed and server ip is " << pam.m_strServerIp << " and server port is " << pam.m_iServerPort);
+        return false;
+    }
+
+    ProductRTInfo pdtrt;
+    pclient.RemoveOpenRequest(pdtrt, strSid, strUserID, strReqID);
+    if (pdtrt.iRtCode != g_Product_constants.PDT_SUCCESS_CODE)
+    {
+        LOG_ERROR_RLD("Remove open request call failed" << " and return code is " << pdtrt.iRtCode);
+
+        ReturnInfo::RetCode(pdtrt.iRtCode);
+        pclient.Close();
+        return blResult;
+    }
+    pclient.Close();
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool ProductHandler::ModifyOpenRequestHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+        }
+
+        this_->WriteMsg(ResultInfoMap, writer, blResult);
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    itFind = pMsgInfoMap->find("reqid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Request id not found.");
+        return blResult;
+    }
+    const std::string strReqID = itFind->second;
+    
+    std::string strReqUserID;
+    itFind = pMsgInfoMap->find("req_userid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strReqUserID = itFind->second;        
+    }
+    
+    std::string strReqUserName;
+    itFind = pMsgInfoMap->find("req_username");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strReqUserName = itFind->second;
+    }
+    
+    std::string strReqInfo;
+    itFind = pMsgInfoMap->find("req_info");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strReqInfo = itFind->second;
+    }
+
+    int iReqStatus = -1;
+    itFind = pMsgInfoMap->find("status");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidType<int>(itFind->second, iReqStatus))
+        {
+            LOG_ERROR_RLD("Request status is error and input value is " << itFind->second);
+            return blResult;
+        }
+    }
+        
+    itFind = pMsgInfoMap->find("req_date");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Req date not found.");
+        return blResult;
+    }
+    const std::string strReqDate = itFind->second;
+
+    if (!ValidDatetime(strReqDate))
+    {
+        LOG_ERROR_RLD("Req date is invalid and input date is " << strReqDate);
+        return blResult;
+    }
+
+    std::string strExtend;
+    itFind = pMsgInfoMap->find("extend");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strExtend = itFind->second;
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Modify open request info received and session id is " << strSid << " and user id is " << strUserID
+        << " and req user id is " << strReqUserID << " and req user name is " << strReqUserName << " and req info is " << strReqInfo
+        << " and req date is " << strReqDate << " and extend is " << strExtend);
+
+    ProductClient pclient;
+    ProductClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort);
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!pclient.Init(pam))
+    {
+        LOG_ERROR_RLD("Product client init failed and server ip is " << pam.m_strServerIp << " and server port is " << pam.m_iServerPort);
+        return false;
+    }
+
+    OpenRequest opreq;
+    opreq.__set_strOpReqID(strReqID);
+    opreq.__set_iReqStatus(iReqStatus);
+    opreq.__set_strExtend(strExtend);
+    opreq.__set_strReqDate(strReqDate);
+    opreq.__set_strReqInfo(strReqInfo);
+    opreq.__set_strReqUserID(strReqUserID);
+    opreq.__set_strReqUserName(strReqUserName);
+
+    ProductRTInfo adrt;
+    pclient.ModifyOpenRequest(adrt, strSid, strUserID, opreq);
+
+    if (adrt.iRtCode != g_Product_constants.PDT_SUCCESS_CODE)
+    {
+        LOG_ERROR_RLD("Modify open request call failed" << " and return code is " << adrt.iRtCode);
+
+        ReturnInfo::RetCode(adrt.iRtCode);
+        pclient.Close();
+        return blResult;
+    }
+    pclient.Close();
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool ProductHandler::QueryOpenRequestHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsOpReqInfoList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsOpReqInfoList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["req_info"] = jsOpReqInfoList;
+
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    std::string strReqID;
+    itFind = pMsgInfoMap->find("reqid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strReqID = itFind->second;
+    }
+    
+    std::string strReqUserID;
+    itFind = pMsgInfoMap->find("req_userid");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strReqUserID = itFind->second;
+    }
+
+    std::string strReqUserName;
+    itFind = pMsgInfoMap->find("req_username");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strReqUserName = itFind->second;
+    }
+
+    if (strReqID.empty() && strReqUserID.empty() && strReqUserName.empty())
+    {
+        LOG_ERROR_RLD("Request id and user id and user name all empty.");
+        return blResult;
+    }
+
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query open request info received and session id is " << strSid << " and user id is " << strUserID << " and request id is " << strReqID
+        << " and request user id is " << strReqUserID << " and request user name is " << strReqUserName);
+
+    ProductClient pclient;
+    ProductClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort);
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!pclient.Init(pam))
+    {
+        LOG_ERROR_RLD("Product client init failed and server ip is " << pam.m_strServerIp << " and server port is " << pam.m_iServerPort);
+        return false;
+    }
+
+    QueryOpenRequestRT qrypdtrt;
+    pclient.QueryOpenRequest(qrypdtrt, strSid, strUserID, strReqID, strReqUserID, strReqUserName);
+    if (qrypdtrt.rtcode.iRtCode != g_Product_constants.PDT_SUCCESS_CODE)
+    {
+        LOG_ERROR_RLD("Query open request call failed" << " and return code is " << qrypdtrt.rtcode.iRtCode);
+
+        ReturnInfo::RetCode(qrypdtrt.rtcode.iRtCode);
+        pclient.Close();
+        return blResult;
+    }
+    pclient.Close();
+
+    for (auto itBegin = qrypdtrt.opreqlist.begin(), itEnd = qrypdtrt.opreqlist.end(); itBegin != itEnd; ++itBegin)
+    {
+        Json::Value jsReq;
+        jsReq["reqid"] = itBegin->strOpReqID;
+        jsReq["info"] = itBegin->strReqInfo;
+        jsReq["status"] = boost::lexical_cast<std::string>(itBegin->iReqStatus);
+        jsReq["req_date"] = itBegin->strReqDate;
+        jsReq["extend"] = itBegin->strExtend;
+
+        jsOpReqInfoList.append(jsReq);
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("req_userid", qrypdtrt.strReqUserID));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("req_username", qrypdtrt.strReqUserName));
+
+    blResult = true;
+
+    return blResult;
+}
+
+bool ProductHandler::QueryAllOpenRequestHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
+{
+    ReturnInfo::RetCode(ReturnInfo::INPUT_PARAMETER_TOO_LESS);
+
+    bool blResult = false;
+    std::map<std::string, std::string> ResultInfoMap;
+    Json::Value jsOpReqInfoList;
+
+    BOOST_SCOPE_EXIT(&writer, this_, &ResultInfoMap, &blResult, &jsOpReqInfoList)
+    {
+        LOG_INFO_RLD("Return msg is writed and result is " << blResult);
+
+        if (!blResult)
+        {
+            ResultInfoMap.clear();
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", boost::lexical_cast<std::string>(ReturnInfo::RetCode())));
+            ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", FAILED_MSG));
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult);
+        }
+        else
+        {
+            auto FuncTmp = [&](void *pValue)
+            {
+                Json::Value *pJsBody = (Json::Value*)pValue;
+                (*pJsBody)["all_req_info"] = jsOpReqInfoList;
+
+            };
+
+            this_->WriteMsg(ResultInfoMap, writer, blResult, FuncTmp);
+        }
+
+    }
+    BOOST_SCOPE_EXIT_END
+
+    auto itFind = pMsgInfoMap->find("sid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("Session id not found.");
+        return blResult;
+    }
+    const std::string strSid = itFind->second;
+
+    itFind = pMsgInfoMap->find("userid");
+    if (pMsgInfoMap->end() == itFind)
+    {
+        LOG_ERROR_RLD("User id not found.");
+        return blResult;
+    }
+    const std::string strUserID = itFind->second;
+
+    int iReqStatus = -1;
+    itFind = pMsgInfoMap->find("status");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidType<int>(itFind->second, iReqStatus))
+        {
+            LOG_ERROR_RLD("Request status is error and input value is " << itFind->second);
+            return blResult;
+        }
+    }
+    
+    std::string strBeginDate;
+    itFind = pMsgInfoMap->find("begindate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strBeginDate = itFind->second;
+        if (!ValidDatetime(strBeginDate))
+        {
+            LOG_ERROR_RLD("Begin date is invalid and value is " << strBeginDate);
+            return blResult;
+        }
+    }
+
+    std::string strEndDate;
+    itFind = pMsgInfoMap->find("enddate");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        strEndDate = itFind->second;
+        if (!ValidDatetime(strEndDate))
+        {
+            LOG_ERROR_RLD("End date is invalid and value is " << strEndDate);
+            return blResult;
+        }
+    }
+
+    unsigned int uiBeginIndex = 0;
+    itFind = pMsgInfoMap->find("beginindex");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidType<unsigned int>(itFind->second, uiBeginIndex))
+        {
+            LOG_ERROR_RLD("Begin index is error and input value is " << itFind->second);
+            return blResult;
+        }
+    }
+
+    ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
+
+    LOG_INFO_RLD("Query all open request info received and session id is " << strSid << " and user id is " << strUserID << " and status is " << iReqStatus
+        << " and begin date is " << strBeginDate << " and end date is " << strEndDate << " and index is " << uiBeginIndex);
+
+    ProductClient pclient;
+    ProductClient::Param pam;
+    pam.m_iConnectTimeout = pam.m_iReceiveTimeout = pam.m_iSendTimeout = m_ParamInfo.m_uiCallFuncTimeout * 1000;
+    pam.m_iServerPort = boost::lexical_cast<int>(m_ParamInfo.m_strRemotePort);
+    pam.m_strServerIp = m_ParamInfo.m_strRemoteAddress;
+    if (!pclient.Init(pam))
+    {
+        LOG_ERROR_RLD("Product client init failed and server ip is " << pam.m_strServerIp << " and server port is " << pam.m_iServerPort);
+        return false;
+    }
+
+    QueryAllOpenRequestParam param;
+    param.__set_iReqStatus(iReqStatus);
+    param.__set_strBeginDate(strBeginDate);
+    param.__set_strBeginIndex(boost::lexical_cast<std::string>(uiBeginIndex));
+    param.__set_strEndDate(strEndDate);
+
+    QueryAllOpenRequestRT qrypdtrt;
+    pclient.QueryAllOpenRequest(qrypdtrt, strSid, strUserID, param);
+    if (qrypdtrt.rtcode.iRtCode != g_Product_constants.PDT_SUCCESS_CODE)
+    {
+        LOG_ERROR_RLD("Query all open request call failed" << " and return code is " << qrypdtrt.rtcode.iRtCode);
+
+        ReturnInfo::RetCode(qrypdtrt.rtcode.iRtCode);
+        pclient.Close();
+        return blResult;
+    }
+    pclient.Close();
+
+    for (auto itBegin = qrypdtrt.opreqlist.begin(), itEnd = qrypdtrt.opreqlist.end(); itBegin != itEnd; ++itBegin)
+    {
+        Json::Value jsReq;
+        jsReq["reqid"] = itBegin->strOpReqID;
+        jsReq["info"] = itBegin->strReqInfo;
+        jsReq["status"] = boost::lexical_cast<std::string>(itBegin->iReqStatus);
+        jsReq["req_date"] = itBegin->strReqDate;
+        jsReq["extend"] = itBegin->strExtend;
+        jsReq["req_userid"] = itBegin->strReqUserID;
+        jsReq["req_username"] = itBegin->strReqUserName;
+
+        jsOpReqInfoList.append(jsReq);
+    }
+
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retcode", SUCCESS_CODE));
+    ResultInfoMap.insert(std::map<std::string, std::string>::value_type("retmsg", SUCCESS_MSG));
+
+    blResult = true;
+
+    return blResult;
 }
 
 bool ProductHandler::AddProductHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMap, MsgWriter writer)
