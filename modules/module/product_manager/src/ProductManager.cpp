@@ -905,6 +905,7 @@ void ProductManager::QueryAllProduct(QueryAllProductRT& _return, const std::stri
         case 7:
             pdt.__set_strExtend(strColumn);
             pdtlist.push_back(pdt);
+            break;
 
         default:
             LOG_ERROR_RLD("Query all product sql callback error, row num is " << uiRowNum
