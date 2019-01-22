@@ -199,7 +199,7 @@ service ProductService
     
     
     AddProductRT AddProduct(1: string strSid, 2: string strUserID, 3: ProductInfo pdt);
-    ProductRTInfo RemoveProduct(1: string strSid, 2: string strUserID, 3: string strPdtID);
+    ProductRTInfo RemoveProduct(1: string strSid, 2: string strUserID, 3: string strPdtID, 4: i32 uiIncPpty);
     ProductRTInfo ModifyProduct(1: string strSid, 2: string strUserID, 3: string strPdtID, 4: ProductInfo pdt);
     
     QueryProductRT QueryProduct(1: string strSid, 2: string strUserID, 3: string strPdtID);
@@ -249,7 +249,7 @@ struct QueryAllOrdParam
 service OrderService
 {
     AddOrdRT AddOrd(1: string strSid, 2: string strUserID, 3: OrderInfo ord);
-    ProductRTInfo RemoveOrd(1: string strSid, 2: string strUserID, 3: string strOrdID);
+    ProductRTInfo RemoveOrd(1: string strSid, 2: string strUserID, 3: string strOrdID, 4: i32 uiIncDtl);
     ProductRTInfo ModifyOrd(1: string strSid, 2: string strUserID, 3: string strOrdID, 4: OrderInfo ord);
     
     AddOrdDetailRT AddOrdDetail(1: string strSid, 2: string strUserID, 3: OrderDetail orddt);

@@ -1507,10 +1507,22 @@ bool ProductHandler::RemoveProductHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
         return blResult;
     }
     const std::string strPdtID = itFind->second;
+
+    int iIncPpty = 1;
+    itFind = pMsgInfoMap->find("include_property");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidType<int>(itFind->second, iIncPpty))
+        {
+            LOG_ERROR_RLD("Include property value is error and input value is " << itFind->second);
+            return blResult;
+        }
+    }
         
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
-    LOG_INFO_RLD("Delete product info received and session id is " << strSid << " and user id is " << strUserID << " and product id is " << strPdtID);
+    LOG_INFO_RLD("Delete product info received and session id is " << strSid << " and user id is " << strUserID << " and product id is " << strPdtID
+        << " and include property is " << iIncPpty);
 
     ProductClient pclient;
     ProductClient::Param pam;
@@ -1524,7 +1536,7 @@ bool ProductHandler::RemoveProductHandler(boost::shared_ptr<MsgInfoMap> pMsgInfo
     }
         
     ProductRTInfo pdtrt;
-    pclient.RemoveProduct(pdtrt, strSid, strUserID, strPdtID);
+    pclient.RemoveProduct(pdtrt, strSid, strUserID, strPdtID, iIncPpty);
     if (pdtrt.iRtCode != g_Product_constants.PDT_SUCCESS_CODE)
     {
         LOG_ERROR_RLD("Remove product call failed" << " and return code is " << pdtrt.iRtCode);
@@ -2540,9 +2552,21 @@ bool ProductHandler::RemoveOrderHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     }
     const std::string strOrdID = itFind->second;
 
+    int iIncDtl = 1;
+    itFind = pMsgInfoMap->find("include_detail");
+    if (pMsgInfoMap->end() != itFind)
+    {
+        if (!ValidType<int>(itFind->second, iIncDtl))
+        {
+            LOG_ERROR_RLD("Include detail value is error and input value is " << itFind->second);
+            return blResult;
+        }
+    }
+
     ReturnInfo::RetCode(boost::lexical_cast<int>(FAILED_CODE));
 
-    LOG_INFO_RLD("Delete order info received and session id is " << strSid << " and user id is " << strUserID << " and order id is " << strOrdID);
+    LOG_INFO_RLD("Delete order info received and session id is " << strSid << " and user id is " << strUserID << " and order id is " << strOrdID
+        << " and include detail is " << iIncDtl);
 
     ProductClient pclient;
     ProductClient::Param pam;
@@ -2556,7 +2580,7 @@ bool ProductHandler::RemoveOrderHandler(boost::shared_ptr<MsgInfoMap> pMsgInfoMa
     }
 
     ProductRTInfo pdtrt;
-    pclient.RemoveOrd(pdtrt, strSid, strUserID, strOrdID);
+    pclient.RemoveOrd(pdtrt, strSid, strUserID, strOrdID, iIncDtl);
     if (pdtrt.iRtCode != g_Product_constants.PDT_SUCCESS_CODE)
     {
         LOG_ERROR_RLD("Remove order call failed" << " and return code is " << pdtrt.iRtCode);

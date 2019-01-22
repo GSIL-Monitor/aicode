@@ -2483,6 +2483,14 @@ uint32_t ProductService_RemoveProduct_args::read(::apache::thrift::protocol::TPr
           xfer += iprot->skip(ftype);
         }
         break;
+      case 4:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->uiIncPpty);
+          this->__isset.uiIncPpty = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -2512,6 +2520,10 @@ uint32_t ProductService_RemoveProduct_args::write(::apache::thrift::protocol::TP
   xfer += oprot->writeString(this->strPdtID);
   xfer += oprot->writeFieldEnd();
 
+  xfer += oprot->writeFieldBegin("uiIncPpty", ::apache::thrift::protocol::T_I32, 4);
+  xfer += oprot->writeI32(this->uiIncPpty);
+  xfer += oprot->writeFieldEnd();
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -2537,6 +2549,10 @@ uint32_t ProductService_RemoveProduct_pargs::write(::apache::thrift::protocol::T
 
   xfer += oprot->writeFieldBegin("strPdtID", ::apache::thrift::protocol::T_STRING, 3);
   xfer += oprot->writeString((*(this->strPdtID)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("uiIncPpty", ::apache::thrift::protocol::T_I32, 4);
+  xfer += oprot->writeI32((*(this->uiIncPpty)));
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -4440,13 +4456,13 @@ void ProductServiceClient::recv_AddProduct(AddProductRT& _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "AddProduct failed: unknown result");
 }
 
-void ProductServiceClient::RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID)
+void ProductServiceClient::RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const int32_t uiIncPpty)
 {
-  send_RemoveProduct(strSid, strUserID, strPdtID);
+  send_RemoveProduct(strSid, strUserID, strPdtID, uiIncPpty);
   recv_RemoveProduct(_return);
 }
 
-void ProductServiceClient::send_RemoveProduct(const std::string& strSid, const std::string& strUserID, const std::string& strPdtID)
+void ProductServiceClient::send_RemoveProduct(const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const int32_t uiIncPpty)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("RemoveProduct", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -4455,6 +4471,7 @@ void ProductServiceClient::send_RemoveProduct(const std::string& strSid, const s
   args.strSid = &strSid;
   args.strUserID = &strUserID;
   args.strPdtID = &strPdtID;
+  args.uiIncPpty = &uiIncPpty;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -5438,7 +5455,7 @@ void ProductServiceProcessor::process_RemoveProduct(int32_t seqid, ::apache::thr
 
   ProductService_RemoveProduct_result result;
   try {
-    iface_->RemoveProduct(result.success, args.strSid, args.strUserID, args.strPdtID);
+    iface_->RemoveProduct(result.success, args.strSid, args.strUserID, args.strPdtID, args.uiIncPpty);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
@@ -6693,13 +6710,13 @@ void ProductServiceConcurrentClient::recv_AddProduct(AddProductRT& _return, cons
   } // end while(true)
 }
 
-void ProductServiceConcurrentClient::RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID)
+void ProductServiceConcurrentClient::RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const int32_t uiIncPpty)
 {
-  int32_t seqid = send_RemoveProduct(strSid, strUserID, strPdtID);
+  int32_t seqid = send_RemoveProduct(strSid, strUserID, strPdtID, uiIncPpty);
   recv_RemoveProduct(_return, seqid);
 }
 
-int32_t ProductServiceConcurrentClient::send_RemoveProduct(const std::string& strSid, const std::string& strUserID, const std::string& strPdtID)
+int32_t ProductServiceConcurrentClient::send_RemoveProduct(const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const int32_t uiIncPpty)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -6709,6 +6726,7 @@ int32_t ProductServiceConcurrentClient::send_RemoveProduct(const std::string& st
   args.strSid = &strSid;
   args.strUserID = &strUserID;
   args.strPdtID = &strPdtID;
+  args.uiIncPpty = &uiIncPpty;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();

@@ -22,7 +22,7 @@ class OrderServiceIf {
  public:
   virtual ~OrderServiceIf() {}
   virtual void AddOrd(AddOrdRT& _return, const std::string& strSid, const std::string& strUserID, const OrderInfo& ord) = 0;
-  virtual void RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID) = 0;
+  virtual void RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const int32_t uiIncDtl) = 0;
   virtual void ModifyOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const OrderInfo& ord) = 0;
   virtual void AddOrdDetail(AddOrdDetailRT& _return, const std::string& strSid, const std::string& strUserID, const OrderDetail& orddt) = 0;
   virtual void RemoveOrdDetail(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const std::string& strOrddtID) = 0;
@@ -60,7 +60,7 @@ class OrderServiceNull : virtual public OrderServiceIf {
   void AddOrd(AddOrdRT& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const OrderInfo& /* ord */) {
     return;
   }
-  void RemoveOrd(ProductRTInfo& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const std::string& /* strOrdID */) {
+  void RemoveOrd(ProductRTInfo& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const std::string& /* strOrdID */, const int32_t /* uiIncDtl */) {
     return;
   }
   void ModifyOrd(ProductRTInfo& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const std::string& /* strOrdID */, const OrderInfo& /* ord */) {
@@ -199,10 +199,11 @@ class OrderService_AddOrd_presult {
 };
 
 typedef struct _OrderService_RemoveOrd_args__isset {
-  _OrderService_RemoveOrd_args__isset() : strSid(false), strUserID(false), strOrdID(false) {}
+  _OrderService_RemoveOrd_args__isset() : strSid(false), strUserID(false), strOrdID(false), uiIncDtl(false) {}
   bool strSid :1;
   bool strUserID :1;
   bool strOrdID :1;
+  bool uiIncDtl :1;
 } _OrderService_RemoveOrd_args__isset;
 
 class OrderService_RemoveOrd_args {
@@ -210,13 +211,14 @@ class OrderService_RemoveOrd_args {
 
   OrderService_RemoveOrd_args(const OrderService_RemoveOrd_args&);
   OrderService_RemoveOrd_args& operator=(const OrderService_RemoveOrd_args&);
-  OrderService_RemoveOrd_args() : strSid(), strUserID(), strOrdID() {
+  OrderService_RemoveOrd_args() : strSid(), strUserID(), strOrdID(), uiIncDtl(0) {
   }
 
   virtual ~OrderService_RemoveOrd_args() throw();
   std::string strSid;
   std::string strUserID;
   std::string strOrdID;
+  int32_t uiIncDtl;
 
   _OrderService_RemoveOrd_args__isset __isset;
 
@@ -226,6 +228,8 @@ class OrderService_RemoveOrd_args {
 
   void __set_strOrdID(const std::string& val);
 
+  void __set_uiIncDtl(const int32_t val);
+
   bool operator == (const OrderService_RemoveOrd_args & rhs) const
   {
     if (!(strSid == rhs.strSid))
@@ -233,6 +237,8 @@ class OrderService_RemoveOrd_args {
     if (!(strUserID == rhs.strUserID))
       return false;
     if (!(strOrdID == rhs.strOrdID))
+      return false;
+    if (!(uiIncDtl == rhs.uiIncDtl))
       return false;
     return true;
   }
@@ -256,6 +262,7 @@ class OrderService_RemoveOrd_pargs {
   const std::string* strSid;
   const std::string* strUserID;
   const std::string* strOrdID;
+  const int32_t* uiIncDtl;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -948,8 +955,8 @@ class OrderServiceClient : virtual public OrderServiceIf {
   void AddOrd(AddOrdRT& _return, const std::string& strSid, const std::string& strUserID, const OrderInfo& ord);
   void send_AddOrd(const std::string& strSid, const std::string& strUserID, const OrderInfo& ord);
   void recv_AddOrd(AddOrdRT& _return);
-  void RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID);
-  void send_RemoveOrd(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID);
+  void RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const int32_t uiIncDtl);
+  void send_RemoveOrd(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const int32_t uiIncDtl);
   void recv_RemoveOrd(ProductRTInfo& _return);
   void ModifyOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const OrderInfo& ord);
   void send_ModifyOrd(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const OrderInfo& ord);
@@ -1036,13 +1043,13 @@ class OrderServiceMultiface : virtual public OrderServiceIf {
     return;
   }
 
-  void RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID) {
+  void RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const int32_t uiIncDtl) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->RemoveOrd(_return, strSid, strUserID, strOrdID);
+      ifaces_[i]->RemoveOrd(_return, strSid, strUserID, strOrdID, uiIncDtl);
     }
-    ifaces_[i]->RemoveOrd(_return, strSid, strUserID, strOrdID);
+    ifaces_[i]->RemoveOrd(_return, strSid, strUserID, strOrdID, uiIncDtl);
     return;
   }
 
@@ -1129,8 +1136,8 @@ class OrderServiceConcurrentClient : virtual public OrderServiceIf {
   void AddOrd(AddOrdRT& _return, const std::string& strSid, const std::string& strUserID, const OrderInfo& ord);
   int32_t send_AddOrd(const std::string& strSid, const std::string& strUserID, const OrderInfo& ord);
   void recv_AddOrd(AddOrdRT& _return, const int32_t seqid);
-  void RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID);
-  int32_t send_RemoveOrd(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID);
+  void RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const int32_t uiIncDtl);
+  int32_t send_RemoveOrd(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const int32_t uiIncDtl);
   void recv_RemoveOrd(ProductRTInfo& _return, const int32_t seqid);
   void ModifyOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const OrderInfo& ord);
   int32_t send_ModifyOrd(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const OrderInfo& ord);

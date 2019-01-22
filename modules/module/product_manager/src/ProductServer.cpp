@@ -145,7 +145,7 @@ void ProductServerHandler::AddProduct(AddProductRT& _return, const std::string& 
     }
 }
 
-void ProductServerHandler::RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID)
+void ProductServerHandler::RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const int iIncPpty)
 {
     if (NULL != m_bh)
     {
@@ -160,7 +160,7 @@ void ProductServerHandler::RemoveProduct(ProductRTInfo& _return, const std::stri
         }
     }
 
-    m_pImpl->RemoveProduct(_return, strSid, strUserID, strPdtID);
+    m_pImpl->RemoveProduct(_return, strSid, strUserID, strPdtID, iIncPpty);
 
     if (NULL != m_ah)
     {
@@ -386,7 +386,7 @@ void OrderServerHandler::AddOrd(AddOrdRT& _return, const std::string& strSid, co
     }
 }
 
-void OrderServerHandler::RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID)
+void OrderServerHandler::RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const int iIncDtl)
 {
     if (NULL != m_bh)
     {
@@ -401,7 +401,7 @@ void OrderServerHandler::RemoveOrd(ProductRTInfo& _return, const std::string& st
         }
     }
 
-    m_pImpl->RemoveOrd(_return, strSid, strUserID, strOrdID);
+    m_pImpl->RemoveOrd(_return, strSid, strUserID, strOrdID, iIncDtl);
 
     if (NULL != m_ah)
     {

@@ -277,6 +277,14 @@ uint32_t OrderService_RemoveOrd_args::read(::apache::thrift::protocol::TProtocol
           xfer += iprot->skip(ftype);
         }
         break;
+      case 4:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->uiIncDtl);
+          this->__isset.uiIncDtl = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -306,6 +314,10 @@ uint32_t OrderService_RemoveOrd_args::write(::apache::thrift::protocol::TProtoco
   xfer += oprot->writeString(this->strOrdID);
   xfer += oprot->writeFieldEnd();
 
+  xfer += oprot->writeFieldBegin("uiIncDtl", ::apache::thrift::protocol::T_I32, 4);
+  xfer += oprot->writeI32(this->uiIncDtl);
+  xfer += oprot->writeFieldEnd();
+
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -331,6 +343,10 @@ uint32_t OrderService_RemoveOrd_pargs::write(::apache::thrift::protocol::TProtoc
 
   xfer += oprot->writeFieldBegin("strOrdID", ::apache::thrift::protocol::T_STRING, 3);
   xfer += oprot->writeString((*(this->strOrdID)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("uiIncDtl", ::apache::thrift::protocol::T_I32, 4);
+  xfer += oprot->writeI32((*(this->uiIncDtl)));
   xfer += oprot->writeFieldEnd();
 
   xfer += oprot->writeFieldStop();
@@ -1633,13 +1649,13 @@ void OrderServiceClient::recv_AddOrd(AddOrdRT& _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "AddOrd failed: unknown result");
 }
 
-void OrderServiceClient::RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID)
+void OrderServiceClient::RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const int32_t uiIncDtl)
 {
-  send_RemoveOrd(strSid, strUserID, strOrdID);
+  send_RemoveOrd(strSid, strUserID, strOrdID, uiIncDtl);
   recv_RemoveOrd(_return);
 }
 
-void OrderServiceClient::send_RemoveOrd(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID)
+void OrderServiceClient::send_RemoveOrd(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const int32_t uiIncDtl)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("RemoveOrd", ::apache::thrift::protocol::T_CALL, cseqid);
@@ -1648,6 +1664,7 @@ void OrderServiceClient::send_RemoveOrd(const std::string& strSid, const std::st
   args.strSid = &strSid;
   args.strUserID = &strUserID;
   args.strOrdID = &strOrdID;
+  args.uiIncDtl = &uiIncDtl;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
@@ -2091,7 +2108,7 @@ void OrderServiceProcessor::process_RemoveOrd(int32_t seqid, ::apache::thrift::p
 
   OrderService_RemoveOrd_result result;
   try {
-    iface_->RemoveOrd(result.success, args.strSid, args.strUserID, args.strOrdID);
+    iface_->RemoveOrd(result.success, args.strSid, args.strUserID, args.strOrdID, args.uiIncDtl);
     result.__isset.success = true;
   } catch (const std::exception& e) {
     if (this->eventHandler_.get() != NULL) {
@@ -2485,13 +2502,13 @@ void OrderServiceConcurrentClient::recv_AddOrd(AddOrdRT& _return, const int32_t 
   } // end while(true)
 }
 
-void OrderServiceConcurrentClient::RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID)
+void OrderServiceConcurrentClient::RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const int32_t uiIncDtl)
 {
-  int32_t seqid = send_RemoveOrd(strSid, strUserID, strOrdID);
+  int32_t seqid = send_RemoveOrd(strSid, strUserID, strOrdID, uiIncDtl);
   recv_RemoveOrd(_return, seqid);
 }
 
-int32_t OrderServiceConcurrentClient::send_RemoveOrd(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID)
+int32_t OrderServiceConcurrentClient::send_RemoveOrd(const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const int32_t uiIncDtl)
 {
   int32_t cseqid = this->sync_.generateSeqId();
   ::apache::thrift::async::TConcurrentSendSentry sentry(&this->sync_);
@@ -2501,6 +2518,7 @@ int32_t OrderServiceConcurrentClient::send_RemoveOrd(const std::string& strSid, 
   args.strSid = &strSid;
   args.strUserID = &strUserID;
   args.strOrdID = &strOrdID;
+  args.uiIncDtl = &uiIncDtl;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();

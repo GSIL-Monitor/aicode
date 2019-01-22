@@ -257,11 +257,11 @@ void ProductClient::AddProduct(AddProductRT& _return, const std::string& strSid,
     }
 }
 
-void ProductClient::RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID)
+void ProductClient::RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const int iIncPpty)
 {
     try
     {
-        m_pProductClient->RemoveProduct(_return, strSid, strUserID, strPdtID);
+        m_pProductClient->RemoveProduct(_return, strSid, strUserID, strPdtID, iIncPpty);
     }
     catch (TTransportException te)
     {
@@ -387,11 +387,11 @@ void ProductClient::AddOrd(AddOrdRT& _return, const std::string& strSid, const s
     }
 }
 
-void ProductClient::RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID)
+void ProductClient::RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const int iIncDtl)
 {
     try
     {
-        m_pOrderClient->RemoveOrd(_return, strSid, strUserID, strOrdID);
+        m_pOrderClient->RemoveOrd(_return, strSid, strUserID, strOrdID, iIncDtl);
     }
     catch (TTransportException te)
     {

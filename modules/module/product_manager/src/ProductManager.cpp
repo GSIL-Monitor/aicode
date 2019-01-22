@@ -672,7 +672,7 @@ void ProductManager::AddProduct(AddProductRT& _return, const std::string& strSid
     blResult = true;
 }
 
-void ProductManager::RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID)
+void ProductManager::RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const int iIncPpty)
 {
     int iFailCode = g_Product_constants.PDT_FAILED_CODE;
     bool blResult = false;
@@ -704,6 +704,19 @@ void ProductManager::RemoveProduct(ProductRTInfo& _return, const std::string& st
     {
         LOG_ERROR_RLD("Remove product exec sql failed, sql is " << sql);
         return;
+    }
+
+    if (-1 != iIncPpty && 1 == iIncPpty)
+    {
+        char sql[1024] = { 0 };        
+        const char *sqlfmt = "delete from t_product_property where pdtid = '%s'";
+        snprintf(sql, sizeof(sql), sqlfmt, strPdtID.c_str());
+
+        if (!m_pMysql->QueryExec(std::string(sql)))
+        {
+            LOG_ERROR_RLD("Remove product property exec sql failed, sql is " << sql);
+            return;
+        }
     }
 
     blResult = true;
@@ -1040,7 +1053,7 @@ void ProductManager::AddOrd(AddOrdRT& _return, const std::string& strSid, const 
     blResult = true;
 }
 
-void ProductManager::RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID)
+void ProductManager::RemoveOrd(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strOrdID, const int iIncDtl)
 {
     bool blResult = false;
     BOOST_SCOPE_EXIT(&blResult, this_, &_return, &g_Product_constants)
@@ -1057,6 +1070,19 @@ void ProductManager::RemoveOrd(ProductRTInfo& _return, const std::string& strSid
     {
         LOG_ERROR_RLD("Remove order exec sql failed, sql is " << sql);
         return;
+    }
+
+    if (-1 != iIncDtl && 1 == iIncDtl)
+    {
+        char sql[1024] = { 0 };
+        const char *sqlfmt = "delete from t_order_detail where ordid = '%s'";
+        snprintf(sql, sizeof(sql), sqlfmt, strOrdID.c_str());
+        
+        if (!m_pMysql->QueryExec(std::string(sql)))
+        {
+            LOG_ERROR_RLD("Remove order detail exec sql failed, sql is " << sql);
+            return;
+        }
     }
 
     blResult = true;

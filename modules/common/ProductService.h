@@ -32,7 +32,7 @@ class ProductServiceIf {
   virtual void QueryOpenRequest(QueryOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strReqID, const std::string& strReqUserID, const std::string& strReqUserName) = 0;
   virtual void QueryAllOpenRequest(QueryAllOpenRequestRT& _return, const std::string& strSid, const std::string& strUserID, const QueryAllOpenRequestParam& qryparam) = 0;
   virtual void AddProduct(AddProductRT& _return, const std::string& strSid, const std::string& strUserID, const ProductInfo& pdt) = 0;
-  virtual void RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID) = 0;
+  virtual void RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const int32_t uiIncPpty) = 0;
   virtual void ModifyProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const ProductInfo& pdt) = 0;
   virtual void QueryProduct(QueryProductRT& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID) = 0;
   virtual void QueryAllProduct(QueryAllProductRT& _return, const std::string& strSid, const std::string& strUserID) = 0;
@@ -100,7 +100,7 @@ class ProductServiceNull : virtual public ProductServiceIf {
   void AddProduct(AddProductRT& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const ProductInfo& /* pdt */) {
     return;
   }
-  void RemoveProduct(ProductRTInfo& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const std::string& /* strPdtID */) {
+  void RemoveProduct(ProductRTInfo& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const std::string& /* strPdtID */, const int32_t /* uiIncPpty */) {
     return;
   }
   void ModifyProduct(ProductRTInfo& /* _return */, const std::string& /* strSid */, const std::string& /* strUserID */, const std::string& /* strPdtID */, const ProductInfo& /* pdt */) {
@@ -1426,10 +1426,11 @@ class ProductService_AddProduct_presult {
 };
 
 typedef struct _ProductService_RemoveProduct_args__isset {
-  _ProductService_RemoveProduct_args__isset() : strSid(false), strUserID(false), strPdtID(false) {}
+  _ProductService_RemoveProduct_args__isset() : strSid(false), strUserID(false), strPdtID(false), uiIncPpty(false) {}
   bool strSid :1;
   bool strUserID :1;
   bool strPdtID :1;
+  bool uiIncPpty :1;
 } _ProductService_RemoveProduct_args__isset;
 
 class ProductService_RemoveProduct_args {
@@ -1437,13 +1438,14 @@ class ProductService_RemoveProduct_args {
 
   ProductService_RemoveProduct_args(const ProductService_RemoveProduct_args&);
   ProductService_RemoveProduct_args& operator=(const ProductService_RemoveProduct_args&);
-  ProductService_RemoveProduct_args() : strSid(), strUserID(), strPdtID() {
+  ProductService_RemoveProduct_args() : strSid(), strUserID(), strPdtID(), uiIncPpty(0) {
   }
 
   virtual ~ProductService_RemoveProduct_args() throw();
   std::string strSid;
   std::string strUserID;
   std::string strPdtID;
+  int32_t uiIncPpty;
 
   _ProductService_RemoveProduct_args__isset __isset;
 
@@ -1453,6 +1455,8 @@ class ProductService_RemoveProduct_args {
 
   void __set_strPdtID(const std::string& val);
 
+  void __set_uiIncPpty(const int32_t val);
+
   bool operator == (const ProductService_RemoveProduct_args & rhs) const
   {
     if (!(strSid == rhs.strSid))
@@ -1460,6 +1464,8 @@ class ProductService_RemoveProduct_args {
     if (!(strUserID == rhs.strUserID))
       return false;
     if (!(strPdtID == rhs.strPdtID))
+      return false;
+    if (!(uiIncPpty == rhs.uiIncPpty))
       return false;
     return true;
   }
@@ -1483,6 +1489,7 @@ class ProductService_RemoveProduct_pargs {
   const std::string* strSid;
   const std::string* strUserID;
   const std::string* strPdtID;
+  const int32_t* uiIncPpty;
 
   uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
 
@@ -2205,8 +2212,8 @@ class ProductServiceClient : virtual public ProductServiceIf {
   void AddProduct(AddProductRT& _return, const std::string& strSid, const std::string& strUserID, const ProductInfo& pdt);
   void send_AddProduct(const std::string& strSid, const std::string& strUserID, const ProductInfo& pdt);
   void recv_AddProduct(AddProductRT& _return);
-  void RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID);
-  void send_RemoveProduct(const std::string& strSid, const std::string& strUserID, const std::string& strPdtID);
+  void RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const int32_t uiIncPpty);
+  void send_RemoveProduct(const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const int32_t uiIncPpty);
   void recv_RemoveProduct(ProductRTInfo& _return);
   void ModifyProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const ProductInfo& pdt);
   void send_ModifyProduct(const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const ProductInfo& pdt);
@@ -2413,13 +2420,13 @@ class ProductServiceMultiface : virtual public ProductServiceIf {
     return;
   }
 
-  void RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID) {
+  void RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const int32_t uiIncPpty) {
     size_t sz = ifaces_.size();
     size_t i = 0;
     for (; i < (sz - 1); ++i) {
-      ifaces_[i]->RemoveProduct(_return, strSid, strUserID, strPdtID);
+      ifaces_[i]->RemoveProduct(_return, strSid, strUserID, strPdtID, uiIncPpty);
     }
-    ifaces_[i]->RemoveProduct(_return, strSid, strUserID, strPdtID);
+    ifaces_[i]->RemoveProduct(_return, strSid, strUserID, strPdtID, uiIncPpty);
     return;
   }
 
@@ -2536,8 +2543,8 @@ class ProductServiceConcurrentClient : virtual public ProductServiceIf {
   void AddProduct(AddProductRT& _return, const std::string& strSid, const std::string& strUserID, const ProductInfo& pdt);
   int32_t send_AddProduct(const std::string& strSid, const std::string& strUserID, const ProductInfo& pdt);
   void recv_AddProduct(AddProductRT& _return, const int32_t seqid);
-  void RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID);
-  int32_t send_RemoveProduct(const std::string& strSid, const std::string& strUserID, const std::string& strPdtID);
+  void RemoveProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const int32_t uiIncPpty);
+  int32_t send_RemoveProduct(const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const int32_t uiIncPpty);
   void recv_RemoveProduct(ProductRTInfo& _return, const int32_t seqid);
   void ModifyProduct(ProductRTInfo& _return, const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const ProductInfo& pdt);
   int32_t send_ModifyProduct(const std::string& strSid, const std::string& strUserID, const std::string& strPdtID, const ProductInfo& pdt);
